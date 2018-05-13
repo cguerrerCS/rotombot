@@ -1,26 +1,21 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token  = "NDQ0Mjc4MjA5NDAwNTM3MDg4.DdjyyA.Xq1WQRv_uKHBJdFiz-mXjiuMwXA";
-client.login(token);
+const IsDevelopment = false;
 
 var fs = require('fs');
 var CsvReadableStream = require('csv-reader');
-var inputStream = fs.createReadStream('RaidLocations.csv', 'utf8');
+var inputRaidDataStream = fs.createReadStream('RaidLocations.csv', 'utf8');
+var inputBotTokenStream = fs.createReadStream('BotToken.csv', 'utf8');
 var Fuse = require('fuse.js');
-
-var admins = 
-{
-    '271467676826599425':'Nick',
-    '356274521382060044':'Cesar'
-}
 
 var ActiveRaids = {};
 var RaidData = [];
+var Tokens = {};
 var Autocorrect = null;
 var fuse = null;
 
 // read in all raid data
-inputStream
+inputRaidDataStream
     .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
     .on('data', function (row) {
 
@@ -35,8 +30,6 @@ inputStream
 		};
 
 		RaidData.push(data);
-    	//console.log('A row arrived: ', row[1]);
-        //console.log('A row arrived: ', row);
     })
     .on('end', function (data) {
 
@@ -55,12 +48,31 @@ inputStream
 			};
 
 		fuse = new Fuse(RaidData, options); // "RaidData" is the item array
+    });
 
-    	//console.log(RaidLocations);
-        //console.log('Done reading in raid data.');
-        //Autocorrect = require('autocorrect')({words: RaidLocations})
-        //console.log('Done reading in raid data.');
-		//console.log(autocorrect('nintendo'));
+// read in bot tokens
+inputBotTokenStream
+    .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
+    .on('data', function (row) {
+
+		var tokenObj = 
+		{ 
+			BotName: row[0],
+			Token: row[1],
+			ClientID: row[2]
+		};
+
+		Tokens[tokenObj.BotName] = tokenObj;
+    })
+    .on('end', function (data) {
+
+    	if (IsDevelopment) {
+    		var token = Tokens["Rotom Jr."].Token;
+    		client.login(token);
+    	} else {
+    		var token = Tokens["Rotom"].Token;
+    		client.login(token);
+    	}
     });
 
 //var channel = client.servers.get("name", "Technica").defaultChannel;
@@ -84,7 +96,7 @@ function RaidListRefresh()
 	}
 }
 
-function ProcessRaidsCommand(message, includeDirections) 
+function ProcessRaidsCommand(message) 
 {
 	var raidListMarkup = [];
 	raidListMarkup.push("__**LOCAL RAID SCHEDULES (L5)**__\n");
@@ -100,22 +112,35 @@ function ProcessRaidsCommand(message, includeDirections)
 	// sort raids by date
 	sortedRaids.sort(function(a,b)
 	{
-    	return a.Time - b.Time;
+    	return a.HatchTime - b.HatchTime;
 	});
 
 	for (var i = 0; i < sortedRaids.length; i++) 
 	{
 		var raid = sortedRaids[i];
-		if (includeDirections) 
-		{
-			raidListMarkup.push(raid.RaidLocation + " @ " + formatDate(raid.HatchTime) + " " + "[Directions](" + raid.MapLink + ")\n");
-		} else {
-			raidListMarkup.push(raid.RaidLocation + " @ " + formatDate(raid.HatchTime) + "\n");
-		}
+		raidListMarkup.push(raid.RaidLocation + " @ " + formatDate(raid.HatchTime) + "\n");
 	}
 
 	var raidListContent = raidListMarkup.join("");
     message.channel.send(raidListContent);
+}
+
+function ProcessDirectionsCommand(message) 
+{
+	if (message.content.startsWith("!directions")) 
+	{
+		var raidToGetDirectionsFor = message.content.replace("!directions", "").trim();
+		var searchResults = fuse.search(raidToGetDirectionsFor);
+		if (searchResults.length < 1) 
+		{
+			ReportError(message, "!directions", "");
+			return;
+		}
+
+		var closestResult = searchResults[0];
+		var directionsContent = closestResult.RaidLocation + " [Directions]\n" + closestResult.MapLink + "\n";
+		message.channel.send(directionsContent);
+	}
 }
 
 function ProcessAddCommand(message) 
@@ -134,6 +159,12 @@ function ProcessAddCommand(message)
 
 			// default time today's month and year
 			var raidTime = new Date();
+
+			if ( !raidTimeInput.toLowerCase().includes("am") && !raidTimeInput.toLowerCase().includes("pm") ) 
+			{
+				ReportError(message, "!add", "Zzzrt! That is an invalid time format.");
+				return;
+			}
 
 			var time = raidTimeInput.toLowerCase().replace("am", "").replace("pm", "");
 			if (time.split(":").length == 2) 
@@ -171,7 +202,6 @@ function ProcessAddCommand(message)
 				var expiryTime = new Date(raidTime.getTime());
 				expiryTime.setMinutes(expiryTime.getMinutes() + 45);
 
-
 				var maxAllowablePredictionTime = new Date();
 				maxAllowablePredictionTime.setMinutes(maxAllowablePredictionTime.getMinutes() + 60);
 				if (raidTime > maxAllowablePredictionTime) 
@@ -192,6 +222,7 @@ function ProcessAddCommand(message)
 				};
 
 				ActiveRaids[raid.RaidLocation] = raid;
+				ProcessRaidsCommand(message);
 
 			} else {
 
@@ -210,7 +241,8 @@ function ProcessAddCommand(message)
 function ProcessRemoveCommand(message) 
 {
 
-	if (message.content.startsWith("!remove")) {
+	if (message.content.startsWith("!remove")) 
+	{
 
 		var raidToRemove = message.content.replace("!remove", "").trim();
 
@@ -227,6 +259,7 @@ function ProcessRemoveCommand(message)
 		if (closestResult.RaidLocation in ActiveRaids) 
 		{
 			delete ActiveRaids[closestResult.RaidLocation];
+			ProcessRaidsCommand(message);
 		}
 
 	} else {
@@ -258,14 +291,14 @@ function ProcessDiscordMessage(message)
         		ProcessRemoveCommand(message);
 		        break;
 		    case "!raids":
-		    	ProcessRaidsCommand(message, false);
+		    	ProcessRaidsCommand(message);
 		    	break;
 			case "!directions":
-		    	ProcessRaidsCommand(message, true);
-		    	break;
-		    case "!shutup":
-           		var output = "shutup @Amzerik Braap! Braap!\n";
+				var output = "Processing " + cmd + " command submitted by user " + message.author +  "\n";
+        		process.stdout.write(output);
         		message.channel.send(output);
+		    	ProcessDirectionsCommand(message);
+		    	break;
 	    	case "!help":
 	    		// TODO: fill in command documentation
 	    		break;
@@ -277,7 +310,7 @@ function ProcessDiscordMessage(message)
 
 function ReportError(message, cmd, error) 
 {
-	var output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\nError: " + error + "\n";
+	var output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n\nError: " + error + "\n";
 	process.stdout.write(output);
 	message.channel.send(output);
 }
@@ -299,12 +332,18 @@ setInterval(RaidListRefresh, 10 * 1000);
 
 client.on("message", async message => {
 
-	// process.stdout.write("person talking " + message.author.id.toString() + "\n");
-	// var isAdmin = message.author.id.toString() in admins;
-	var isAdmin = true;
-
-	if (!message.author.bot && isAdmin) 
+	if (!message.author.bot) 
 	{
-		ProcessDiscordMessage(message);
+		if (IsDevelopment) 
+		{
+			if (message.channel.type.toString() == "dm") 
+			{
+				ProcessDiscordMessage(message);
+			}
+
+		} else {
+
+			ProcessDiscordMessage(message);
+		}
 	}	
 });
