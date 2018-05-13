@@ -1,17 +1,17 @@
 City,Raid Location,Friendly Name,Longitude,Latitude,Map Link
 Redmond,Cleveland Fountain,Cleveland Fountain,47.673667,-122.1255950,"https://www.google.com/maps/dir/?api=1&destination=47.673667,-122.1255950"
 Redmond,Gridlock Light Sculpture,Gridlock,47.673298,-122.1252560,"https://www.google.com/maps/dir/?api=1&destination=47.673298,-122.1252560"
-Redmond,Painted Parking Lot,Painted,47.672712,-122.1246170,"https://www.google.com/maps/dir/?api=1&destination=47.672712,-122.1246170"
+Redmond,Painted Parking Lot,Painted Parking Lot,47.672712,-122.1246170,"https://www.google.com/maps/dir/?api=1&destination=47.672712,-122.1246170"
 Redmond,Redmond Town Center Fish Statue,Farmers Market,47.671892,-122.1244250,"https://www.google.com/maps/dir/?api=1&destination=47.671892,-122.1244250"
 Redmond,Redmond Clock Tower,Clock Tower,47.674170,-122.1230560,"https://www.google.com/maps/dir/?api=1&destination=47.674170,-122.1230560"
-Redmond,Victors Coffee Co. and Rosters,Victors,47.674577,-122.1219000,"https://www.google.com/maps/dir/?api=1&destination=47.674577,-122.1219000"
-Redmond,Redmond's Erratic,Erratic,47.671955,-122.1192510,"https://www.google.com/maps/dir/?api=1&destination=47.671955,-122.1192510"
+Redmond,Victors Coffee Co. and Rosters,Victors Coffeeshop,47.674577,-122.1219000,"https://www.google.com/maps/dir/?api=1&destination=47.674577,-122.1219000"
+Redmond,Redmond's Erratic,Redmond Erratic,47.671955,-122.1192510,"https://www.google.com/maps/dir/?api=1&destination=47.671955,-122.1192510"
 Redmond,Kids Playing Baseball Mural,Mattress Firm,47.672620,-122.1168190,"https://www.google.com/maps/dir/?api=1&destination=47.672620,-122.1168190"
-Redmond,BJ's Brewmural,BJs,47.668914,-122.1197480,"https://www.google.com/maps/dir/?api=1&destination=47.668914,-122.1197480"
+Redmond,BJ's Brewmural,BJs Brewhouse,47.668914,-122.1197480,"https://www.google.com/maps/dir/?api=1&destination=47.668914,-122.1197480"
 Redmond,Mural (Wells Fargo),Wells Fargo,47.678650,-122.1273090,"https://www.google.com/maps/dir/?api=1&destination=47.678650,-122.1273090"
-Redmond,Wisdom Seekers in Redmond,Library,47.678799,-122.1285320,"https://www.google.com/maps/dir/?api=1&destination=47.678799,-122.1285320"
+Redmond,Wisdom Seekers in Redmond,Redmond Library,47.678799,-122.1285320,"https://www.google.com/maps/dir/?api=1&destination=47.678799,-122.1285320"
 Redmond,Luke McRedmond's Paired Beavers,Luke McRedmond,47.673250,-122.1321600,"https://www.google.com/maps/dir/?api=1&destination=47.673250,-122.1321600"
-Redmond,Soulfood Books and Café,Soul Foods,47.675219,-122.1303860,"https://www.google.com/maps/dir/?api=1&destination=47.675219,-122.1303860"
+Redmond,Soulfood Books and Cafe,Soul Foods,47.675219,-122.1303860,"https://www.google.com/maps/dir/?api=1&destination=47.675219,-122.1303860"
 Redmond,West Ironcycle,Ben Franklin,47.675691,-122.1301230,"https://www.google.com/maps/dir/?api=1&destination=47.675691,-122.1301230"
 Redmond,Hunting Fox,City Hall,47.678920,-122.1305200,"https://www.google.com/maps/dir/?api=1&destination=47.678920,-122.1305200"
 Redmond,Weiner Elephants,Redmond PD,47.680386,-122.1288890,"https://www.google.com/maps/dir/?api=1&destination=47.680386,-122.1288890"
@@ -24,7 +24,7 @@ Redmond,Nike Park,Nike Park,47.683823,-122.1108410,"https://www.google.com/maps/
 Redmond,St. Jude Walking Trail,St Judes,47.693495,-122.1168830,"https://www.google.com/maps/dir/?api=1&destination=47.693495,-122.1168830"
 Redmond,Redmond Meadow Park,Meadow Park,47.695703,-122.1265500,"https://www.google.com/maps/dir/?api=1&destination=47.695703,-122.1265500"
 Redmond,Leaf Inlay in Sidewalk,Leaf Inlay,47.689362,-122.1144350,"https://www.google.com/maps/dir/?api=1&destination=47.689362,-122.1144350"
-Redmond,The Church Of Jesus Christ Of Latter-Day Saints,LDS,47.690909,-122.1109640,"https://www.google.com/maps/dir/?api=1&destination=47.690909,-122.1109640"
+Redmond,The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park),LDS (Hartman Park),47.690909,-122.1109640,"https://www.google.com/maps/dir/?api=1&destination=47.690909,-122.1109640"
 Redmond,Hartman Park,Hartman Park Sign,47.691002,-122.1101770,"https://www.google.com/maps/dir/?api=1&destination=47.691002,-122.1101770"
 Redmond,Jim Palmquist Memorial Plaque,Hartman Park (Baseball),47.692436,-122.1073280,"https://www.google.com/maps/dir/?api=1&destination=47.692436,-122.1073280"
 Redmond,Redmond Pool,Redmond Pool,47.692516,-122.1063080,"https://www.google.com/maps/dir/?api=1&destination=47.692516,-122.1063080"
@@ -68,7 +68,7 @@ Redmond,Austin J.Eversole Eagle Scout Project,Grass Lawn Park (Woods),47.667063,
 Redmond,Running Man Sidewalk,RedWest (Sidewalk),47.660022,-122.1418250,"https://www.google.com/maps/dir/?api=1&destination=47.660022,-122.1418250"
 Redmond,Step Waterfall,RedWest (Waterfall),47.658960,-122.1407840,"https://www.google.com/maps/dir/?api=1&destination=47.658960,-122.1407840"
 Redmond,Microsoft Redwest Wetlands East,RedWest (Wetlands),47.656599,-122.1385120,"https://www.google.com/maps/dir/?api=1&destination=47.656599,-122.1385120"
-Redmond,All Saits Lutheran Church,All Saits Lutheran Church,47.657134,-122.1434590,"https://www.google.com/maps/dir/?api=1&destination=47.657134,-122.1434590"
+Redmond,All Saints Lutheran Church,All Saints Lutheran Church,47.657134,-122.1434590,"https://www.google.com/maps/dir/?api=1&destination=47.657134,-122.1434590"
 Redmond,Tree Cave,RedWest (Tree Cave),47.655397,-122.1405350,"https://www.google.com/maps/dir/?api=1&destination=47.655397,-122.1405350"
 Redmond,Nintendo Sign,Nintendo Sign,47.654689,-122.1410070,"https://www.google.com/maps/dir/?api=1&destination=47.654689,-122.1410070"
 Redmond,Nintendo of America,Nintendo Building,47.651046,-122.1401260,"https://www.google.com/maps/dir/?api=1&destination=47.651046,-122.1401260"
@@ -109,3 +109,55 @@ Redmond,"Connor ""Boy"" Reed Memorial Bench",Farrell McWhirter Park (Bench),47.6
 Redmond,Bird on a Boat,Redmond PCC,47.701848,-122.0933000,"https://www.google.com/maps/dir/?api=1&destination=47.701848,-122.0933000"
 Redmond,Juel Park,Juel Park (Entrance),47.702702,-122.0892780,"https://www.google.com/maps/dir/?api=1&destination=47.702702,-122.0892780"
 Redmond,Juel Trail,Juel Park (Trail),47.701802,-122.0891420,"https://www.google.com/maps/dir/?api=1&destination=47.701802,-122.0891420"
+Redmond,Truck In A Tree,Microsoft B30,47.644983,-122.1215250,
+Redmond,Microsoft Fitness Trail,Microsoft Fitness Trail,47.643633,-122.1206670,
+Redmond,Creekside Covenant Church,Creekside Covenant Church,47.630389,-122.1096660,
+Redmond,Bellevue Youth Theatre,Bellevue Youth Theatre,47.622770,-122.1167850,
+Redmond,Bellevue Masonic Center's Plaque,Bellevue Masonic Center,47.624449,-122.1225780,
+Redmond,Overlake Park Presbyterian Church,Overlake Park Prebyterian Church,47.627528,-122.1316990,
+Redmond,Colonial Square Apartment Homes,Xroads (Colonial Square),47.624645,-122.1322360,
+Redmond,Crossroads Cow in Stone Garden,Xroads (Cow),47.620334,-122.1302540,
+Redmond,Woodland Mural,Xroads (Woodland Mural),47.619303,-122.1299030,
+Redmond,Coffee Cup Bike Rack,Xroads (Bike Rack),47.618412,-122.1312280,
+Redmond,Crossroads Community Center,Xroads (Community Center),47.619357,-122.1280170,
+Redmond,The Salvation Army,Xroads (Salvation Army),47.618808,-122.1222460,
+Redmond,Calvary Lutheran Church,Calvary Lutheran Church,47.614881,-122.1224090,
+Redmond,P. George Brown Memorial Bench,Hilaire Park (Bench),47.614595,-122.1281870,
+Redmond,Hilaire Park,Hilaire Park (Entrance),47.615103,-122.1292320,
+Redmond,Cross of Christ Lutheran Church,Cross of Christ Lutheran Church,47.613940,-122.1330890,
+Redmond,Lake to Lake Trail Marker North,Lake to Lake Trail Marker North,47.608007,-122.1381620,
+Redmond,St. Louise De Marillac Catholic Church,St. Louise De Marillac Catholic Church,47.608480,-122.1323770,
+Redmond,Keep Wildlife Wild,Larsen Lake Blueberry Farm,47.605443,-122.1374460,
+Redmond,Evergreen Park Dog Stop,Evergreen Park Dog Stop,47.603728,-122.1284430,
+Redmond,Weowna Park Trail Stairway Marker,Weowna Park (Trail Stairway),47.602610,-122.1140190,
+Redmond,The Club,Boys and Girls Club,47.602973,-122.1365740,
+Redmond,Blueberry Farmers at the Blueberry Bus Stop,Blueberry Bus Stop,47.602901,-122.1360430,
+Redmond,Little League Federal Field,Little League Federal Field,47.601973,-122.1379170,
+Redmond,"Lake to Lake Trailhead, 151st Ave Entrance",Lake to Lake Trailhead (151st),47.598810,-122.1370030,
+Redmond,Bellevue Demonstration Garden,Bellevue Demonstration Garden,47.597158,-122.1332810,
+Redmond,Nature Does Nothing Uselessly,Nature Does Nothing Uselessly,47.596921,-122.1335900,
+Redmond,Lake Hills Park,Lake Hills Park,47.599626,-122.1210700,
+Redmond,"Ducks And Dogs, The Rules Of Lake Hills Park",Lake Hills Park Rules,47.597600,-122.1235320,
+Redmond,Robinsglen Nature Park,Robinsglen Nature Park,47.596512,-122.1212390,
+Redmond,Welcome To Phantom Lake!,Phantom Lake,47.592393,-122.1309370,
+Redmond,Trail System Sign,Weowna Park (Trail System Sign),47.596658,-122.1154680,
+Redmond,Lake To Lake Trail Sign,Lake To Lake Trail Sign,47.595704,-122.1154000,
+Redmond,Trees Wanted Dead or Alive,Weowna Park (Trees Wanted),47.593918,-122.1155470,
+Redmond,West Lake Sammamish Lion,West Lake Sammamish Lion,47.595314,-122.1113830,
+Redmond,Lake To Lake Trail,Lake To Lake Trail (26th Street),47.589022,-122.1170320,
+Redmond,City of Bellevue Trail System Marker (24th),Bellevue Trail System Marker (24th),47.588855,-122.1226420,
+Redmond,Spiritridge and Phantom Lake Trailhead,Spiritridge and Phantom Lake Trailhead,47.588893,-122.1258970,
+Redmond,Bellevue Trail Post,Bellevue Airfield Park,47.586778,-122.1284030,
+Redmond,Forty One Point Five Park,Forty One Point Five Park,47.573847,-122.1112060,
+Redmond,Vasa Park Fountain,Vasa Park (Fountain),47.576751,-122.1128690,
+Redmond,Vasa Park Reunion Building,Vasa Park (Reunion Building),47.576745,-122.1141250,
+Redmond,Spiritridge Park Rock,Spiritridge Park Rock,47.580960,-122.1280010,
+Redmond,Blue Bowl Fountain,Blue Bowl Fountain,47.580815,-122.1337460,
+Redmond,City of Bellevue Trail System Marker (156th),Bellevue Trail System Marker (156th),47.585358,-122.1324170,
+Redmond,Robinswood Tennis Center,Robinswood Park (Tennis Center),47.588971,-122.1380110,
+Redmond,"""The Dogs Know"" Amelia Gray Memorial Bench",Robinswood Park (Bench),47.587637,-122.1386150,
+Redmond,Robinswood Dog Park,Robinswood Park (Dog Park),47.587905,-122.1424300,
+Redmond,Robinswood Park Trail Entrance,Robinswood Park (Trail),47.586816,-122.1423530,
+Redmond,The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills),LDS (Lake Hills),47.584283,-122.1411510,
+Redmond,Pergola,Sunset Village (Pergola),47.581765,-122.1402400,
+Redmond,Lil Jon Restaurant,Sunset Village (Lil Jon Restaurant),47.581852,-122.1389120,
