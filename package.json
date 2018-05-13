@@ -1,0 +1,25 @@
+{
+  "name": "rotombot",
+  "version": "1.0.0",
+  "description": "Discord Bot used for organizing Pokemon Go Raids",
+  "main": "rotombot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cguerrerCS/rotombot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cguerrerCS/rotombot/issues"
+  },
+  "homepage": "https://github.com/cguerrerCS/rotombot#readme",
+  "dependencies": {
+    "csv-reader": "^1.0.3",
+    "discord.js": "^11.3.2",
+    "fuse.js": "^3.2.0"
+  }
+}
