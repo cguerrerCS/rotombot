@@ -154,8 +154,6 @@ function ProcessAddCommand(message)
 		{
 			var raidLocationInput = input.split("@")[0].trim();
 			var raidTimeInput = input.split("@")[1].trim();
-			//process.stdout.write("raid name: " + raidLocationInput + "\n");
-			//process.stdout.write("raid time: " + raidTimeInput + "\n");
 
 			// default time today's month and year
 			var raidTime = new Date();
@@ -184,6 +182,7 @@ function ProcessAddCommand(message)
 					return;
 				}
 
+				hour = hour % 12;
 				hour += raidTimeInput.toLowerCase().includes("pm") ? 12 : 0;
 				raidTime.setHours(hour);
 				raidTime.setMinutes(minutes);
