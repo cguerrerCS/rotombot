@@ -20,6 +20,7 @@
   "dependencies": {
     "csv-reader": "^1.0.3",
     "discord.js": "^11.3.2",
+    "discord.js-commando": "^0.10.0",
     "fuse.js": "^3.2.0"
   }
 }

@@ -1,5 +1,11 @@
-const Discord = require('discord.js');
+const Discord = require('discord.js-commando');
 const client = new Discord.Client();
+
+//Discord related commands
+client.registry.registerGroup('raids','Raids');
+client.registry.registerDefaults();
+client.registry.registerCommandsIn(__dirname + "/commands");
+
 const IsDevelopment = false;
 
 var fs = require('fs');
