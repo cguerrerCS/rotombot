@@ -1,5 +1,5 @@
 const commando = require('discord.js-commando');
-const ProcessRaidsCommand = require('./../../rotombot.js');
+
 //!raids command
 class raids extends commando.Command{
     constructor(client){
@@ -11,7 +11,11 @@ class raids extends commando.Command{
             examples: ['!raids']
         })
     }
-    async run(message, args){ /*ProcessRaidsCommand(message, false);*/ } 
+    async run(message, args){
+      
+      var client = message.client;
+      message.channel.send(client.RaidManager.listFormatted());
+    }
 }
 
 module.exports = raids;

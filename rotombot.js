@@ -1,68 +1,45 @@
-const Discord = require('discord.js-commando');
-const client = new Discord.Client();
+const RaidManager = require('./raidmanager.js');
+const { CommandoClient } = require('discord.js-commando');
+const cmdParser = require('discord-command-parser');
+const cmdPrefix = '!';
+const IsDevelopment = false;
 
 //Discord related commands
+const client = new CommandoClient({
+    _commandPrefix: '!'
+});
+
 client.registry.registerGroup('raids','Raids');
 client.registry.registerDefaults();
 client.registry.registerCommandsIn(__dirname + "/commands");
-
-const IsDevelopment = false;
 
 var fs = require('fs');
 var CsvReadableStream = require('csv-reader');
 var inputRaidDataStream = fs.createReadStream('RaidLocations.csv', 'utf8');
 var inputBotTokenStream = fs.createReadStream('BotToken.csv', 'utf8');
+var inputRaidBossDataStream = fs.createReadStream('RaidBosses.csv', 'utf8');
 var Fuse = require('fuse.js');
 
 var ActiveRaids = {};
 var RaidData = [];
+var RaidBossData = [];
 var Tokens = {};
 var Autocorrect = null;
-var fuse = null;
+var fuseRaidData = null;
+var fuseRaidBossData = null;
 
-// read in all raid data
-inputRaidDataStream
-    .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
-    .on('data', function (row) {
-
-		var data = 
-		{ 
-			City: row[0],
-			RaidLocation: row[1],
-			FriendlyName: row[2], 
-			Lng: row[3], 
-			Lat: row[4], 
-			MapLink: row[5]
-		};
-
-		RaidData.push(data);
-    })
-    .on('end', function (data) {
-
-    	var options = {
-    		shouldSort: true,
-    		caseSensitive: false,
-  			threshold: 0.6,
-  			location: 0,
-  			distance: 100,
-  			maxPatternLength: 32,
-  			minMatchCharLength: 1,
-  			keys: [
-    			"RaidLocation",
-    			"FriendlyName"
-			]
-			};
-
-		fuse = new Fuse(RaidData, options); // "RaidData" is the item array
-    });
+// testing adding seperate classes
+//var myModule = require('./mymodule.js');
+//var RaidManager = new myModule();
+//client.RaidManager = RaidManager;
 
 // read in bot tokens
 inputBotTokenStream
     .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
     .on('data', function (row) {
 
-		var tokenObj = 
-		{ 
+		var tokenObj =
+		{
 			BotName: row[0],
 			Token: row[1],
 			ClientID: row[2]
@@ -81,18 +58,20 @@ inputBotTokenStream
     	}
     });
 
+
+
 //var channel = client.servers.get("name", "Technica").defaultChannel;
 //client.sendMessage(channel, "Hello world!");
-process.stdout.write("listening for messages...\n");
 
-function RaidListRefresh() 
+/*
+function RaidListRefresh()
 {
 	var now = new Date();
 
-	for (var key in ActiveRaids) 
+	for (var key in ActiveRaids)
 	{
 		var raid = ActiveRaids[key];
-		if (now > raid.ExpiryTime) 
+		if (now > raid.ExpiryTime)
 		{
 			process.stdout.write("Raid Expired: " + key + "\n");
 			process.stdout.write("Time Now: " + now + "\n");
@@ -100,227 +79,75 @@ function RaidListRefresh()
 			delete ActiveRaids[key];
 		}
 	}
-}
+}*/
 
-function ProcessRaidsCommand(message) 
+/*
+function ProcessDirectionsCommand(message, args)
 {
-	var raidListMarkup = [];
-	raidListMarkup.push("__**LOCAL RAID SCHEDULES (L5)**__\n");
+  if (args.length == 0)
+  {
+    ReportError(message, "!directions", "no gym name provided.");
+    return;
+  }
 
-	// Create sortedRaids array
-	var sortedRaids = new Array();
-	for (var key in ActiveRaids) 
+  var raidToGetDirectionsFor = args.join(' ').trim();
+	var searchResults = fuse.search(raidToGetDirectionsFor);
+	if (searchResults.length < 1)
 	{
-		var raid = ActiveRaids[key];
-    	sortedRaids.push(raid);
-	}
-
-	// sort raids by date
-	sortedRaids.sort(function(a,b)
-	{
-    	return a.HatchTime - b.HatchTime;
-	});
-
-	for (var i = 0; i < sortedRaids.length; i++) 
-	{
-		var raid = sortedRaids[i];
-		raidListMarkup.push(raid.RaidLocation + " @ " + formatDate(raid.HatchTime) + "\n");
-	}
-
-	var raidListContent = raidListMarkup.join("");
-    message.channel.send(raidListContent);
-}
-
-function ProcessDirectionsCommand(message) 
-{
-	if (message.content.startsWith("!directions")) 
-	{
-		var raidToGetDirectionsFor = message.content.replace("!directions", "").trim();
-		var searchResults = fuse.search(raidToGetDirectionsFor);
-		if (searchResults.length < 1) 
-		{
-			ReportError(message, "!directions", "");
-			return;
-		}
-
-		var closestResult = searchResults[0];
-		var directionsContent = closestResult.RaidLocation + " [Directions]\n" + closestResult.MapLink + "\n";
-		message.channel.send(directionsContent);
-	}
-}
-
-function ProcessAddCommand(message) 
-{
-	// command example !add "cleveland fountain" @ 4:15 pm
-	if (message.content.startsWith("!add")) 
-	{
-		var input = message.content.replace("!add", "");
-
-		if (input.split("@").length == 2) 
-		{
-			var raidLocationInput = input.split("@")[0].trim();
-			var raidTimeInput = input.split("@")[1].trim();
-
-			// default time today's month and year
-			var raidTime = new Date();
-
-			if ( !raidTimeInput.toLowerCase().includes("am") && !raidTimeInput.toLowerCase().includes("pm") ) 
-			{
-				ReportError(message, "!add", "Zzzrt! That is an invalid time format.");
-				return;
-			}
-
-			var time = raidTimeInput.toLowerCase().replace("am", "").replace("pm", "");
-			if (time.split(":").length == 2) 
-			{
-				if ( isNaN(time.split(":")[0]) || isNaN(time.split(":")[1]) ) 
-				{
-					ReportError(message, "!add", "Zzzrt! That is an invalid time format.");
-					return;
-				}
-
-				var hour = parseInt(time.split(":")[0]);
-				var minutes = parseInt(time.split(":")[1]);
-
-				if ((hour < 1 || hour > 12) || (minutes < 0 || minutes > 60))
-				{
-	           		ReportError(message, "!add", "Zzzrt! That is an invalid time format.");
-					return;
-				}
-
-				hour = hour % 12;
-				hour += raidTimeInput.toLowerCase().includes("pm") ? 12 : 0;
-				raidTime.setHours(hour);
-				raidTime.setMinutes(minutes);
-				raidTime.setSeconds(0);
-
-				// Get closest result and add to raid list
-				var searchResults = fuse.search(raidLocationInput);
-
-				if (searchResults.length < 1) 
-				{
-					ReportError(message, "!add", "");
-					return;
-				}
-
-				var closestResult = searchResults[0];
-				var expiryTime = new Date(raidTime.getTime());
-				expiryTime.setMinutes(expiryTime.getMinutes() + 45);
-
-				var maxAllowablePredictionTime = new Date();
-				maxAllowablePredictionTime.setMinutes(maxAllowablePredictionTime.getMinutes() + 60);
-				if (raidTime > maxAllowablePredictionTime) 
-				{
-					ReportError(message, "!add", "My circuitzzz are tingling! That raid hatch time is too far in the future...");
-					return;
-				}
-
-				var raid = { 
-					City: closestResult.City,
-					RaidLocation: closestResult.RaidLocation,
-					FriendlyName: closestResult.FriendlyName, 
-					HatchTime: raidTime,
-					ExpiryTime: expiryTime,
-					Lng: closestResult.Lng, 
-					Lat: closestResult.Lat, 
-					MapLink: closestResult.MapLink
-				};
-
-				ActiveRaids[raid.RaidLocation] = raid;
-				ProcessRaidsCommand(message);
-
-			} else {
-
-				ReportError(message, "!add", "");
-				return;
-			}
-
-		} else {
-			// error message.
-       		ReportError(message, "!add", "");
-			return;
-		}
-  	}
-}
-
-function ProcessRemoveCommand(message) 
-{
-
-	if (message.content.startsWith("!remove")) 
-	{
-
-		var raidToRemove = message.content.replace("!remove", "").trim();
-
-		// Get closest result and add to raid list
-		var searchResults = fuse.search(raidToRemove);
-		if (searchResults.length < 1) 
-		{
-			ReportError(message, "!remove", "");
-			return;
-		}
-
-		var closestResult = searchResults[0];
-
-		if (closestResult.RaidLocation in ActiveRaids) 
-		{
-			delete ActiveRaids[closestResult.RaidLocation];
-			ProcessRaidsCommand(message);
-		}
-
-	} else {
-
-   		ReportError(message, "!remove", "");
+		ReportError(message, "!directions", "no gym found.");
 		return;
 	}
-}
 
-function ProcessDiscordMessage(message) 
+	var closestResult = searchResults[0];
+	var directionsContent = closestResult.RaidLocation + " [Directions]\n" + closestResult.MapLink + "\n";
+	message.channel.send(directionsContent);
+}*/
+
+/*
+function ProcessRemoveCommand(message, args)
 {
-	// check that message has content
-	if (message) 
+  if ((!IsDevelopment) && (message.channel.type.toString() == "dm"))
+  {
+    ReportError(message, "!remove", "cannot issue command from DMs.");
+    return;
+  }
+
+  if (args.length == 0)
+  {
+    ReportError(message, "!remove", "no gym name provided.");
+    return;
+  }
+
+  var raidToRemove = args.join(' ').trim();
+	var searchResults = fuse.search(raidToRemove);
+	if (searchResults.length < 1)
 	{
-		var cmd = message.content.split(" ")[0].toLowerCase();
-		
-		switch(cmd) 
-		{
-		    case "!add":
-           		var output = "Processing " + cmd + " command submitted by user " + message.author +  "\n";
-        		process.stdout.write(output);
-        		message.channel.send(output);
-		    	ProcessAddCommand(message);
-		        break;
-		    case "!remove":
-		        var output = "Processing " + cmd + " command submitted by user " + message.author +  "\n";
-        		process.stdout.write(output);
-        		message.channel.send(output);
-        		ProcessRemoveCommand(message);
-		        break;
-		    case "!raids":
-		    	ProcessRaidsCommand(message);
-		    	break;
-			case "!directions":
-				var output = "Processing " + cmd + " command submitted by user " + message.author +  "\n";
-        		process.stdout.write(output);
-        		message.channel.send(output);
-		    	ProcessDirectionsCommand(message);
-		    	break;
-	    	case "!help":
-	    		// TODO: fill in command documentation
-	    		break;
-		    default:
-		        return;
-       	}
+		ReportError(message, "!remove", "no gym found.");
+		return;
 	}
-}
 
-function ReportError(message, cmd, error) 
+	var closestResult = searchResults[0];
+	if (closestResult.RaidLocation in ActiveRaids)
+	{
+		delete ActiveRaids[closestResult.RaidLocation];
+		ProcessRaidsCommand(message);
+	} else {
+    ReportError(message, "!remove", closestResult.RaidLocation + " is not in raids list.");
+    return;
+  }
+}
+*/
+
+function ReportError(message, cmd, error)
 {
-	var output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n\nError: " + error + "\n";
+	var output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n*error: " + error + "*\n";
 	process.stdout.write(output);
 	message.channel.send(output);
 }
 
-function formatDate(date) 
+/*
+// Datetime to readable format
+function FormatDateAMPM(date)
 {
   var hours = date.getHours();
   var minutes = date.getMinutes();
@@ -330,18 +157,103 @@ function formatDate(date)
   minutes = minutes < 10 ? '0'+ minutes : minutes;
   var strTime = hours + ':' + minutes + ' ' + ampm;
   return strTime;
-}
+}*/
 
 // Raid list clean up, recurr every 10 seconds
-setInterval(RaidListRefresh, 10 * 1000);
+// setInterval(RaidListRefresh, 10 * 1000);
+
+client.on('ready', () => {
+
+  process.stdout.write(`Logged in as ${client.user.tag}!\n`);
+  process.stdout.write("listening for messages...\n");
+
+  // read in all raid data
+  inputRaidDataStream
+      .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
+      .on('data', function (row) {
+
+  		var data =
+  		{
+  			City: row[0],
+  			RaidLocation: row[1],
+  			FriendlyName: row[2],
+  			Lng: row[3],
+  			Lat: row[4],
+  			MapLink: row[5]
+  		};
+
+  		RaidData.push(data);
+
+      })
+      .on('end', function (data) {
+
+      	var options = {
+      		shouldSort: true,
+      		caseSensitive: false,
+    			threshold: 0.6,
+    			location: 0,
+    			distance: 100,
+    			maxPatternLength: 32,
+    			minMatchCharLength: 1,
+    			keys: [
+      			"RaidLocation",
+      			"FriendlyName"
+  			]
+  			};
+
+		    fuseRaidData = new Fuse(RaidData, options); // "RaidData" is the item array
+        client.RaidsFuzzySearch = fuseRaidData;
+      });
+
+      inputRaidBossDataStream
+          .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
+          .on('data', function (row) {
+
+      		var data =
+      		{
+      			RaidBoss: row[0],
+      			RaidTier: row[1]
+      		};
+
+      		RaidBossData.push(data);
+
+          })
+          .on('end', function (data) {
+
+          	var options = {
+          		shouldSort: true,
+          		caseSensitive: false,
+        			threshold: 0.6,
+        			location: 0,
+        			distance: 100,
+        			maxPatternLength: 32,
+        			minMatchCharLength: 1,
+        			keys: [
+          			"RaidBoss"
+      			]
+      			};
+
+    		    fuseRaidBossData = new Fuse(RaidBossData, options); // "RaidData" is the item array
+            client.RaidBossFuzzySearch = fuseRaidBossData;
+          });
+
+
+    // TODO: load add this on ready, Client Custom Properties
+    client.RaidManager = new RaidManager();
+    client.ReportError = ReportError;
+    client.IsDevelopment = IsDevelopment;
+    // client.FormatDateAMPM = FormatDateAMPM;
+    // client.RaidsFuzzySearch = fuse;
+});
 
 client.on("message", async message => {
 
-	if (!message.author.bot) 
+  /*
+	if (!message.author.bot)
 	{
-		if (IsDevelopment) 
+		if (IsDevelopment)
 		{
-			if (message.channel.type.toString() == "dm") 
+			if (message.channel.type.toString() == "dm")
 			{
 				ProcessDiscordMessage(message);
 			}
@@ -350,5 +262,5 @@ client.on("message", async message => {
 
 			ProcessDiscordMessage(message);
 		}
-	}	
+	}*/
 });

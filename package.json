@@ -19,6 +19,7 @@
   "homepage": "https://github.com/cguerrerCS/rotombot#readme",
   "dependencies": {
     "csv-reader": "^1.0.3",
+    "discord-command-parser": "^1.2.1",
     "discord.js": "^11.3.2",
     "discord.js-commando": "^0.10.0",
     "fuse.js": "^3.2.0"
