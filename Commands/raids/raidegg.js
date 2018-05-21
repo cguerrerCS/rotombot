@@ -40,7 +40,7 @@ class raidegg extends commando.Command{
         console.log("input: " + input);
 
         // get matches for in syntax
-        var inKeywordPattern = '([1-5])[ ]([^(\\s)].+)[ ][iI][nN][ ]([6][0]|[1-5][0-9]|[1-9])';
+        var inKeywordPattern = '^([1-5])[ ]([^(\\s)].+)[ ][iI][nN][ ]([6][0]|[1-5][0-9]|[1-9])$';
         var inKeywordRegex = RegExp(inKeywordPattern,'g');
         var inKeywordArray;
         while ((inKeywordArray = inKeywordRegex.exec(input)) !== null) {
@@ -76,7 +76,7 @@ class raidegg extends commando.Command{
         }
 
         // get matches for @ syntax
-        var atKeywordPattern = '([1-5])[ ]([^(\\s)].+)[ ]@[ ]((1[0-2]|0?[1-9]):([0-5][0-9])[ ]{0,1}([AaPp][Mm]))';
+        var atKeywordPattern = '^([1-5])[ ]([^(\\s)].+)[ ]@[ ]((1[0-2]|0?[1-9]):([0-5][0-9])[ ]{0,1}([AaPp][Mm]))$';
         var atKeywordRegex = RegExp(atKeywordPattern,'g');
         var atKeywordArray;
         while ((atKeywordArray = atKeywordRegex.exec(input)) !== null) {

@@ -257,8 +257,8 @@ function RaidManager() {
       for (var i = 0; i < sortedRaids.length; i++)
       {
         var raid = sortedRaids[i];
-        var tierStringEgg = "Tier " + raid.Tier;
-        var tierStringHatched = "(" + raid.Tier + ")";
+        var tierStringEgg = "T" + raid.Tier;
+        var tierStringHatched = "T" + raid.Tier;
         if (raid.State === RaidStateEnum.egg) {
           raidListMarkupRaidUpcoming.push("[" + tierStringEgg +  "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
 

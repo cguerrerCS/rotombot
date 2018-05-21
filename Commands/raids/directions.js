@@ -12,23 +12,21 @@ class directions extends commando.Command{
             examples: ['!directions painted', '!directions Mysterious Hatch']
         })
     }
-    async run(message){
+    async run(message, args){
 
       var client = message.client;
       var output = "Processing !directions command submitted by user " + message.author +  "\n";
       process.stdout.write(output);
       message.channel.send(output);
 
-      // parse arguments
-      let parsed = cmdParser.parse(message, '!');
-      if (!parsed.success) return;
-      if (parsed.arguments.length === 0)
+      // if no arguments provided (null or empty string)
+      if (!(args))
       {
         client.ReportError(message, "!directions", "no gym name provided.");
         return;
       }
 
-      var raidToGetDirectionsFor = parsed.arguments.join(' ');
+      var raidToGetDirectionsFor = args.match(/\S+/g).join(' ');
       var searchResults = client.RaidsFuzzySearch.search(raidToGetDirectionsFor);
       if (searchResults.length < 1)
       {
