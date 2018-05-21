@@ -39,6 +39,10 @@ function RaidManager() {
         throw "raid minute expiry countdown is NaN.";
       }
 
+      // convert any string format numbers to int
+      tier = parseInt(tier);
+      minutes = parseInt(minutes);
+
       // error check bounds
       if (minutes < 0 || minutes > MAX_RAID_ACTIVE_TIME)
       {
