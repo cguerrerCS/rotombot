@@ -8,11 +8,11 @@ class raidegg extends commando.Command{
             name: 'raidegg',
             group: 'raids',
             memberName: 'raidegg',
-            description: 'add raid egg to incoming raids list',
+            description: "add raid egg to incoming raids list, '@' denotes absolute time 'in' is relative time",
             examples: [
-              '!raidegg <tier> <location> @ <time am/pm>',
+              '!raidegg <tier [1-5]> <location> @ <hh:mm am/pm>',
               '!raidegg 5 Luke McRedmond @ 12:45 pm',
-              '!raidegg <tier> <location> in <countdown minutes until hatch>',
+              '!raidegg <tier [1-5]> <location> in <timer [1-60]>',
               '!raidegg 5 Painted Parking in 20'
             ]
         })
@@ -37,9 +37,10 @@ class raidegg extends commando.Command{
 
         // clean up additional whitespace between arguments
         var input = parsed.arguments.join(' ');
+        console.log("input: " + input);
 
         // get matches for in syntax
-        var inKeywordPattern = '([1-5])[ ]([^(\s)].+)[ ][iI][nN][ ]([6][0]|[1-5][0-9]|[1-9])';
+        var inKeywordPattern = '([1-5])[ ]([^(\\s)].+)[ ][iI][nN][ ]([6][0]|[1-5][0-9]|[1-9])';
         var inKeywordRegex = RegExp(inKeywordPattern,'g');
         var inKeywordArray;
         while ((inKeywordArray = inKeywordRegex.exec(input)) !== null) {
@@ -62,13 +63,20 @@ class raidegg extends commando.Command{
           }
           var closestResult = searchResults[0];
 
-          client.RaidManager.addEggCountdown(tier, closestResult.RaidLocation, countdown );
+          try {
+            client.RaidManager.addEggCountdown(tier, closestResult.RaidLocation, countdown );
+          } catch(err) {
+            client.ReportError(message, "!raidegg", err);
+            return;
+          }
+
+          // client.RaidManager.addEggCountdown(tier, closestResult.RaidLocation, countdown );
           message.channel.send(client.RaidManager.listFormatted());
           return;
         }
 
         // get matches for @ syntax
-        var atKeywordPattern = '([1-5])[ ]([^(\s)].+)[ ]@[ ]((1[0-2]|0?[1-9]):([0-5][0-9])[ ]([AaPp][Mm]))';
+        var atKeywordPattern = '([1-5])[ ]([^(\\s)].+)[ ]@[ ]((1[0-2]|0?[1-9]):([0-5][0-9])[ ]{0,1}([AaPp][Mm]))';
         var atKeywordRegex = RegExp(atKeywordPattern,'g');
         var atKeywordArray;
         while ((atKeywordArray = atKeywordRegex.exec(input)) !== null) {
@@ -121,9 +129,20 @@ class raidegg extends commando.Command{
           }
           var closestResult = searchResults[0];
 
-          client.RaidManager.addEggAbsolute(tier, closestResult.RaidLocation, eggHatchTime );
+          try {
+            client.RaidManager.addEggAbsolute(tier, closestResult.RaidLocation, eggHatchTime );
+          } catch(err) {
+            client.ReportError(message, "!raidegg", err);
+            return;
+          }
+
+          // client.RaidManager.addEggAbsolute(tier, closestResult.RaidLocation, eggHatchTime );
           message.channel.send(client.RaidManager.listFormatted());
+          return;
         }
+
+        client.ReportError(message, "!raidegg", "invalid command argument, try !help command.");
+        return;
     }
 }
 

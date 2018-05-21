@@ -253,12 +253,13 @@ function RaidManager() {
       for (var i = 0; i < sortedRaids.length; i++)
       {
         var raid = sortedRaids[i];
-        var tierString = "Tier " + raid.Tier;
+        var tierStringEgg = "Tier " + raid.Tier;
+        var tierStringHatched = "(" + raid.Tier + ")";
         if (raid.State === RaidStateEnum.egg) {
-          raidListMarkupRaidUpcoming.push("[" + tierString +  "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
+          raidListMarkupRaidUpcoming.push("[" + tierStringEgg +  "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
 
         } else if (raid.State === RaidStateEnum.hatched) {
-          raidListMarkupRaidActive.push("[" + tierString + " " + raid.Pokemon + "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
+          raidListMarkupRaidActive.push("[" + tierStringHatched + " " + raid.Pokemon + "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
         }
       }
 

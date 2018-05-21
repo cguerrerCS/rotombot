@@ -10,7 +10,7 @@ class raid extends commando.Command{
             memberName: 'raid',
             description: 'add raid to active raids list',
             examples: [
-              '!raid <pkmn> <location> <minute countdown>',
+              '!raid <pkmn> <location> <minutes left>',
               '!raid ho-oh Luke McRedmond 30'
             ]
         })
@@ -55,7 +55,7 @@ class raid extends commando.Command{
         // ...
         var pkmnSearchResults = client.RaidBossFuzzySearch.search(pkmn);
         if (pkmnSearchResults.length < 1) {
-          client.ReportError(message, "!raid", "no pokemon name found in search results");
+          client.ReportError(message, "!raid", "no raid boss pokemon matching [" + pkmn + "] found in search results");
           return;
         }
         var closestPkmnResult = pkmnSearchResults[0];
@@ -68,13 +68,6 @@ class raid extends commando.Command{
           return;
         }
         var closestResult = searchResults[0];
-
-        /*
-        if (tier < 5)
-        {
-          client.ReportError(message, "!raid", "raids lower than tier 5 not currently supported");
-          return;
-        }*/
 
         try {
           client.RaidManager.addRaid(closestPkmnResult.RaidBoss, tier, closestResult.RaidLocation, countdown );

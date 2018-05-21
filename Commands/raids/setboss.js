@@ -9,7 +9,10 @@ class setboss extends commando.Command{
             group: 'raids',
             memberName:'setboss',
             description: 'Report raid boss for hatched egg.',
-            examples: ['!setboss Latios Painted Parking']
+            examples: [
+              '!setboss <raid boss> <location>',
+              '!setboss Latios Painted Parking'
+            ]
         })
     }
     async run(message){
@@ -38,9 +41,10 @@ class setboss extends commando.Command{
       var pkmn = parsed.arguments[0];
       var pkmnSearchResults = client.RaidBossFuzzySearch.search(pkmn);
       if (pkmnSearchResults.length < 1) {
-        client.ReportError(message, "!raid", "no pokemon name found in search results");
+        client.ReportError(message, "!setboss", "no raid boss pokemon matching [" + pkmn + "] found in search results");
         return;
       }
+
       var closestPkmnResult = pkmnSearchResults[0];
       var tier = parseInt(closestPkmnResult.RaidTier.replace("Tier", "").trim());
 
