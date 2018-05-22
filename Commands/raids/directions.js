@@ -22,7 +22,7 @@ class directions extends commando.Command{
       // if no arguments provided (null or empty string)
       if (!(args))
       {
-        client.ReportError(message, "!directions", "no gym name provided.");
+        client.ReportError(message, "!directions", "no gym name provided.", "!directions <gym name>");
         return;
       }
 
@@ -30,7 +30,7 @@ class directions extends commando.Command{
       var searchResults = client.RaidsFuzzySearch.search(raidToGetDirectionsFor);
       if (searchResults.length < 1)
       {
-        client.ReportError(message, "!directions", "no gym found.");
+        client.ReportError(message, "!directions", "no gym found.", "!directions <gym name>");
         return;
       }
 

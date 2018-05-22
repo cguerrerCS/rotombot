@@ -34,14 +34,14 @@ class setboss extends commando.Command{
       if (!parsed.success) return;
       if (parsed.arguments.length < 2)
       {
-        client.ReportError(message, "!setboss", "too few arguments.");
+        client.ReportError(message, "!setboss", "too few arguments.", this.examples[0]);
         return;
       }
 
       var pkmn = parsed.arguments[0];
       var pkmnSearchResults = client.RaidBossFuzzySearch.search(pkmn);
       if (pkmnSearchResults.length < 1) {
-        client.ReportError(message, "!setboss", "no raid boss pokemon matching [" + pkmn + "] found in search results");
+        client.ReportError(message, "!setboss", "no raid boss pokemon matching [" + pkmn + "] found in search results", this.examples[0]);
         return;
       }
 
@@ -52,7 +52,7 @@ class setboss extends commando.Command{
       var searchResults = client.RaidsFuzzySearch.search(raidToSetBossFor);
       if (searchResults.length < 1)
       {
-        client.ReportError(message, "!setboss", "no gym found.");
+        client.ReportError(message, "!setboss", "no gym found.", this.examples[0]);
         return;
       }
 
@@ -61,7 +61,7 @@ class setboss extends commando.Command{
       try {
         client.RaidManager.setRaidBoss(closestPkmnResult.RaidBoss, tier, closestResult.RaidLocation);
       } catch(err) {
-        client.ReportError(message, "!setboss", err);
+        client.ReportError(message, "!setboss", err, this.examples[0]);
         return;
       }
 
