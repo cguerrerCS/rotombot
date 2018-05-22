@@ -1,5 +1,7 @@
+"use strict";
 
 const { FlexTime } = require("botsbits");
+var Fuse = require("fuse.js");
 
 const MAX_EGG_HATCH_TIME = 60;
 const MAX_RAID_ACTIVE_TIME = 45;
@@ -11,15 +13,15 @@ var RaidManager = function () {
     this.gymSearch = undefined;
     this.raids = {};
 
-    setInterval(() => this.RaidListRefresh, 10 * 1000);
+    setInterval(() => this.RaidListRefresh, 30 * 1000);
 };
 
-RaidManager.RaidStateEnum = Object.freeze({"egg":1, "hatched":2});
+RaidManager.RaidStateEnum = Object.freeze({ "egg": 1, "hatched": 2 });
 
 function validateGymObject(gym) {
     const required = ["City", "RaidLocation", "FriendlyName", "Lng", "Lat", "MapLink"];
     required.forEach((property) => {
-        if (!obj.hasOwnProperty(property)) {
+        if (!gym.hasOwnProperty(property)) {
             throw new Error(`Raid Object missing "${property}" property.`);
         }
     });
@@ -28,16 +30,16 @@ function validateGymObject(gym) {
 function validateBossObject(boss) {
     const required = ["RaidBoss", "RaidTier"];
     required.forEach((property) => {
-        if (!obj.hasOwnProperty(property)) {
+        if (!boss.hasOwnProperty(property)) {
             throw new Error(`Raid Boss Object missing "${property}" property.`);
         }
     });
 }
 
-RaidManager.prototype.setGymData = function(data, search) {
+RaidManager.prototype.setGymData = function (data, search) {
     // validate that the objects can be used with fuse
     data.forEach((obj) => validateGymObject(obj));
-    this.gyms = gymData;
+    this.gyms = data;
 
     if (!search) {
         const options = {
@@ -50,19 +52,18 @@ RaidManager.prototype.setGymData = function(data, search) {
             minMatchCharLength: 1,
             keys: [
                 "RaidLocation",
-                "FriendlyName"
-            ]
+                "FriendlyName",
+            ],
         };
 
         search = new Fuse(data, options); // "RaidData" is the item array
     }
     this.gymSearch = search;
-}
+};
 
 RaidManager.prototype.setBossData = function (data, search) {
     // validate that the objects can be used with fuse
-    var required = ["RaidBoss", "RaidTier"];
-    raidBossData.forEach((obj) => validateBossObject(obj));
+    data.forEach((obj) => validateBossObject(obj));
     this.bosses = data;
 
     if (!search) {
@@ -75,20 +76,20 @@ RaidManager.prototype.setBossData = function (data, search) {
             maxPatternLength: 32,
             minMatchCharLength: 1,
             keys: [
-            "RaidBoss"
-            ]
+                "RaidBoss",
+            ],
         };
 
-        search  = new Fuse(RaidBossData, options); // "RaidData" is the item array
+        search  = new Fuse(data, options);
     }
     this.bossSearch = search;
-}
+};
 
-RaidManager.validateTier = function(wantTier) {
-    const tier = Number(wantTier);
+RaidManager.validateTier = function (wantTier) {
+    let tier = Number(wantTier);
 
     if (tier.isNaN()) {
-        if ((typeof tier !== "string") || (!tier.startsWith("Tier")) {
+        if ((typeof tier !== "string") || (!tier.startsWith("Tier"))) {
             throw new Error(`Tier value ${tier} must be a number.`);
         }
         tier = Number(tier.replace("Tier", "").trim());
@@ -98,7 +99,7 @@ RaidManager.validateTier = function(wantTier) {
         throw new Error(`Tier value ${tier} must be in the range [1..5].`);
     }
     return tier;
-}
+};
 
 RaidManager.validateHatchTime = function (wantHatchTime) {
     let time = new FlexTime(wantHatchTime);
@@ -112,7 +113,7 @@ RaidManager.validateHatchTime = function (wantHatchTime) {
         throw new Error(`Requested hatch time ${wantHatchTime} is in the past.`);
     }
     return time;
-}
+};
 
 RaidManager.validateEggTimer = function (wantTimer) {
     const timer = Number(wantTimer);
@@ -123,7 +124,7 @@ RaidManager.validateEggTimer = function (wantTimer) {
         throw new Error(`Egg timer ${wantTimer} is out of range (1..${MAX_EGG_HATCH_TIME}).`);
     }
     return timer;
-}
+};
 
 RaidManager.validateRaidTimer = function (wantTimer) {
     const timer = Number(wantTimer);
@@ -134,16 +135,16 @@ RaidManager.validateRaidTimer = function (wantTimer) {
         throw new Error(`Raid timer ${wantTimer} is out of range (1..${MAX_RAID_ACTIVE_TIME}).`);
     }
     return timer;
-}
+};
 
-RaidManager.prototype.validateBoss = function(wantBoss) {
+RaidManager.prototype.validateBoss = function (wantBoss) {
     if (typeof wantBoss === "object") {
         validateBossObject(wantBoss);
         return wantBoss;
     }
 
     if (!this.bosses) {
-        throw new Error('RaidManager not ready - bosses not initialized.');
+        throw new Error("RaidManager not ready - bosses not initialized.");
     }
 
     var possibleBosses = this.bossSearch.search(wantBoss);
@@ -151,16 +152,16 @@ RaidManager.prototype.validateBoss = function(wantBoss) {
         throw new Error(`No known boss matches requested boss name "${wantBoss}"`);
     }
     return possibleBosses[0];
-}
+};
 
-RaidManager.prototype.validateGym = function(wantGym) {
+RaidManager.prototype.validateGym = function (wantGym) {
     if (typeof wantGym === "object") {
         validateGymObject(wantGym);
         return wantGym;
     }
 
     if (!this.gyms) {
-        throw new Error('RaidManager not ready - gyms not initialized.');
+        throw new Error("RaidManager not ready - gyms not initialized.");
     }
 
     var possibleGyms = this.gymSearch.search(wantGym);
@@ -168,56 +169,56 @@ RaidManager.prototype.validateGym = function(wantGym) {
         throw new Error(`No known location matches requested gym name "${wantGym}"`);
     }
     return possibleGyms[0];
-}
+};
 
-RaidManager.prototype.removeRaid= function (wantGym) {
+RaidManager.prototype.removeRaid = function (wantGym) {
     let gym = this.validateGym(wantGym);
     if (gym.RaidLocation in this.raids) {
         delete this.raids[gym.RaidLocation];
     }
     else {
-        throw new Error(`No raid reported at ${wantGym.RaidLocation}.`)
+        throw new Error(`No raid reported at ${wantGym.RaidLocation}.`);
     }
-}
+};
 
 /**
  * Add a raid in hatched state
- * @param {String} wantBoss 
- * @param {String} wantGym 
- * @param {String|Number} wantMinutes 
+ * @param {String|Object} wantBoss
+ * @param {String|Object} wantGym
+ * @param {String|Number} wantMinutes
  */
-RaidManager.prototype.addRaid = function(wantBoss, wantGym, wantMinutes) {
+RaidManager.prototype.addRaid = function (wantBoss, wantGym, wantMinutes) {
     let gym = this.validateGym(wantGym);
     let boss = this.validateBoss(wantBoss);
     let expiry = new FlexTime(Date.now(), wantMinutes);
-    let hatch = new FlexTime(expiry, - MAX_RAID_ACTIVE_TIME);
-    let spawn = new FlexTime(hatch, - MAX_EGG_HATCH_TIME);
+    let hatch = new FlexTime(expiry, -MAX_RAID_ACTIVE_TIME);
+    let spawn = new FlexTime(hatch, -MAX_EGG_HATCH_TIME);
 
     // if the gym already has a raid scheduled, just try to set the boss
     if (gym.RaidLocation in this.raids) {
-        return this.setRaidBoss(wantBoss, wantGym)
+        return this.setRaidBoss(wantBoss, wantGym);
     }
 
     var raid = {
         tier: boss.tier,
         pokemon: boss,
         raidLocation: gym,
-        state: RaidStateEnum.hatched,
+        state: RaidManager.RaidStateEnum.hatched,
         spawnTime: spawn,
         hatchTime: hatch,
-        expiryTime: expiryTime
+        expiryTime: expiry,
     };
 
     this.raids[gym.RaidLocation] = raid;
-}
+};
 
-RaidManager.prototype.setRaidBoss = function(wantBoss, wantGym) {
+RaidManager.prototype.setRaidBoss = function (wantBoss, wantGym) {
     let boss = this.validateBoss(wantBoss);
     let gym = this.validateGym(wantGym);
 
     if (gym.RaidLocation in this.raids) {
         let raid = this.raids[gym.RaidLocation];
-        if (raid.state === RaidStateEnum.hatched) {
+        if (raid.state === RaidManager.RaidStateEnum.hatched) {
             if (raid.tier !== boss.tier) {
                 throw new Error(`Cannot set ${boss.name} as boss for a tier ${raid.tier} raid.`);
             }
@@ -225,16 +226,17 @@ RaidManager.prototype.setRaidBoss = function(wantBoss, wantGym) {
                 throw new Error(`Raid at ${gym.RaidLocation} already has a boss.`);
             }
             raid.pokemon = boss;
-        } else {
+        }
+        else {
             throw new Error("Unable to set raid boss - egg has not hatched.");
         }
     }
     else {
-        throw new Error(`Unable to set raid boss - No raid reported for ${gym.RaidLocation}.`)
+        throw new Error(`Unable to set raid boss - No raid reported for ${gym.RaidLocation}.`);
     }
-}
+};
 
-RaidManager.prototype.addEggCountdown = function(wantTier, wantGym, wantMinutes) {
+RaidManager.prototype.addEggCountdown = function (wantTier, wantGym, wantMinutes) {
     let minutes = this.validateEggTimer(wantMinutes);
     const hatchTime = FlexTime.getFlexTime(Date.now(), minutes);
 
@@ -246,16 +248,16 @@ RaidManager.prototype.addEggCountdown = function(wantTier, wantGym, wantMinutes)
         tier: this.validateTier(wantTier),
         pokemon: undefined,
         raidLocation: this.validateGym(wantGym),
-        state: RaidStateEnum.egg,
-        spawnTime: FlexTime.getFlexTime(hatchTime, - MAX_EGG_HATCH_TIME),
+        state: RaidManager.RaidStateEnum.egg,
+        spawnTime: FlexTime.getFlexTime(hatchTime, -MAX_EGG_HATCH_TIME),
         hatchTime: hatchTime,
-        expiryTime: FlexTime.getFlexTime(hatchTime, MAX_RAID_ACTIVE_TIME)
+        expiryTime: FlexTime.getFlexTime(hatchTime, MAX_RAID_ACTIVE_TIME),
     };
 
     this.raids[raid.raidLocation.RaidLocation] = raid;
-}
+};
 
-this.prototype.addEggAbsolute = function(wantTier, wantGym, wantHatchTime) {
+this.prototype.addEggAbsolute = function (wantTier, wantGym, wantHatchTime) {
     const tier = this.validateTier(wantTier);
     const gym = this.validateGym(wantGym);
     const hatch = this.validateHatchTime(wantHatchTime);
@@ -264,41 +266,41 @@ this.prototype.addEggAbsolute = function(wantTier, wantGym, wantHatchTime) {
         tier: tier,
         pokemon: undefined,
         raidLocation: gym,
-        state: RaidStateEnum.egg,
+        state: RaidManager.RaidStateEnum.egg,
         spawnTime: new FlexTime(hatch, -MAX_EGG_HATCH_TIME),
-        hatchTime: hatchTime,
-        expiryTime: new FlexTime(hatch, MAX_RAID_ACTIVE_TIME)
+        hatchTime: hatch,
+        expiryTime: new FlexTime(hatch, MAX_RAID_ACTIVE_TIME),
     };
 
     if (gym.RaidLocation in this.raids) {
         throw new Error(`Gym ${gym.RaidLocation} already has a scheduled raid.`);
     }
     this.raids[gym.RaidLocation] = raid;
-}
+};
 
 /**
  * Get a list of all raid objects (hatched and not hatched) sorted by hatch time.
  */
-this.prototype.list = function() {
+this.prototype.list = function () {
     // create sortedRaids array (sorted by hatch time)
     let sortedRaids = [];
-    for (var key in this.raids) {
+    this.raids.forEach((key) => {
         // this copy method will not work for nested objects
         var raidObj = this.raids[key];
         var raidObjCopy = JSON.parse(JSON.stringify(raidObj));
         sortedRaids.push(raidObjCopy);
-    }
+    });
 
     // sort raids by date
-    sortedRaids.sort((a,b) => a.hatchTime - b.hatchTime);
+    sortedRaids.sort((a, b) => a.hatchTime - b.hatchTime);
 
     return sortedRaids;
-}
+};
 
 /**
  * Get a discord formatted raid list.
  */
-this.prototype.listFormatted = function() {
+this.prototype.listFormatted = function () {
     let raidListMarkupRaidActive = [];
     let raidListMarkupRaidUpcoming = [];
     raidListMarkupRaidActive.push("__**ACTIVE RAIDS**__\n");
@@ -308,71 +310,64 @@ this.prototype.listFormatted = function() {
     for (let i = 0; i < sortedRaids.length; i++) {
         let raid = sortedRaids[i];
         let tierString = "Tier " + raid.tier;
-        if (raid.state === RaidStateEnum.egg) {
+        if (raid.state === RaidManager.RaidStateEnum.egg) {
             raidListMarkupRaidUpcoming.push("[" + tierString +  "] " + raid.raidLocation + " @ " + formatDateAmPm(raid.hatchTime) + "\n");
-
-        } else if (raid.state === RaidStateEnum.hatched) {
+        }
+        else if (raid.state === RaidManager.RaidStateEnum.hatched) {
             raidListMarkupRaidActive.push("[" + tierString + " " + raid.pokemon + "] " + raid.raidLocation + " @ " + formatDateAmPm(raid.hatchTime) + "\n");
         }
     }
 
     var output = "";
-    if ((raidListMarkupRaidActive.length === 1) && (raidListMarkupRaidUpcoming.length === 1))
-    {
-        output = "*No raids to report.*"
+    if ((raidListMarkupRaidActive.length === 1) && (raidListMarkupRaidUpcoming.length === 1)) {
+        output = "*No raids to report.*";
     }
 
-    if (raidListMarkupRaidActive.length > 1)
-    {
+    if (raidListMarkupRaidActive.length > 1) {
         output = output + raidListMarkupRaidActive.join("");
     }
 
-    if ((raidListMarkupRaidUpcoming.length > 1) && (raidListMarkupRaidActive.length > 1))
-    {
+    if ((raidListMarkupRaidUpcoming.length > 1) && (raidListMarkupRaidActive.length > 1)) {
         output = output + "\n" + raidListMarkupRaidUpcoming.join("");
     }
-    else if ((raidListMarkupRaidUpcoming.length > 1) && (raidListMarkupRaidActive.length === 1))
-    {
+    else if ((raidListMarkupRaidUpcoming.length > 1) && (raidListMarkupRaidActive.length === 1)) {
         output = output + raidListMarkupRaidUpcoming.join("");
     }
 
     return output;
-}
+};
 
 /**
  * Private function: Convert DataTime to readable format.
  */
-function formatDateAmPm(date)
-{
+function formatDateAmPm(date) {
     let hours = date.getHours();
     let minutes = date.getMinutes();
-    let ampm = hours >= 12 ? 'PM' : 'AM';
+    let ampm = hours >= 12 ? "PM" : "AM";
     hours = hours % 12;
     hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0'+ minutes : minutes;
-    let strTime = hours + ':' + minutes + ' ' + ampm;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    let strTime = hours + ":" + minutes + " " + ampm;
     return strTime;
 }
 
 /**
  * Private function: Refresh raid list to reflect eggs hatching and raids expiring.
  */
-RaidManager.prototype.raidListRefresh = function() {
+RaidManager.prototype.raidListRefresh = function () {
     let now = new Date();
-    for (let key in this.raids) {
+    this.raids.forEach((key) => {
         let raid = this.raids[key];
-        if ((raid.state === RaidStateEnum.egg) && (now >= this.raids[key].hatchTime))
-        {
+        if ((raid.state === RaidManager.RaidStateEnum.egg) && (now >= this.raids[key].hatchTime)) {
             console.log("[Raid Manager] Raid Egg Hatched: " + key);
-            raid.state = RaidStateEnum.hatched;
+            raid.state = RaidManager.RaidStateEnum.hatched;
         }
 
-        if (now > raid.expiryTime)
-        {
+        if (now > raid.expiryTime) {
             console.log("[Raid Manager] Raid Expired: " + key);
             delete this.raids[key];
         }
-    }
-}
+    });
+};
 
 module.exports = RaidManager;

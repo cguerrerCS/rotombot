@@ -4,7 +4,9 @@
   "description": "Discord Bot used for organizing Pokemon Go Raids",
   "main": "rotombot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jasmine --config=test/support/jasmine.json",
+    "cover": "istanbul cover --include-all-sources jasmine -- --config=test/support/jasmine.json",
+    "lint": "eslint lib raidManager3.js test/unit"
   },
   "repository": {
     "type": "git",
@@ -24,5 +26,14 @@
     "discord.js": "^11.3.2",
     "discord.js-commando": "^0.10.0",
     "fuse.js": "^3.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.7.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "jasmine": "^3.1.0"
   }
 }
