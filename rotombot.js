@@ -82,6 +82,7 @@ client.on('ready', () => {
       .pipe(CsvReadableStream({ parseNumbers: true, parseBooleans: true, trim: true , skipHeader: true}))
       .on('data', function (row) {
 
+		// TODO: JScript convention is lower case for member names
   		var data =
   		{
   			City: row[0],
