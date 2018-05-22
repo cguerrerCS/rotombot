@@ -5,6 +5,87 @@ function RaidManager() {
     var Raids = {};
     var RaidStateEnum = Object.freeze({"egg":1, "hatched":2});
 
+    var Fuse = require('fuse.js');
+    var RaidData = [];
+    var RaidBossData = [];
+    var RaidDataFuzzyLookup = null;
+    var RaidBossDataFuzzyLookup = null;
+
+    /**
+     * Set data used for Raid Location Fuzzy Search.
+     * @param {Array} var Array of raid boss objects (all must have all Properties).
+     */
+    this.setRaidData = function (raidData) {
+
+      // validate that the objects can be used with fuse
+      var required = ["City", "RaidLocation", "FriendlyName", "Lng", "Lat", "MapLink"];
+      raidData.forEach(function(obj)
+      {
+        required.forEach(function(property)
+        {
+            if (!obj.hasOwnProperty(property))
+            {
+              throw ("Raid Object missing " + property + "' property.");
+            }
+        });
+      });
+
+      var options = {
+        shouldSort: true,
+        caseSensitive: false,
+        threshold: 0.6,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [
+          "RaidLocation",
+          "FriendlyName"
+      ]
+      };
+
+      RaidDataFuzzyLookup = new Fuse(raidData, options); // "RaidData" is the item array
+    }
+
+    /**
+     * Set data used for Raid Boss Fuzzy Search.
+     * @param {Array} var Array of raid boss objects (all must have RaidBoss and Tier Properties).
+     */
+    this.setRaidBossData = function (raidBossData) {
+
+      // validate that the objects can be used with fuse
+      var required = ["RaidBoss", "RaidTier"];
+      raidBossData.forEach(function(obj)
+      {
+        required.forEach(function(property)
+        {
+            if (!obj.hasOwnProperty(property))
+            {
+              throw ("Raid Boss Object missing " + property + "' property.");
+            }
+        });
+      });
+
+      var options = {
+      shouldSort: true,
+      caseSensitive: false,
+      threshold: 0.4,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: [
+        "RaidBoss"
+      ]
+      };
+
+      RaidBossDataFuzzyLookup  = new Fuse(RaidBossData, options); // "RaidData" is the item array
+    }
+
+    /**
+     * Remove raid data from Raid Manager
+     * @param {String} var Raid location to remove raid from.
+     */
     this.removeRaid = function (location) {
 
       if (location in Raids)
@@ -61,7 +142,7 @@ function RaidManager() {
       var spawnTime = new Date();
       spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
-      // TODO: resolve raid tier based off of pkmn species here instead
+      // TODO: resolve raid tier based off of pkmn species here instead and no longer require tier
       // ...
       // ...
 
