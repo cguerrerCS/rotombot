@@ -9,7 +9,7 @@ class remove extends commando.Command{
             group: 'raids',
             memberName:'remove',
             description: 'remove from raid list',
-            examples: ['!remove Luke McRedmond', '!remove Erratic']
+            examples: ['!remove <gym name>', '!remove Luke McRedmond', '!remove Erratic']
         })
     }
     async run(message){
@@ -31,7 +31,7 @@ class remove extends commando.Command{
       if (!parsed.success) return;
       if (parsed.arguments.length === 0)
       {
-        client.ReportError(message, "!remove", "no gym name provided.");
+        client.ReportError(message, "!remove", "no gym name provided.", this.examples[0]);
         return;
       }
 
@@ -39,7 +39,7 @@ class remove extends commando.Command{
       var searchResults = client.RaidsFuzzySearch.search(raidToRemove);
       if (searchResults.length < 1)
       {
-        client.ReportError(message, "!remove", "no gym found.");
+        client.ReportError(message, "!remove", "no gym found.", this.examples[0]);
         return;
       }
 
@@ -48,7 +48,7 @@ class remove extends commando.Command{
       try {
         client.RaidManager.removeRaid(closestResult.RaidLocation);
       } catch(err) {
-        client.ReportError(message, "!remove", err);
+        client.ReportError(message, "!remove", err, this.examples[0]);
         return;
       }
 

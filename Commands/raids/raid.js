@@ -39,7 +39,7 @@ class raid extends commando.Command{
 
         if (parsed.arguments.length < 3)
         {
-          client.ReportError(message, "!raid", "too few arguments.");
+          client.ReportError(message, "!raid", "too few arguments.", this.examples[0]);
           return;
         }
 
@@ -55,7 +55,7 @@ class raid extends commando.Command{
         // ...
         var pkmnSearchResults = client.RaidBossFuzzySearch.search(pkmn);
         if (pkmnSearchResults.length < 1) {
-          client.ReportError(message, "!raid", "no raid boss pokemon matching [" + pkmn + "] found in search results");
+          client.ReportError(message, "!raid", "no raid boss pokemon matching [" + pkmn + "] found in search results", this.examples[0]);
           return;
         }
         var closestPkmnResult = pkmnSearchResults[0];
@@ -64,7 +64,7 @@ class raid extends commando.Command{
         var searchResults = client.RaidsFuzzySearch.search(location);
         if (searchResults.length < 1)
         {
-          client.ReportError(message, "!raid", "no gym found matching search results");
+          client.ReportError(message, "!raid", "no gym found matching search results", this.examples[0]);
           return;
         }
         var closestResult = searchResults[0];
@@ -72,7 +72,7 @@ class raid extends commando.Command{
         try {
           client.RaidManager.addRaid(closestPkmnResult.RaidBoss, tier, closestResult.RaidLocation, countdown );
         } catch(err) {
-          client.ReportError(message, "!raid", err);
+          client.ReportError(message, "!raid", err, this.examples[0]);
           return;
         }
 

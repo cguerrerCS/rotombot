@@ -138,9 +138,18 @@ function ProcessRemoveCommand(message, args)
 }
 */
 
-function ReportError(message, cmd, error)
+function ReportError(message, cmd, error, syntax)
 {
 	var output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n*error: " + error + "*\n";
+
+	console.log("syntax " + syntax)
+
+	if(syntax)
+	{
+
+		output = output + "\n **__SAMPLE COMMAND:__** ```" + syntax + "```"; 
+	}
+
 	process.stdout.write(output);
 	message.channel.send(output);
 }

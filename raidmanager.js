@@ -188,7 +188,7 @@ function RaidManager() {
 
       if ( tier < 1 || tier > 5 )
       {
-        throw "raid tier cannot be [" + minutes + "].";
+        throw "raid tier cannot be [" + tier + "].";
       }
 
       if (!(hatchTime instanceof Date))
