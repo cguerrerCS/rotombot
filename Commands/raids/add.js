@@ -2,10 +2,10 @@ const commando = require('discord.js-commando');
 const cmdParser = require('discord-command-parser');
 const { FlexTime } = require('botsbits');
 
-const addEggByStartTimeRegex = /^!add\s+(?:L?([1-5])\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/;
-const addEggByTimerRegex = /^!add\s+(?:L?([1-5])\s+)?(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/;
-const addBossWithTimerRegex = /^!add\s*(\w+)\s*(?:at)\s*(\w+(?:\w|\s)*)(?:\s+(\d?\d)\s*(?:left))\s*?$/;
-const addBossNoTimerRegex = /^!add\s*(\w+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)$/;
+const addEggByStartTimeRegex = /^!add\s+(?:L?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/;
+const addEggByTimerRegex = /^!add\s+(?:L?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/;
+const addBossWithTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(?:\s+(\d?\d)\s*(?:left))\s*?$/;
+const addBossNoTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)$/;
 
 function getGym(client, location) {
     // Get closest result and add to raid list
@@ -27,12 +27,14 @@ class raid extends commando.Command{
             memberName: 'add',
             description: 'add raid or boss to active raids list',
             examples: [
-              '!add <pkmn> <location> <minute countdown> left',
-              '!add ho-oh Luke McRedmond 30 left',
-              '!add <location> (at|@) <time>',
+              '!add <pkmn> (at|@) <location> <minute countdown> left',
+              '!add ho-oh at Luke McRedmond 30 left',
+              '!add [<tier>] <location> (at|@) <time>',
               '!add wells fargo at 1012',
-              '!add <location> in <minutes>',
-              '!add library in 20'
+              '!add 4 wells fargo at 1012',
+              '!add [<tier>] <location> in <minutes>',
+              '!add library in 20',
+              '!add 4 library in 20',
             ]
         })
     }
@@ -56,6 +58,11 @@ class raid extends commando.Command{
         if (match != null) {
             const [, tierSpec, location, timeSpec] = match;
             const tier = tierSpec || 5;
+            if ((tier < 1) || (tier > 5)) {
+                client.ReportError(message, "!add", "Tier must be 1-5.");
+                return;
+            }
+
             const time = new FlexTime(timeSpec);
             const delta = new FlexTime().getDeltaInMinutes(time);
             if (delta > 60) {
@@ -82,6 +89,11 @@ class raid extends commando.Command{
         if (match != null) {
             const [, tierSpec, location, timer] = match;
             const tier = tierSpec || 5;
+            if ((tier < 1) || (tier > 5)) {
+                client.ReportError(message, "!add", "Tier must be 1-5.");
+                return;
+            }
+
             if ((timer < 1) || (timer > 60)) {
                 client.ReportError(message, "!add", "Timer must be 1-60 minutes.");
                 return;
@@ -92,8 +104,13 @@ class raid extends commando.Command{
                 return;
             }
 
-            client.RaidManager.addEggCountdown(tier, closestResult.RaidLocation, timer );
-            message.channel.send(client.RaidManager.listFormatted());
+            try {
+                client.RaidManager.addEggCountdown(tier, closestResult.RaidLocation, timer );
+                message.channel.send(client.RaidManager.listFormatted());
+            } catch(err) {
+                client.ReportError(message, "!add", err);
+                return;
+            }
             return;
         }
 
