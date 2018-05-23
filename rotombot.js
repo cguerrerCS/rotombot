@@ -9,7 +9,7 @@ const client = new CommandoClient({
 
 client.registry.registerGroup('raids','Raids');
 client.registry.registerDefaults();
-client.registry.registerCommandsIn(__dirname + "/commands");
+client.registry.registerCommandsIn(__dirname + "/Commands");
 
 var fs = require('fs');
 var CsvReadableStream = require('csv-reader');

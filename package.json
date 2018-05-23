@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cguerrerCS/rotombot#readme",
   "dependencies": {
+    "botsbits": "git+https://github.com/DidjaRedo/BotsBits.git",
     "csv-reader": "^1.0.3",
     "discord-command-parser": "^1.2.1",
     "discord.js": "^11.3.2",
