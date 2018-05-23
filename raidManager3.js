@@ -88,15 +88,15 @@ RaidManager.prototype.setBossData = function (data, search) {
 RaidManager.validateTier = function (wantTier) {
     let tier = Number(wantTier);
 
-    if (tier.isNaN()) {
-        if ((typeof tier !== "string") || (!tier.startsWith("Tier"))) {
-            throw new Error(`Tier value ${tier} must be a number.`);
+    if (Number.isNaN(tier)) {
+        if ((typeof wantTier !== "string") || (!wantTier.startsWith("Tier"))) {
+            throw new Error(`Tier value ${wantTier} must be a number.`);
         }
-        tier = Number(tier.replace("Tier", "").trim());
+        tier = Number(wantTier.replace("Tier", "").trim());
     }
 
     if ((tier < 1) || (tier > 5)) {
-        throw new Error(`Tier value ${tier} must be in the range [1..5].`);
+        throw new Error(`Tier value ${wantTier} must be in the range [1..5].`);
     }
     return tier;
 };
@@ -117,7 +117,7 @@ RaidManager.validateHatchTime = function (wantHatchTime) {
 
 RaidManager.validateEggTimer = function (wantTimer) {
     const timer = Number(wantTimer);
-    if (timer.isNaN()) {
+    if (Number.isNaN(timer)) {
         throw new Error(`Egg timer value ${wantTimer} is not a number.`);
     }
     if ((timer < 1) || (timer > MAX_EGG_HATCH_TIME)) {
@@ -128,7 +128,7 @@ RaidManager.validateEggTimer = function (wantTimer) {
 
 RaidManager.validateRaidTimer = function (wantTimer) {
     const timer = Number(wantTimer);
-    if (timer.isNaN()) {
+    if (Number.isNaN(timer)) {
         throw new Error(`Raid timer value ${wantTimer} is not a number.`);
     }
     if ((timer < 1) || (timer > MAX_RAID_ACTIVE_TIME)) {
@@ -194,11 +194,6 @@ RaidManager.prototype.addRaid = function (wantBoss, wantGym, wantMinutes) {
     let hatch = new FlexTime(expiry, -MAX_RAID_ACTIVE_TIME);
     let spawn = new FlexTime(hatch, -MAX_EGG_HATCH_TIME);
 
-    // if the gym already has a raid scheduled, just try to set the boss
-    if (gym.RaidLocation in this.raids) {
-        return this.setRaidBoss(wantBoss, wantGym);
-    }
-
     var raid = {
         tier: boss.tier,
         pokemon: boss,
@@ -257,7 +252,7 @@ RaidManager.prototype.addEggCountdown = function (wantTier, wantGym, wantMinutes
     this.raids[raid.raidLocation.RaidLocation] = raid;
 };
 
-this.prototype.addEggAbsolute = function (wantTier, wantGym, wantHatchTime) {
+RaidManager.prototype.addEggAbsolute = function (wantTier, wantGym, wantHatchTime) {
     const tier = this.validateTier(wantTier);
     const gym = this.validateGym(wantGym);
     const hatch = this.validateHatchTime(wantHatchTime);
@@ -281,7 +276,7 @@ this.prototype.addEggAbsolute = function (wantTier, wantGym, wantHatchTime) {
 /**
  * Get a list of all raid objects (hatched and not hatched) sorted by hatch time.
  */
-this.prototype.list = function () {
+RaidManager.prototype.list = function () {
     // create sortedRaids array (sorted by hatch time)
     let sortedRaids = [];
     this.raids.forEach((key) => {
@@ -300,7 +295,7 @@ this.prototype.list = function () {
 /**
  * Get a discord formatted raid list.
  */
-this.prototype.listFormatted = function () {
+RaidManager.prototype.listFormatted = function () {
     let raidListMarkupRaidActive = [];
     let raidListMarkupRaidUpcoming = [];
     raidListMarkupRaidActive.push("__**ACTIVE RAIDS**__\n");
