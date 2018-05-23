@@ -1,9 +1,10 @@
 "use strict";
 
 const RaidManager = require("../../raidManager3");
+const { FlexTime } = require("botsbits");
 
 const bosses = [
-    { RaidBoss: "Latias" , RaidTier: "Tier 5" },
+    { RaidBoss: "Latias", RaidTier: "Tier 5" },
     { RaidBoss: "Ho-oh", RaidTier: "Tier 5" },
     { RaidBoss: "Houndoom", RaidTier: "Tier 4" },
     { RaidBoss: "Tyranitar", RaidTier: "Tier 4" },
@@ -46,7 +47,7 @@ const gyms = [
     { City: "Redmond", RaidLocation: "West Ironcycle", FriendlyName: "Ben Franklin", Lng: "47.675691", Lat: "-122.130123", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.675691,-122.1301230" },
     { City: "Redmond", RaidLocation: "Hunting Fox", FriendlyName: "City Hall", Lng: "47.678920", Lat: "-122.130520", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.678920,-122.1305200" },
     { City: "Redmond", RaidLocation: "Weiner Elephants", FriendlyName: "Redmond PD", Lng: "47.680386", Lat: "-122.128889", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.680386,-122.1288890" },
-    { City: "Redmond", RaidLocation: "Portal II", FriendlyName: "Portal 2", Lng: "47.680447, -122.131723", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.680447,-122.1317230" },
+    { City: "Redmond", RaidLocation: "Portal II", FriendlyName: "Portal 2", Lng: "47.680447", Lat: "-122.131723", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.680447,-122.1317230" },
     { City: "Redmond", RaidLocation: "The Last Test", FriendlyName: "Last Test", Lng: "47.682691", Lat: "-122.132021", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.682691,-122.1320210" },
     { City: "Redmond", RaidLocation: "Community Rockstars", FriendlyName: "Community Rockstars", Lng: "47.683612", Lat: "-122.132734", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.683612,-122.1327340" },
     { City: "Redmond", RaidLocation: "Redmond Twist", FriendlyName: "Evergreen", Lng: "47.681979", Lat: "-122.123692", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.681979,-122.1236920" },
@@ -90,7 +91,23 @@ describe("raidManager", () => {
     });
 
     describe("validateHatchTime static method", () => {
+        it("should accept valid times", () => {
+            [1, 10, 59].forEach((minutes) => {
+                let date = new Date(Date.now() + (minutes * 60 * 1000));
+                let time = new FlexTime(date);
+                let validTime = RaidManager.validateHatchTime(time.toString());
+                expect(validTime.getHours()).toBe(time.getHours());
+                expect(validTime.getMinutes()).toBe(time.getMinutes());
+            });
+        });
 
+        it("should reject invalid times", () => {
+            [-2, 65].forEach((minutes) => {
+                let date = new Date(Date.now() + (minutes * 60 * 1000));
+                let time = new FlexTime(date);
+                expect(() => RaidManager.validateHatchTime(time.toString())).toThrow();
+            });
+        });
     });
 
     describe("validateEggTimer static method", () => {
@@ -130,11 +147,47 @@ describe("raidManager", () => {
     });
 
     describe("validateBoss method", () => {
+        it("should match a valid boss", () => {
+            let rm = getTestRaidManager();
+            [
+                ["latias", "Latias"],
+                ["ho-oh", "Ho-oh"],
+                ["ttar", "Tyranitar"],
+                ["hooh", "Ho-oh"],
+            ].forEach((test) => {
+                let boss = rm.validateBoss(test[0]);
+                expect(boss.RaidBoss).toBe(test[1]);
+            });
+        });
 
+        it("should throw for an invalid boss", () => {
+            let rm = getTestRaidManager();
+            ["BOGOBOSS", "WTF"].forEach((bossName) => {
+                expect(() => rm.validateBoss(bossName)).toThrow();
+            });
+        });
     });
 
     describe("validateGym method", () => {
+        it("should match a valid gym", () => {
+            let rm = getTestRaidManager();
+            [
+                ["painted", "Painted Parking Lot"],
+                ["market", "Redmond Town Center Fish Statue"],
+                ["pd", "Weiner Elephants"],
+                ["city hall", "Hunting Fox"],
+            ].forEach((test) => {
+                let gym = rm.validateGym(test[0]);
+                expect(gym.RaidLocation).toBe(test[1]);
+            });
+        });
 
+        it("should throw for an invalid gym", () => {
+            let rm = getTestRaidManager();
+            ["BOGOGYM", "WTF"].forEach((gymName) => {
+                expect(() => rm.validateGym(gymName)).toThrow();
+            });
+        });
     });
 
     describe("addRaid method", () => {
