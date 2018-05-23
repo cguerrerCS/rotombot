@@ -8,7 +8,7 @@ const addBossWithTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(
 const addBossWithTimerAltRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(?:for)(?:\s+(\d?\d)\s*)\s*?$/;
 const addBossNoTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)$/;
 
-function getGym(client, location) {
+function getGym(client, message, location) {
     // Get closest result and add to raid list
     let searchResults = client.RaidsFuzzySearch.search(location);
     if (searchResults.length < 1)
@@ -94,7 +94,7 @@ class raid extends commando.Command{
             }
             
             // Get closest result and add to raid list
-            let closestResult = getGym(client, location);
+            let closestResult = getGym(client, message, location);
             if (!closestResult) {
                 return;
             }
@@ -118,7 +118,7 @@ class raid extends commando.Command{
                 return;
             }
 
-            let closestResult = getGym(client, location);
+            let closestResult = getGym(client, message, location);
             if (!closestResult) {
                 return;
             }
@@ -145,7 +145,7 @@ class raid extends commando.Command{
             var closestPokemon = pkmnSearchResults[0];
             var tier = parseInt(closestPokemon.RaidTier.replace("Tier", "").trim());
 
-            let closestResult = getGym(client, location);
+            let closestResult = getGym(client, message, location);
             if (!closestResult) {
                 return;
             }
@@ -177,7 +177,7 @@ class raid extends commando.Command{
             var closestPokemon = pkmnSearchResults[0];
             var tier = parseInt(closestPokemon.RaidTier.replace("Tier", "").trim());
 
-            let closestResult = getGym(client, location);
+            let closestResult = getGym(client, message, location);
             if (!closestResult) {
                 return;
             }
