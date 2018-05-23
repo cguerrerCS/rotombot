@@ -5,6 +5,7 @@ const { FlexTime } = require('botsbits');
 const addEggByStartTimeRegex = /^!add\s+(?:L?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/;
 const addEggByTimerRegex = /^!add\s+(?:L?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/;
 const addBossWithTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(?:\s+(\d?\d)\s*(?:left))\s*?$/;
+const addBossWithTimerAltRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(?:for)(?:\s+(\d?\d)\s*)\s*?$/;
 const addBossNoTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)$/;
 
 function getGym(client, location) {
@@ -27,14 +28,32 @@ class raid extends commando.Command{
             memberName: 'add',
             description: 'add raid or boss to active raids list',
             examples: [
-              '!add <pkmn> (at|@) <location> <minute countdown> left',
-              '!add ho-oh at Luke McRedmond 30 left',
-              '!add [<tier>] <location> (at|@) <time>',
-              '!add wells fargo at 1012',
-              '!add 4 wells fargo at 1012',
-              '!add [<tier>] <location> in <minutes>',
-              '!add library in 20',
-              '!add 4 library in 20',
+                'Add an unhatched egg with start time and optional tier:',
+                '  !add [<tier>] <location> (at|@) <time>',
+                '  !add wells fargo at 1012',
+                '  !add 4 wells fargo at 1012',
+                'Add an unhatched egg with time-to-hatch and an optional tier:',
+                '  !add [<tier>] <location> in <minutes>',
+                '  !add library in 20',
+                '  !add 4 library in 20',
+                'Add or update an active raid:',
+                '  !add <pkmn> (at|@) <location> <minutes> left',
+                '  !add ho-oh at Luke McRedmond 30 left',
+                'or:',
+                '  !add <pkmn> (at|@) <location> for <minutes>',
+                '  !add latias at wells for 10',
+                'Add a boss to an hatched egg:',
+                '  !add <pkmn> (at|@) <location>',
+                '  !add ttar at wells',
+                'Where:',
+                '  Time is 12- or 24-hour format with optional colon. If am/pm is',
+                '  omitted for 12-hour, the upcoming time is assumed:',
+                '     12:10pm - 10 minutes after noon',
+                '     06:15 - 6:15 AM',
+                '     9:15 - either 9:15 AM or 9:15 PM',
+                '  Tier is 1-5',
+                '  Unhatched egg timer is 1-60',
+                '  Active raid timer is 1-45',
             ]
         })
     }
@@ -114,9 +133,8 @@ class raid extends commando.Command{
             return;
         }
 
-
-        match = message.content.match(addBossWithTimerRegex);
-        if (match != null) {
+        match = message.content.match(addBossWithTimerRegex) || message.content.match(addBossWithTimerAltRegex);
+        if (match !== null) {
             const [, boss, location, timer] = match;
 
             var pkmnSearchResults = client.RaidBossFuzzySearch.search(boss);
