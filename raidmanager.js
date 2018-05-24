@@ -344,7 +344,7 @@ function RaidManager() {
           raidListMarkupRaidUpcoming.push("[" + tierStringEgg +  "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
 
         } else if (raid.State === RaidStateEnum.hatched) {
-          raidListMarkupRaidActive.push("[" + tierStringHatched + " " + raid.Pokemon + "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
+          raidListMarkupRaidActive.push("[" + tierStringHatched + " " + raid.Pokemon + "] " + raid.RaidLocation + " ends @ " + FormatDateAMPM(raid.ExpiryTime) + "\n");
         }
       }
 
