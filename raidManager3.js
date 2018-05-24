@@ -96,7 +96,7 @@ RaidManager.validateTier = function (wantTier) {
     }
 
     if ((tier < 1) || (tier > 5)) {
-        throw new Error(`Tier value ${wantTier} must be in the range [1..5].`);
+        throw new Error(`Tier value ${wantTier} must be in the range 1-5.`);
     }
     return tier;
 };
@@ -223,11 +223,11 @@ RaidManager.prototype.setRaidBoss = function (wantBoss, wantGym) {
             raid.pokemon = boss;
         }
         else {
-            throw new Error("Unable to set raid boss - egg has not hatched.");
+            throw new Error("Cannot set raid boss for unhatched egg.  Please update the raid time.");
         }
     }
     else {
-        throw new Error(`Unable to set raid boss - No raid reported for ${gym.RaidLocation}.`);
+        throw new Error("Cannot set raid boss of unreported raids. Please add the raid.");
     }
 };
 
