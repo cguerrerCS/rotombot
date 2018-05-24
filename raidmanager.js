@@ -176,7 +176,7 @@ function RaidManager() {
 
       if ( tier < 1 || tier > 5 )
       {
-        throw "raid tier cannot be [" + minutes + "].";
+        throw "raid tier cannot be [" + tier + "].";
       }
 
       if (location in Raids)
@@ -186,11 +186,11 @@ function RaidManager() {
           raid.Pokemon = pkmn;
           raid.Tier = tier;
         } else {
-          throw "cannot set raid boss for unhatched egg."
+          throw "Cannot set raid boss for unhatched egg. Please update the raid time."
         }
 
       } else {
-        throw "cannot set raid boss of unreported raids."
+        throw "Cannot set raid boss of unreported raids. Please add the raid."
       }
     }
 
