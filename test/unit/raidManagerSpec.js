@@ -191,7 +191,21 @@ describe("raidManager", () => {
     });
 
     describe("addRaid method", () => {
+        it("should add a raid with valid gym, boss and time remaining even if a raid is already reported for the location", () => {
+            let rm = getTestRaidManager();
+            [
+                ["hooh", "painted", 20, "Painted Parking Lot"],
+                ["latias", "city hall", 1, "Hunting Fox"],
+                ["ttar", "painted", 44, "Painted Parking Lot"],
+            ].forEach((test) => {
+                let raid = rm.addRaid(test[0], test[1], test[2]);
 
+                let now = new FlexTime();
+                let expiry = FlexTime.getFlexTime(now, test[2]);
+                expect(raid.expiryTime.getHours()).toEqual(expiry.getHours());
+                expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
+            });
+        });
     });
 
     describe("setRaidBoss method", () => {

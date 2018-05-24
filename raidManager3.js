@@ -171,14 +171,11 @@ RaidManager.prototype.validateGym = function (wantGym) {
     return possibleGyms[0];
 };
 
-RaidManager.prototype.removeRaid = function (wantGym) {
-    let gym = this.validateGym(wantGym);
-    if (gym.RaidLocation in this.raids) {
-        delete this.raids[gym.RaidLocation];
+RaidManager.prototype.tryGetRaid = function (gym) {
+    if (!this.raids[gym]) {
+        gym = this.validateGym(gym);
     }
-    else {
-        throw new Error(`No raid reported at ${wantGym.RaidLocation}.`);
-    }
+    return this.raids[gym];
 };
 
 /**
@@ -190,9 +187,9 @@ RaidManager.prototype.removeRaid = function (wantGym) {
 RaidManager.prototype.addRaid = function (wantBoss, wantGym, wantMinutes) {
     let gym = this.validateGym(wantGym);
     let boss = this.validateBoss(wantBoss);
-    let expiry = new FlexTime(Date.now(), wantMinutes);
-    let hatch = new FlexTime(expiry, -MAX_RAID_ACTIVE_TIME);
-    let spawn = new FlexTime(hatch, -MAX_EGG_HATCH_TIME);
+    let expiry = FlexTime.getFlexTime(new Date(), wantMinutes);
+    let hatch = FlexTime.getFlexTime(expiry, -MAX_RAID_ACTIVE_TIME);
+    let spawn = FlexTime.getFlexTime(hatch, -MAX_EGG_HATCH_TIME);
 
     var raid = {
         tier: boss.tier,
@@ -205,6 +202,7 @@ RaidManager.prototype.addRaid = function (wantBoss, wantGym, wantMinutes) {
     };
 
     this.raids[gym.RaidLocation] = raid;
+    return raid;
 };
 
 RaidManager.prototype.setRaidBoss = function (wantBoss, wantGym) {
@@ -273,6 +271,16 @@ RaidManager.prototype.addEggAbsolute = function (wantTier, wantGym, wantHatchTim
     this.raids[gym.RaidLocation] = raid;
 };
 
+RaidManager.prototype.removeRaid = function (wantGym) {
+    let gym = this.validateGym(wantGym);
+    if (gym.RaidLocation in this.raids) {
+        delete this.raids[gym.RaidLocation];
+    }
+    else {
+        throw new Error(`No raid reported at ${wantGym.RaidLocation}.`);
+    }
+};
+
 /**
  * Get a list of all raid objects (hatched and not hatched) sorted by hatch time.
  */
@@ -309,7 +317,7 @@ RaidManager.prototype.listFormatted = function () {
             raidListMarkupRaidUpcoming.push("[" + tierString +  "] " + raid.raidLocation + " @ " + formatDateAmPm(raid.hatchTime) + "\n");
         }
         else if (raid.state === RaidManager.RaidStateEnum.hatched) {
-            raidListMarkupRaidActive.push("[" + tierString + " " + raid.pokemon + "] " + raid.raidLocation + " @ " + formatDateAmPm(raid.hatchTime) + "\n");
+            raidListMarkupRaidActive.push("[" + tierString + " " + raid.pokemon + "] " + raid.raidLocation + " ends @ " + formatDateAmPm(raid.expiryTime) + "\n");
         }
     }
 
