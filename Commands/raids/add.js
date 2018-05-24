@@ -11,6 +11,7 @@ const addBossNoTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)$/;
 const eggStartTimeSampleIndex = 1;
 const eggTimerSampleIndex = 5;
 const bossWithTimerLeftSampleIndex = 9;
+const bosswithTimerForSampleIndex = 12;
 const bossNoTimerSampleIndex = 15;
 
 function getGym(client, message, location) {
@@ -142,9 +143,11 @@ class raid extends commando.Command{
         if (match !== null) {
             const [, boss, location, timer] = match;
 
+            var commandSyntax = this.examples[bosswithTimerForSampleIndex] +"\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
+
             var pkmnSearchResults = client.RaidBossFuzzySearch.search(boss);
             if (pkmnSearchResults.length < 1) {
-                client.ReportError(message, "!raid", "no pokemon name found in search results");
+                client.ReportError(message, "!raid", "no pokemon name found in search results", commandSyntax);
                 return;
             }
             var closestPokemon = pkmnSearchResults[0];
@@ -156,7 +159,7 @@ class raid extends commando.Command{
             }
 
             if ((timer < 1) || (timer > 45)) {
-                client.ReportError(message, "!add", "Raid timer must be 1-45 minutes.", this.examples[bossWithTimerLeftSampleIndex]);
+                client.ReportError(message, "!add", "Raid timer must be 1-45 minutes.", commandSyntax);
                 return;
             }
 
@@ -164,7 +167,7 @@ class raid extends commando.Command{
                 client.RaidManager.addRaid(closestPokemon.RaidBoss, tier, closestResult.RaidLocation, timer);
                 message.channel.send(client.RaidManager.listFormatted());
             } catch(err) {
-                client.ReportError(message, "!add", err, this.examples[bossWithTimerLeftSampleIndex]);
+                client.ReportError(message, "!add", err, commandSyntax);
                 return;
             }
             return;
@@ -193,7 +196,7 @@ class raid extends commando.Command{
             } catch(err) {
                 // If we get this error, the raid is likely not in the active list, so give the
                 // help for adding the raid.
-                client.ReportError(message, "!add", err, this.examples[bossWithTimerLeftSampleIndex]);
+                client.ReportError(message, "!add", err, this.examples[bosswithTimerForSampleIndex] +"\nOR\n" + this.examples[bossWithTimerLeftSampleIndex]);
                 return;
             }
             return;
