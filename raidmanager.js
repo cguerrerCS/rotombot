@@ -132,16 +132,14 @@ function RaidManager() {
       }
 
       // default time today's month and year
-      var now = new Date();
-
 			var expiryTime = new Date();
-      expiryTime.setMinutes(now.getMinutes() + minutes);
+      expiryTime.setMinutes(expiryTime.getMinutes() + minutes);
 
-      var hatchTime = new Date();
-      hatchTime.setMinutes(expiryTime.getMinutes() - MAX_RAID_ACTIVE_TIME);
+      var hatchTime = new Date(expiryTime.getTime());
+      hatchTime.setMinutes(hatchTime.getMinutes() - MAX_RAID_ACTIVE_TIME);
 
-      var spawnTime = new Date();
-      spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
+      var spawnTime = new Date(hatchTime.getTime());
+      spawnTime.setMinutes(spawnTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
       // TODO: resolve raid tier based off of pkmn species here instead and no longer require tier
       // ...
@@ -229,17 +227,15 @@ function RaidManager() {
         throw "egg cannot hatch in [" + minutes + "] minutes.";
       }
 
-      // default time today's month and year
-      var now = new Date();
-
+      // start hatchtime now and add countdown minutes
       var hatchTime = new Date();
-      hatchTime.setMinutes(now.getMinutes() + minutes);
+      hatchTime.setMinutes(hatchTime.getMinutes() + minutes);
 
-      var spawnTime = new Date();
-      spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
+      var spawnTime = new Date(hatchTime.getTime());
+      spawnTime.setMinutes(spawnTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
-      var expiryTime = new Date();
-      expiryTime.setMinutes(hatchTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
+      var expiryTime = new Date(hatchTime.getTime());
+      expiryTime.setMinutes(expiryTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
 
       var raid = {
         Tier: tier,
@@ -284,11 +280,11 @@ function RaidManager() {
       // TODO: error check hatchtime range, can just ask user to report raid instead (if already hatched)
       // TODO: max and min prediction time calculations
 
-      var spawnTime = new Date();
-      spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
+      var spawnTime = new Date(hatchTime.getTime());
+      spawnTime.setMinutes(spawnTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
-      var expiryTime = new Date();
-      expiryTime.setMinutes(hatchTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
+      var expiryTime = new Date(hatchTime.getTime());
+      expiryTime.setMinutes(expiryTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
 
       var raid = {
         Tier: tier,
