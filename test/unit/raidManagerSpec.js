@@ -1,6 +1,6 @@
 "use strict";
 
-const RaidManager = require("../../raidManager3");
+const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
 const bosses = [
