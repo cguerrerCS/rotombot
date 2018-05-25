@@ -1,6 +1,6 @@
 const RaidManager = require('./raidmanager.js');
 const { CommandoClient } = require('discord.js-commando');
-const IsDevelopment = false;
+const IsDevelopment = true;
 
 //Discord related commands
 const client = new CommandoClient({
@@ -61,7 +61,6 @@ function ReportError(message, cmd, error, syntax)
 
 	if(syntax)
 	{
-
 		output = output + "\n **__SAMPLE COMMAND:__** ```" + syntax + "```";
 	}
 

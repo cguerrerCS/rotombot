@@ -5,6 +5,7 @@ function RaidManager() {
     var Raids = {};
     var RaidStateEnum = Object.freeze({"egg":1, "hatched":2});
 
+    var util = require('util');
     var Fuse = require('fuse.js');
     var RaidData = [];
     var RaidBossData = [];
@@ -156,6 +157,7 @@ function RaidManager() {
         ExpiryTime: expiryTime
       };
 
+      console.log("[Raid Manager] Active Raid added with relative time: " + RaidToString(raid));
       Raids[raid.RaidLocation] = raid;
     }
 
@@ -249,6 +251,7 @@ function RaidManager() {
         ExpiryTime: expiryTime
       };
 
+      console.log("[Raid Manager] Raid egg added with relative time: " + RaidToString(raid));
       Raids[raid.RaidLocation] = raid;
     }
 
@@ -297,6 +300,7 @@ function RaidManager() {
         ExpiryTime: expiryTime
       };
 
+      console.log("[Raid Manager] Raid egg added with absolute time: " + RaidToString(raid));
       Raids[raid.RaidLocation] = raid;
     }
 
@@ -386,6 +390,26 @@ function RaidManager() {
       return strTime;
     }
 
+    function RaidToString(raidObj)
+    {
+      //Tier: tier,
+      //Pokemon: "Unknown",
+      //RaidLocation: location,
+      //State: RaidStateEnum.egg,
+      //SpawnTime: spawnTime,
+      //HatchTime: hatchTime,
+      //ExpiryTime: expiryTime
+
+      var raidInfoString = util.format("[Location: %s, NowTime: %s, SpawnTime: %s, HatchTime: %s, ExpiryTime: %s]",
+        raidObj.RaidLocation,
+        FormatDateAMPM(new Date()),
+        FormatDateAMPM(raidObj.SpawnTime),
+        FormatDateAMPM(raidObj.HatchTime),
+        FormatDateAMPM(raidObj.ExpiryTime));
+
+      return raidInfoString;
+    }
+
     /**
      * Private function: Refresh raid list to reflect eggs hatching and raids expiring.
      */
@@ -393,16 +417,17 @@ function RaidManager() {
       var now = new Date();
       for (var key in Raids)
       {
+
         var raid = Raids[key];
         if ((raid.State === RaidStateEnum.egg) && (now >= Raids[key].HatchTime))
         {
-          console.log("[Raid Manager] Raid Egg Hatched: " + key);
+          console.log("[Raid Manager] Raid Egg Hatched: " + RaidToString(raid));
           raid.State = RaidStateEnum.hatched;
         }
 
         if (now > raid.ExpiryTime)
         {
-          console.log("[Raid Manager] Raid Expired: " + key);
+          console.log("[Raid Manager] Raid Expired: " + RaidToString(raid));
           delete Raids[key];
         }
       }

@@ -68,7 +68,8 @@ class raid extends commando.Command{
 
         const client = message.client;
         const output = `Processing !add command submitted by user ${message.author}\n`;
-        process.stdout.write(output);
+        console.log("[Raid Manager] command: " + message.content);
+        // process.stdout.write(output);
         message.channel.send(output);
 
         if (message.channel.type.toString() == "dm")
@@ -98,7 +99,7 @@ class raid extends commando.Command{
                 client.ReportError(message, "!add", "That time is too far in the past.", this.examples[eggStartTimeSampleIndex]);
                 return;
             }
-            
+
             // Get closest result and add to raid list
             let closestResult = getGym(client, message, location);
             if (!closestResult) {
