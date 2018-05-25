@@ -142,6 +142,8 @@ function RaidManager() {
       var spawnTime = new Date();
       spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
+      console.log(`added raid with spawn: ${spawnTime}, hatch: ${hatchTime}, expiry: ${expiryTime}`);
+
       // TODO: resolve raid tier based off of pkmn species here instead and no longer require tier
       // ...
       // ...
@@ -238,6 +240,8 @@ function RaidManager() {
 
       var expiryTime = new Date();
       expiryTime.setMinutes(hatchTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
+
+      console.log(`added egg with spawn: ${spawnTime}, hatch: ${hatchTime}, expiry: ${expiryTime}`);
 
       var raid = {
         Tier: tier,
@@ -400,9 +404,9 @@ function RaidManager() {
           raid.State = RaidStateEnum.hatched;
         }
 
-        if (now > raid.ExpiryTime)
+        if (now.getTime() > raid.ExpiryTime.getTime())
         {
-          console.log("[Raid Manager] Raid Expired: " + key);
+          console.log(`[Raid Manager] Raid Expired: ${key} (expiry: ${raid.ExpiryTime})`);
           delete Raids[key];
         }
       }
