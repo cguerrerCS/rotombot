@@ -202,14 +202,69 @@ describe("raidManager", () => {
 
                 let now = new FlexTime();
                 let expiry = FlexTime.getFlexTime(now, test[2]);
+                let hatch = FlexTime.getFlexTime(expiry, -RaidManager.maxRaidActiveTime);
+                let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
+
+                expect(raid.spawnTime.getHours()).toEqual(spawn.getHours());
+                expect(raid.spawnTime.getMinutes()).toEqual(spawn.getMinutes());
+                expect(raid.hatchTime.getHours()).toEqual(hatch.getHours());
+                expect(raid.hatchTime.getMinutes()).toEqual(hatch.getMinutes());
                 expect(raid.expiryTime.getHours()).toEqual(expiry.getHours());
                 expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
+            });
+        });
+
+        it("should fail for an invalid boss, gym, or time remaining", function () {
+            let rm = getTestRaidManager();
+            [
+                ["BLARG", "painted", 20, "No known boss matches requested name \"BLARG\"."],
+                ["latias", "XYZZY", 1, "No known gym matches requested name \"XYZZY\"."],
+                ["latias", "painted", 0, "Raid timer 0 is out of range (1..45)."],
+                ["latias", "painted", -15, "Raid timer -15 is out of range (1..45)."],
+                ["latias", "painted", 65, "Raid timer 65 is out of range (1..45)."],
+            ].forEach((test) => {
+                expect(() => {
+                    rm.addRaid(test[0], test[1], test[2]);
+                }).toThrowError(test[3]);
             });
         });
     });
 
     describe("setRaidBoss method", () => {
+        it("should add a boss to an existing raid with no boss, regardless of tier", () => {
+            let rm = getTestRaidManager();
+            let hatch = FlexTime.getFlexTime(Date.now(), -5);
+            let raid = rm._forceRaid("painted", 5, undefined, hatch.toString());
 
+            expect(raid).toBeDefined();
+
+            let bossRaid = rm.setRaidBoss("ttar", "painted");
+            expect(bossRaid).toBeDefined();
+            expect(bossRaid.pokemon.RaidBoss).toBe("Tyranitar");
+        });
+
+        it("should replace the boss of an existing raid with a boss, regardless of tier", () => {
+            let rm = getTestRaidManager();
+            let hatch = FlexTime.getFlexTime(Date.now(), -5);
+            let raid = rm._forceRaid("painted", 5, "latias", hatch.toString());
+
+            expect(raid).toBeDefined();
+
+            let bossRaid = rm.setRaidBoss("ttar", "painted");
+            expect(bossRaid).toBeDefined();
+            expect(bossRaid.pokemon.RaidBoss).toBe("Tyranitar");
+        });
+
+        it("should fail if no raid exists", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.setRaidBoss("ttar", "painted")).toThrowError("Cannot set raid boss of unreported raids. Please add the raid.");
+        });
+
+        it("should fail if an unknown boss or gym is supplied", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.setRaidBoss("XYZZY", "painted")).toThrowError("No known boss matches requested name \"XYZZY\".");
+            expect(() => rm.setRaidBoss("ttar", "XYZZY")).toThrowError("No known gym matches requested name \"XYZZY\".");
+        });
     });
 
     describe("addEggCountdown method", () => {

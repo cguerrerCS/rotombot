@@ -17,6 +17,8 @@ var RaidManager = function () {
 };
 
 RaidManager.RaidStateEnum = Object.freeze({ "egg": 1, "hatched": 2 });
+RaidManager.maxEggHatchTime = MAX_EGG_HATCH_TIME;
+RaidManager.maxRaidActiveTime = MAX_RAID_ACTIVE_TIME;
 
 function validateGymObject(gym) {
     const required = ["City", "RaidLocation", "FriendlyName", "Lng", "Lat", "MapLink"];
@@ -149,7 +151,7 @@ RaidManager.prototype.validateBoss = function (wantBoss) {
 
     var possibleBosses = this.bossSearch.search(wantBoss);
     if (possibleBosses.length < 1) {
-        throw new Error(`No known boss matches requested boss name "${wantBoss}"`);
+        throw new Error(`No known boss matches requested name "${wantBoss}".`);
     }
     return possibleBosses[0];
 };
@@ -166,7 +168,7 @@ RaidManager.prototype.validateGym = function (wantGym) {
 
     var possibleGyms = this.gymSearch.search(wantGym);
     if (possibleGyms.length < 1) {
-        throw new Error(`No known location matches requested gym name "${wantGym}"`);
+        throw new Error(`No known gym matches requested name "${wantGym}".`);
     }
     return possibleGyms[0];
 };
@@ -178,6 +180,59 @@ RaidManager.prototype.tryGetRaid = function (gym) {
     return this.raids[gym];
 };
 
+RaidManager.prototype.tryGetBoss= function (wantBoss) {
+    if (!this.gyms) {
+        throw new Error("RaidManager not ready - bosses not initialized.");
+    }
+
+    var possibleBosses = this.bossSearch.search(wantBoss);
+    if (possibleBosses.length < 1) {
+        return undefined;
+    }
+    return possibleBosses[0];
+};
+
+RaidManager.prototype.tryGetGym = function (wantGym) {
+    if (!this.gyms) {
+        throw new Error("RaidManager not ready - gyms not initialized.");
+    }
+
+    var possibleGyms = this.gymSearch.search(wantGym);
+    if (possibleGyms.length < 1) {
+        return undefined;
+    }
+    return possibleGyms[0];
+};
+
+/**
+ * Bypasses validity checks for testing
+ */
+RaidManager.prototype._forceRaid = function (wantGym, wantTier, wantBoss, wantHatchTime) {
+    if (wantGym) {
+        let gym = (typeof wantGym === "string") ? this.tryGetGym(wantGym) : wantGym;
+        let boss = (typeof wantBoss === "string") ? this.tryGetBoss(wantBoss) : wantBoss;
+        let hatch = new FlexTime(wantHatchTime);
+        let spawn = FlexTime.getFlexTime(hatch, -MAX_EGG_HATCH_TIME);
+        let expiry = FlexTime.getFlexTime(hatch, MAX_RAID_ACTIVE_TIME);
+        let delta = new FlexTime().getDeltaInMinutes(hatch);
+        let state = (delta < 0 ? RaidManager.RaidStateEnum.hatched : RaidManager.RaidStateEnum.egg);
+
+        let raid = {
+            tier: wantTier,
+            pokemon: boss,
+            raidLocation: gym,
+            state: state,
+            spawnTime: spawn,
+            hatchTime: hatch,
+            expiryTime: expiry,
+        };
+
+        this.raids[gym.RaidLocation] = raid;
+        return raid;
+    }
+    return undefined;
+};
+
 /**
  * Add a raid in hatched state
  * @param {String|Object} wantBoss
@@ -185,13 +240,14 @@ RaidManager.prototype.tryGetRaid = function (gym) {
  * @param {String|Number} wantMinutes
  */
 RaidManager.prototype.addRaid = function (wantBoss, wantGym, wantMinutes) {
-    let gym = this.validateGym(wantGym);
     let boss = this.validateBoss(wantBoss);
-    let expiry = FlexTime.getFlexTime(new Date(), wantMinutes);
+    let gym = this.validateGym(wantGym);
+    let minutes = RaidManager.validateRaidTimer(wantMinutes);
+    let expiry = FlexTime.getFlexTime(new Date(), minutes);
     let hatch = FlexTime.getFlexTime(expiry, -MAX_RAID_ACTIVE_TIME);
     let spawn = FlexTime.getFlexTime(hatch, -MAX_EGG_HATCH_TIME);
 
-    var raid = {
+    let raid = {
         tier: boss.tier,
         pokemon: boss,
         raidLocation: gym,
@@ -212,17 +268,20 @@ RaidManager.prototype.setRaidBoss = function (wantBoss, wantGym) {
     if (gym.RaidLocation in this.raids) {
         let raid = this.raids[gym.RaidLocation];
         if (raid.state === RaidManager.RaidStateEnum.hatched) {
+            /*
             if (raid.tier !== boss.tier) {
                 throw new Error(`Cannot set ${boss.name} as boss for a tier ${raid.tier} raid.`);
             }
             else if (raid.pokemon) {
                 throw new Error(`Raid at ${gym.RaidLocation} already has a boss.`);
             }
+            */
             raid.pokemon = boss;
         }
         else {
             throw new Error("Cannot set raid boss for unhatched egg.  Please update the raid time.");
         }
+        return raid;
     }
     else {
         throw new Error("Cannot set raid boss of unreported raids. Please add the raid.");
