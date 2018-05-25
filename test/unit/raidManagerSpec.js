@@ -194,9 +194,9 @@ describe("raidManager", () => {
         it("should add a raid with valid gym, boss and time remaining even if a raid is already reported for the location", () => {
             let rm = getTestRaidManager();
             [
-                ["hooh", "painted", 20, "Painted Parking Lot"],
-                ["latias", "city hall", 1, "Hunting Fox"],
-                ["ttar", "painted", 44, "Painted Parking Lot"],
+                ["hooh", "painted", 20, "Painted Parking Lot", "Ho-oh", 5],
+                ["latias", "city hall", 1, "Hunting Fox", "Latias", 5],
+                ["ttar", "painted", 44, "Painted Parking Lot", "Tyranitar", 4],
             ].forEach((test) => {
                 let raid = rm.addRaid(test[0], test[1], test[2]);
 
@@ -211,6 +211,11 @@ describe("raidManager", () => {
                 expect(raid.hatchTime.getMinutes()).toEqual(hatch.getMinutes());
                 expect(raid.expiryTime.getHours()).toEqual(expiry.getHours());
                 expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
+
+                expect(raid.state).toBe(RaidManager.RaidStateEnum.hatched);
+                expect(raid.raidLocation.RaidLocation).toBe(test[3]);
+                expect(raid.pokemon.RaidBoss).toBe(test[4]);
+                expect(raid.tier).toBe(test[5]);
             });
         });
 
@@ -268,23 +273,172 @@ describe("raidManager", () => {
     });
 
     describe("addEggCountdown method", () => {
+        it("should add a valid egg when no raid exists at the location", () => {
+            let rm = getTestRaidManager();
+            let raid = rm.addEggCountdown(5, "painted", 10);
+            let hatch = FlexTime.getFlexTime(Date.now(), 10);
+            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
 
+            expect(raid.tier).toBe(5);
+            expect(raid.pokemon).toBeUndefined();
+            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
+            expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
+            expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
+            expect(raid.hatchTime.getMinutes()).toBe(hatch.getMinutes());
+            expect(raid.expiryTime.getHours()).toBe(expiry.getHours());
+            expect(raid.expiryTime.getMinutes()).toBe(expiry.getMinutes());
+        });
+
+        it("should add a valid egg when a raid already exists at the location", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addRaid("latias", "market", 30)).toBeDefined();
+
+            let raid = rm.addEggCountdown(4, "market", 20);
+            let hatch = FlexTime.getFlexTime(Date.now(), 20);
+            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
+            expect(raid.tier).toBe(4);
+            expect(raid.pokemon).toBeUndefined();
+            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
+            expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
+            expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
+            expect(raid.hatchTime.getMinutes()).toBe(hatch.getMinutes());
+            expect(raid.expiryTime.getHours()).toBe(expiry.getHours());
+            expect(raid.expiryTime.getMinutes()).toBe(expiry.getMinutes());
+        });
+
+        it("should throw for an invalid tier, location or timer", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.addEggCountdown(-1, "painted", 10)).toThrowError("Tier value -1 must be in the range 1-5.");
+            expect(() => rm.addEggCountdown(0, "painted", 10)).toThrowError("Tier value 0 must be in the range 1-5.");
+            expect(() => rm.addEggCountdown(6, "painted", 10)).toThrowError("Tier value 6 must be in the range 1-5.");
+            expect(() => rm.addEggCountdown(5, "XYZZY", 10)).toThrowError("No known gym matches requested name \"XYZZY\".");
+            expect(() => rm.addEggCountdown(5, "painted", 0)).toThrowError("Egg timer 0 is out of range (1..60).");
+            expect(() => rm.addEggCountdown(5, "painted", -15)).toThrowError("Egg timer -15 is out of range (1..60).");
+            expect(() => rm.addEggCountdown(5, "painted", 75)).toThrowError("Egg timer 75 is out of range (1..60).");
+        });
     });
 
     describe("addEggAbsolute method", () => {
+        it("should add a valid egg when no raid exists at the location", () => {
+            let rm = getTestRaidManager();
+            let hatch = FlexTime.getFlexTime(Date.now(), 10);
+            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
 
+            let raid = rm.addEggAbsolute(5, "painted", hatch.toString());
+            expect(raid.tier).toBe(5);
+            expect(raid.pokemon).toBeUndefined();
+            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
+            expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
+            expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
+            expect(raid.hatchTime.getMinutes()).toBe(hatch.getMinutes());
+            expect(raid.expiryTime.getHours()).toBe(expiry.getHours());
+            expect(raid.expiryTime.getMinutes()).toBe(expiry.getMinutes());
+        });
+
+        it("should add a valid egg when a raid already exists at the location", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addRaid("latias", "market", 30)).toBeDefined();
+
+            let hatch = FlexTime.getFlexTime(Date.now(), 20);
+            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
+
+            let raid = rm.addEggAbsolute(4, "market", hatch.toString());
+            expect(raid.tier).toBe(4);
+            expect(raid.pokemon).toBeUndefined();
+            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
+            expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
+            expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
+            expect(raid.hatchTime.getMinutes()).toBe(hatch.getMinutes());
+            expect(raid.expiryTime.getHours()).toBe(expiry.getHours());
+            expect(raid.expiryTime.getMinutes()).toBe(expiry.getMinutes());
+        });
+
+        it("should throw for an invalid tier, location or start time", () => {
+            let rm = getTestRaidManager();
+            let validHatch = FlexTime.getFlexTime(Date.now(), 20).toString();
+
+            expect(() => rm.addEggAbsolute(-1, "painted", validHatch)).toThrowError("Tier value -1 must be in the range 1-5.");
+            expect(() => rm.addEggAbsolute(0, "painted", validHatch)).toThrowError("Tier value 0 must be in the range 1-5.");
+            expect(() => rm.addEggAbsolute(6, "painted", validHatch)).toThrowError("Tier value 6 must be in the range 1-5.");
+            expect(() => rm.addEggAbsolute(5, "XYZZY", validHatch)).toThrowError("No known gym matches requested name \"XYZZY\".");
+
+            [-10, 75, 11 * 60].forEach((delta) => {
+                let time = FlexTime.getFlexTime(Date.now(), delta).toString();
+                let expected = (delta < 0) ? /Requested hatch time .* is in the past/ : /Requested hatch time .* is too far in the future/;
+                expect(() => rm.addEggAbsolute(5, "painted", time)).toThrowError(expected);
+            });
+        });
     });
 
     describe("removeRaid method", () => {
+        it("should remove an existing raid", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addEggCountdown(5, "painted", 20)).toBeDefined();
 
+            expect(rm.tryGetRaid("painted")).toBeDefined();
+            expect(rm.removeRaid("painted")).toBeDefined();
+            expect(rm.tryGetRaid("painted")).toBeUndefined();
+        });
+
+        it("should throw if no raid exists", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.removeRaid("painted")).toThrowError("No raid reported at Painted Parking Lot.");
+        });
     });
 
     describe("list method", () => {
+        it("should list raids in time order", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addEggCountdown(5, "painted", 30)).toBeDefined();
+            expect(rm.addEggCountdown(5, "market", 20)).toBeDefined();
+            expect(rm.addEggCountdown(4, "luke", 10)).toBeDefined();
+            expect(rm.addRaid("ttar", "wells", 30));
 
+            let last = undefined;
+            let list = rm.list();
+            list.forEach((raid) => {
+                if (last) {
+                    expect(raid.expiryTime.getTime()).toBeGreaterThan(last.expiryTime.getTime());
+                }
+                last = raid;
+            });
+        });
     });
 
     describe("listFormatted method", () => {
+        it("should list raids in time order", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addEggCountdown(5, "painted", 30)).toBeDefined();
+            expect(rm.addEggCountdown(5, "market", 20)).toBeDefined();
+            expect(rm.addEggCountdown(4, "luke", 10)).toBeDefined();
+            expect(rm.addRaid("ttar", "wells", 10));
+            expect(rm.addRaid("aggron", "city hall", 15));
 
+            let output = rm.listFormatted();
+            let lines = output.split("\n");
+
+            [
+                /^.*ACTIVE RAIDS.*$/,
+                /^.*Tyranitar.*Wells Fargo.*ends @.*$/,
+                /^.*Aggron.*Hunting Fox.*ends @.*$/,
+                /^.*$/,
+                /^.*UPCOMING RAIDS.*$/,
+                /^.*Tier 4.*Beavers @.*$/,
+                /^.*Tier 5.*Fish Statue @.*$/,
+                /^.*Tier 5.*Parking Lot @.*$/,
+            ].forEach((regex) => {
+                let line = lines.shift();
+                expect(regex.test(line)).toBe(true);
+            });
+        });
     });
 
 
