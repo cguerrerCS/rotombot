@@ -8,7 +8,7 @@ class directions extends commando.Command{
             name: 'directions',
             group: 'raids',
             memberName: 'directions',
-            description: 'show directions to current raids',
+            description: 'show gym location directions',
             examples: ['!directions painted', '!directions Mysterious Hatch']
         })
     }

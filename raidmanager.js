@@ -5,6 +5,7 @@ function RaidManager() {
     var Raids = {};
     var RaidStateEnum = Object.freeze({"egg":1, "hatched":2});
 
+    var util = require('util');
     var Fuse = require('fuse.js');
     var RaidData = [];
     var RaidBossData = [];
@@ -131,16 +132,14 @@ function RaidManager() {
       }
 
       // default time today's month and year
-      var now = new Date();
-
 			var expiryTime = new Date();
-      expiryTime.setMinutes(now.getMinutes() + minutes);
+      expiryTime.setMinutes(expiryTime.getMinutes() + minutes);
 
-      var hatchTime = new Date();
-      hatchTime.setMinutes(expiryTime.getMinutes() - MAX_RAID_ACTIVE_TIME);
+      var hatchTime = new Date(expiryTime.getTime());
+      hatchTime.setMinutes(hatchTime.getMinutes() - MAX_RAID_ACTIVE_TIME);
 
-      var spawnTime = new Date();
-      spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
+      var spawnTime = new Date(hatchTime.getTime());
+      spawnTime.setMinutes(spawnTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
       // TODO: resolve raid tier based off of pkmn species here instead and no longer require tier
       // ...
@@ -156,6 +155,7 @@ function RaidManager() {
         ExpiryTime: expiryTime
       };
 
+      console.log("[Raid Manager] Active Raid added with relative time: " + RaidToString(raid));
       Raids[raid.RaidLocation] = raid;
     }
 
@@ -176,7 +176,7 @@ function RaidManager() {
 
       if ( tier < 1 || tier > 5 )
       {
-        throw "raid tier cannot be [" + minutes + "].";
+        throw "raid tier cannot be [" + tier + "].";
       }
 
       if (location in Raids)
@@ -186,11 +186,11 @@ function RaidManager() {
           raid.Pokemon = pkmn;
           raid.Tier = tier;
         } else {
-          throw "cannot set raid boss for unhatched egg."
+          throw "Cannot set raid boss for unhatched egg. Please update the raid time."
         }
 
       } else {
-        throw "cannot set raid boss of unreported raids."
+        throw "Cannot set raid boss of unreported raids. Please add the raid."
       }
     }
 
@@ -227,17 +227,15 @@ function RaidManager() {
         throw "egg cannot hatch in [" + minutes + "] minutes.";
       }
 
-      // default time today's month and year
-      var now = new Date();
-
+      // start hatchtime now and add countdown minutes
       var hatchTime = new Date();
-      hatchTime.setMinutes(now.getMinutes() + minutes);
+      hatchTime.setMinutes(hatchTime.getMinutes() + minutes);
 
-      var spawnTime = new Date();
-      spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
+      var spawnTime = new Date(hatchTime.getTime());
+      spawnTime.setMinutes(spawnTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
-      var expiryTime = new Date();
-      expiryTime.setMinutes(hatchTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
+      var expiryTime = new Date(hatchTime.getTime());
+      expiryTime.setMinutes(expiryTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
 
       var raid = {
         Tier: tier,
@@ -249,6 +247,7 @@ function RaidManager() {
         ExpiryTime: expiryTime
       };
 
+      console.log("[Raid Manager] Raid egg added with relative time: " + RaidToString(raid));
       Raids[raid.RaidLocation] = raid;
     }
 
@@ -281,11 +280,11 @@ function RaidManager() {
       // TODO: error check hatchtime range, can just ask user to report raid instead (if already hatched)
       // TODO: max and min prediction time calculations
 
-      var spawnTime = new Date();
-      spawnTime.setMinutes(hatchTime.getMinutes() - MAX_EGG_HATCH_TIME);
+      var spawnTime = new Date(hatchTime.getTime());
+      spawnTime.setMinutes(spawnTime.getMinutes() - MAX_EGG_HATCH_TIME);
 
-      var expiryTime = new Date();
-      expiryTime.setMinutes(hatchTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
+      var expiryTime = new Date(hatchTime.getTime());
+      expiryTime.setMinutes(expiryTime.getMinutes() + MAX_RAID_ACTIVE_TIME);
 
       var raid = {
         Tier: tier,
@@ -297,6 +296,7 @@ function RaidManager() {
         ExpiryTime: expiryTime
       };
 
+      console.log("[Raid Manager] Raid egg added with absolute time: " + RaidToString(raid));
       Raids[raid.RaidLocation] = raid;
     }
 
@@ -344,7 +344,7 @@ function RaidManager() {
           raidListMarkupRaidUpcoming.push("[" + tierStringEgg +  "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
 
         } else if (raid.State === RaidStateEnum.hatched) {
-          raidListMarkupRaidActive.push("[" + tierStringHatched + " " + raid.Pokemon + "] " + raid.RaidLocation + " @ " + FormatDateAMPM(raid.HatchTime) + "\n");
+          raidListMarkupRaidActive.push("[" + tierStringHatched + " " + raid.Pokemon + "] " + raid.RaidLocation + " ends @ " + FormatDateAMPM(raid.ExpiryTime) + "\n");
         }
       }
 
@@ -386,6 +386,26 @@ function RaidManager() {
       return strTime;
     }
 
+    function RaidToString(raidObj)
+    {
+      //Tier: tier,
+      //Pokemon: "Unknown",
+      //RaidLocation: location,
+      //State: RaidStateEnum.egg,
+      //SpawnTime: spawnTime,
+      //HatchTime: hatchTime,
+      //ExpiryTime: expiryTime
+
+      var raidInfoString = util.format("[Location: %s, NowTime: %s, SpawnTime: %s, HatchTime: %s, ExpiryTime: %s]",
+        raidObj.RaidLocation,
+        FormatDateAMPM(new Date()),
+        FormatDateAMPM(raidObj.SpawnTime),
+        FormatDateAMPM(raidObj.HatchTime),
+        FormatDateAMPM(raidObj.ExpiryTime));
+
+      return raidInfoString;
+    }
+
     /**
      * Private function: Refresh raid list to reflect eggs hatching and raids expiring.
      */
@@ -393,16 +413,17 @@ function RaidManager() {
       var now = new Date();
       for (var key in Raids)
       {
+
         var raid = Raids[key];
         if ((raid.State === RaidStateEnum.egg) && (now >= Raids[key].HatchTime))
         {
-          console.log("[Raid Manager] Raid Egg Hatched: " + key);
+          console.log("[Raid Manager] Raid Egg Hatched: " + RaidToString(raid));
           raid.State = RaidStateEnum.hatched;
         }
 
         if (now > raid.ExpiryTime)
         {
-          console.log("[Raid Manager] Raid Expired: " + key);
+          console.log("[Raid Manager] Raid Expired: " + RaidToString(raid));
           delete Raids[key];
         }
       }
