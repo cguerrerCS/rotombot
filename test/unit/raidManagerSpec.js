@@ -213,7 +213,7 @@ describe("raidManager", () => {
                 expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
 
                 expect(raid.state).toBe(RaidManager.RaidStateEnum.hatched);
-                expect(raid.raidLocation.name).toBe(test[3]);
+                expect(raid.gym.name).toBe(test[3]);
                 expect(raid.pokemon.name).toBe(test[4]);
                 expect(raid.tier).toBe(test[5]);
             });

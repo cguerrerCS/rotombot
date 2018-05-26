@@ -1,6 +1,6 @@
 "use strict";
 
-const RaidManager = require("./raidmanager.js");
+const RaidManager = require("./lib/raidmanager.js");
 const { CommandoClient } = require("discord.js-commando");
 const isDevelopment = false;
 
@@ -19,6 +19,7 @@ let inputRaidDataStream = fs.createReadStream("RaidLocations.csv", "utf8");
 let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
 let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
 
+let raidManager = new RaidManager();
 let raidData = [];
 let raidBossData = [];
 let tokens = {};
@@ -37,16 +38,16 @@ inputBotTokenStream
     })
     .on("end", function () {
         if (isDevelopment) {
-            let token = tokens["Rotom Jr."].Token;
+            let token = tokens["Rotom Jr."].token;
             client.login(token);
         }
         else {
-            let token = tokens.Rotom.Token;
+            let token = tokens.Rotom.token;
             client.login(token);
         }
     });
 
-function ReportError(message, cmd, error, syntax) {
+function reportError(message, cmd, error, syntax) {
     let output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n*error: " + error + "*\n";
 
     console.log("syntax " + syntax);
@@ -62,9 +63,9 @@ function ReportError(message, cmd, error, syntax) {
 // on client ready, load in any data and setup raid manager
 client.on("ready", () => {
     process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
-    client.ReportError = ReportError;
-    client.IsDevelopment = isDevelopment;
-    client.RaidManager = new RaidManager();
+    client.reportError = reportError;
+    client.isDevelopment = isDevelopment;
+    client.raidManager = raidManager;
 
     // read in all raid data
     inputRaidDataStream
@@ -81,7 +82,7 @@ client.on("ready", () => {
             raidData.push(data);
         })
         .on("end", function () {
-            client.raidManager.setRaidData(raidData);
+            client.raidManager.setGymData(raidData);
         });
 
     inputRaidBossDataStream
@@ -94,6 +95,6 @@ client.on("ready", () => {
             raidBossData.push(data);
         })
         .on("end", function () {
-            client.RaidManager.setRaidBossData(raidBossData);
+            client.raidManager.setBossData(raidBossData);
         });
 });

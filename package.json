@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jasmine --config=test/support/jasmine.json",
     "cover": "nyc --reporter=lcov jasmine --config=test/support/jasmine.json",
-    "lint": "eslint rotombot.js lib test/unit",
-    "fixlint": "eslint rotombot.js lib test/unit --fix"
+    "lint": "eslint rotombot.js lib commands test/unit",
+    "fixlint": "eslint rotombot.js lib commands test/unit --fix"
   },
   "repository": {
     "type": "git",
