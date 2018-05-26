@@ -4,64 +4,64 @@ const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
 const bosses = [
-    { RaidBoss: "Latias", RaidTier: "Tier 5" },
-    { RaidBoss: "Ho-oh", RaidTier: "Tier 5" },
-    { RaidBoss: "Houndoom", RaidTier: "Tier 4" },
-    { RaidBoss: "Tyranitar", RaidTier: "Tier 4" },
-    { RaidBoss: "Aggron", RaidTier: "Tier 4" },
-    { RaidBoss: "Absol", RaidTier: "Tier 4" },
-    { RaidBoss: "Walrein", RaidTier: "Tier 4" },
-    { RaidBoss: "Machamp", RaidTier: "Tier 3" },
-    { RaidBoss: "Gengar", RaidTier: "Tier 3" },
-    { RaidBoss: "Jynx", RaidTier: "Tier 3" },
-    { RaidBoss: "Pinsir", RaidTier: "Tier 3" },
-    { RaidBoss: "Granbull", RaidTier: "Tier 3" },
-    { RaidBoss: "Piloswine", RaidTier: "Tier 3" },
-    { RaidBoss: "Exeggutor", RaidTier: "Tier 2" },
-    { RaidBoss: "Misdreavus", RaidTier: "Tier 2" },
-    { RaidBoss: "Sneasel", RaidTier: "Tier 2" },
-    { RaidBoss: "Sableye", RaidTier: "Tier 2" },
-    { RaidBoss: "Mawile", RaidTier: "Tier 2" },
-    { RaidBoss: "Magikarp", RaidTier: "Tier 1" },
-    { RaidBoss: "Wailmer", RaidTier: "Tier 1" },
-    { RaidBoss: "Swablu", RaidTier: "Tier 1" },
-    { RaidBoss: "Shuppet", RaidTier: "Tier 1" },
-    { RaidBoss: "Duskull", RaidTier: "Tier 1" },
-    { RaidBoss: "Snorunt", RaidTier: "Tier 1" },
+    { name: "Latias", tier: "Tier 5" },
+    { name: "Ho-oh", tier: "Tier 5" },
+    { name: "Houndoom", tier: "Tier 4" },
+    { name: "Tyranitar", tier: "Tier 4" },
+    { name: "Aggron", tier: "Tier 4" },
+    { name: "Absol", tier: "Tier 4" },
+    { name: "Walrein", tier: "Tier 4" },
+    { name: "Machamp", tier: "Tier 3" },
+    { name: "Gengar", tier: "Tier 3" },
+    { name: "Jynx", tier: "Tier 3" },
+    { name: "Pinsir", tier: "Tier 3" },
+    { name: "Granbull", tier: "Tier 3" },
+    { name: "Piloswine", tier: "Tier 3" },
+    { name: "Exeggutor", tier: "Tier 2" },
+    { name: "Misdreavus", tier: "Tier 2" },
+    { name: "Sneasel", tier: "Tier 2" },
+    { name: "Sableye", tier: "Tier 2" },
+    { name: "Mawile", tier: "Tier 2" },
+    { name: "Magikarp", tier: "Tier 1" },
+    { name: "Wailmer", tier: "Tier 1" },
+    { name: "Swablu", tier: "Tier 1" },
+    { name: "Shuppet", tier: "Tier 1" },
+    { name: "Duskull", tier: "Tier 1" },
+    { name: "Snorunt", tier: "Tier 1" },
 ];
 
 const gyms = [
-    { City: "Redmond", RaidLocation: "Cleveland Fountain", FriendlyName: "Cleveland Fountain", Lng: "47.673667", Lat: "-122.125595", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.673667,-122.1255950" },
-    { City: "Redmond", RaidLocation: "Gridlock Light Sculpture", FriendlyName: "Gridlock", Lng: "47.673298", Lat: "-122.125256", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.673298,-122.1252560" },
-    { City: "Redmond", RaidLocation: "Painted Parking Lot", FriendlyName: "Painted Parking Lot", Lng: "47.672712", Lat: "-122.124617", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.672712,-122.1246170" },
-    { City: "Redmond", RaidLocation: "Redmond Town Center Fish Statue", FriendlyName: "Farmers Market", Lng: "47.671892", Lat: "-122.124425", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.671892,-122.1244250" },
-    { City: "Redmond", RaidLocation: "Redmond Clock Tower", FriendlyName: "Clock Tower", Lng: "47.674170", Lat: "-122.123056", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.674170,-122.1230560" },
-    { City: "Redmond", RaidLocation: "Victors Coffee Co. and Rosters", FriendlyName: "Victors Coffeeshop", Lng: "47.674577", Lat: "-122.121900", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.674577,-122.1219000" },
-    { City: "Redmond", RaidLocation: "Redmond's Erratic", FriendlyName: "Redmond Erratic", Lng: "47.671955", Lat: "-122.119251", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.671955,-122.1192510" },
-    { City: "Redmond", RaidLocation: "Kids Playing Baseball Mural", FriendlyName: "Mattress Firm", Lng: "47.672620", Lat: "-122.116819", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.672620,-122.1168190" },
-    { City: "Redmond", RaidLocation: "BJ's Brewmural", FriendlyName: "BJs Brewhouse", Lng: "47.668914", Lat: "-122.119748", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.668914,-122.1197480" },
-    { City: "Redmond", RaidLocation: "Mural (Wells Fargo)", FriendlyName: "Wells Fargo", Lng: "47.678650", Lat: "-122.127309", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.678650,-122.1273090" },
-    { City: "Redmond", RaidLocation: "Wisdom Seekers in Redmond", FriendlyName: "Redmond Library", Lng: "47.678799", Lat: "-122.128532", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.678799,-122.1285320" },
-    { City: "Redmond", RaidLocation: "Luke McRedmond's Paired Beavers", FriendlyName: "Luke McRedmond", Lng: "47.673250", Lat: "-122.132160", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.673250,-122.1321600" },
-    { City: "Redmond", RaidLocation: "Soulfood Books and Cafe", FriendlyName: "Soul Foods", Lng: "47.675219", Lat: "-122.130386", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.675219,-122.1303860" },
-    { City: "Redmond", RaidLocation: "West Ironcycle", FriendlyName: "Ben Franklin", Lng: "47.675691", Lat: "-122.130123", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.675691,-122.1301230" },
-    { City: "Redmond", RaidLocation: "Hunting Fox", FriendlyName: "City Hall", Lng: "47.678920", Lat: "-122.130520", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.678920,-122.1305200" },
-    { City: "Redmond", RaidLocation: "Weiner Elephants", FriendlyName: "Redmond PD", Lng: "47.680386", Lat: "-122.128889", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.680386,-122.1288890" },
-    { City: "Redmond", RaidLocation: "Portal II", FriendlyName: "Portal 2", Lng: "47.680447", Lat: "-122.131723", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.680447,-122.1317230" },
-    { City: "Redmond", RaidLocation: "The Last Test", FriendlyName: "Last Test", Lng: "47.682691", Lat: "-122.132021", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.682691,-122.1320210" },
-    { City: "Redmond", RaidLocation: "Community Rockstars", FriendlyName: "Community Rockstars", Lng: "47.683612", Lat: "-122.132734", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.683612,-122.1327340" },
-    { City: "Redmond", RaidLocation: "Redmond Twist", FriendlyName: "Evergreen", Lng: "47.681979", Lat: "-122.123692", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.681979,-122.1236920" },
-    { City: "Redmond", RaidLocation: "Mysterious Hatch", FriendlyName: "Reservoir Park", Lng: "47.685378", Lat: "-122.122394", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.685378,-122.1223940" },
-    { City: "Redmond", RaidLocation: "Nike Park", FriendlyName: "Nike Park", Lng: "47.683823", Lat: "-122.110841", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.683823,-122.1108410" },
-    { City: "Redmond", RaidLocation: "St. Jude Walking Trail", FriendlyName: "St Judes", Lng: "47.693495", Lat: "-122.116883", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.693495,-122.1168830" },
-    { City: "Redmond", RaidLocation: "Redmond Meadow Park", FriendlyName: "Meadow Park", Lng: "47.695703", Lat: "-122.126550", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.695703,-122.1265500" },
-    { City: "Redmond", RaidLocation: "Leaf Inlay in Sidewalk", FriendlyName: "Leaf Inlay", Lng: "47.689362", Lat: "-122.114435", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.689362,-122.1144350" },
-    { City: "Redmond", RaidLocation: "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", FriendlyName: "LDS (Hartman Park)", Lng: "47.690909", Lat: "-122.110964", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.690909,-122.1109640" },
-    { City: "Redmond", RaidLocation: "Hartman Park", FriendlyName: "Hartman Park Sign", Lng: "47.691002", Lat: "-122.110177", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.691002,-122.1101770" },
-    { City: "Redmond", RaidLocation: "Jim Palmquist Memorial Plaque", FriendlyName: "Hartman Park (Baseball)", Lng: "47.692436", Lat: "-122.107328", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.692436,-122.1073280" },
-    { City: "Redmond", RaidLocation: "Redmond Pool", FriendlyName: "Redmond Pool", Lng: "47.692516", Lat: "-122.106308", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.692516,-122.1063080" },
-    { City: "Redmond", RaidLocation: "Bear Creek Water Tower", FriendlyName: "Bear Creek Water Tower", Lng: "47.687974", Lat: "-122.103674", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.687974,-122.1036740" },
-    { City: "Redmond", RaidLocation: "Education Hill Pig", FriendlyName: "Education Hill Pig", Lng: "47.674945", Lat: "-122.111546", MapLink: "https://www.google.com/maps/dir/?api=1&destination=47.674945,-122.1115460" },
+    { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595" },
+    { city: "Redmond", name: "Gridlock Light Sculpture", friendlyName: "Gridlock", lng: "47.673298", lat: "-122.125256" },
+    { city: "Redmond", name: "Painted Parking Lot", friendlyName: "Painted Parking Lot", lng: "47.672712", lat: "-122.124617" },
+    { city: "Redmond", name: "Redmond Town Center Fish Statue", friendlyName: "Farmers Market", lng: "47.671892", lat: "-122.124425" },
+    { city: "Redmond", name: "Redmond Clock Tower", friendlyName: "Clock Tower", lng: "47.674170", lat: "-122.123056" },
+    { city: "Redmond", name: "Victors Coffee Co. and Rosters", friendlyName: "Victors Coffeeshop", lng: "47.674577", lat: "-122.121900" },
+    { city: "Redmond", name: "Redmond's Erratic", friendlyName: "Redmond Erratic", lng: "47.671955", lat: "-122.119251" },
+    { city: "Redmond", name: "Kids Playing Baseball Mural", friendlyName: "Mattress Firm", lng: "47.672620", lat: "-122.116819" },
+    { city: "Redmond", name: "BJ's Brewmural", friendlyName: "BJs Brewhouse", lng: "47.668914", lat: "-122.119748" },
+    { city: "Redmond", name: "Mural (Wells Fargo)", friendlyName: "Wells Fargo", lng: "47.678650", lat: "-122.127309" },
+    { city: "Redmond", name: "Wisdom Seekers in Redmond", friendlyName: "Redmond Library", lng: "47.678799", lat: "-122.128532" },
+    { city: "Redmond", name: "Luke McRedmond's Paired Beavers", friendlyName: "Luke McRedmond", lng: "47.673250", lat: "-122.132160" },
+    { city: "Redmond", name: "Soulfood Books and Cafe", friendlyName: "Soul Foods", lng: "47.675219", lat: "-122.130386" },
+    { city: "Redmond", name: "West Ironcycle", friendlyName: "Ben Franklin", lng: "47.675691", lat: "-122.130123" },
+    { city: "Redmond", name: "Hunting Fox", friendlyName: "city Hall", lng: "47.678920", lat: "-122.130520" },
+    { city: "Redmond", name: "Weiner Elephants", friendlyName: "Redmond PD", lng: "47.680386", lat: "-122.128889" },
+    { city: "Redmond", name: "Portal II", friendlyName: "Portal 2", lng: "47.680447", lat: "-122.131723" },
+    { city: "Redmond", name: "The Last Test", friendlyName: "Last Test", lng: "47.682691", lat: "-122.132021" },
+    { city: "Redmond", name: "Community Rockstars", friendlyName: "Community Rockstars", lng: "47.683612", lat: "-122.132734" },
+    { city: "Redmond", name: "Redmond Twist", friendlyName: "Evergreen", lng: "47.681979", lat: "-122.123692" },
+    { city: "Redmond", name: "Mysterious Hatch", friendlyName: "Reservoir Park", lng: "47.685378", lat: "-122.122394" },
+    { city: "Redmond", name: "Nike Park", friendlyName: "Nike Park", lng: "47.683823", lat: "-122.110841" },
+    { city: "Redmond", name: "St. Jude Walking Trail", friendlyName: "St Judes", lng: "47.693495", lat: "-122.116883" },
+    { city: "Redmond", name: "Redmond Meadow Park", friendlyName: "Meadow Park", lng: "47.695703", lat: "-122.126550" },
+    { city: "Redmond", name: "Leaf Inlay in Sidewalk", friendlyName: "Leaf Inlay", lng: "47.689362", lat: "-122.114435" },
+    { city: "Redmond", name: "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", friendlyName: "LDS (Hartman Park)", lng: "47.690909", lat: "-122.110964" },
+    { city: "Redmond", name: "Hartman Park", friendlyName: "Hartman Park Sign", lng: "47.691002", lat: "-122.110177" },
+    { city: "Redmond", name: "Jim Palmquist Memorial Plaque", friendlyName: "Hartman Park (Baseball)", lng: "47.692436", lat: "-122.107328" },
+    { city: "Redmond", name: "Redmond Pool", friendlyName: "Redmond Pool", lng: "47.692516", lat: "-122.106308" },
+    { city: "Redmond", name: "Bear Creek Water Tower", friendlyName: "Bear Creek Water Tower", lng: "47.687974", lat: "-122.103674" },
+    { city: "Redmond", name: "Education Hill Pig", friendlyName: "Education Hill Pig", lng: "47.674945", lat: "-122.111546" },
 ];
 
 function getTestRaidManager() {
@@ -75,7 +75,7 @@ describe("raidManager", () => {
     describe("validateTier static method", () => {
         it("should accept numbers in range and well-formatted strings", () => {
             [
-                [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], ["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["Tier 1", 1], ["Tier 2", 2], ["Tier 3", 3], ["Tier 4", 4], ["Tier 5", 5]
+                [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], ["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["Tier 1", 1], ["Tier 2", 2], ["Tier 3", 3], ["Tier 4", 4], ["Tier 5", 5],
             ].forEach((test) => {
                 expect(RaidManager.validateTier(test[0])).toBe(test[1]);
             });
@@ -83,7 +83,7 @@ describe("raidManager", () => {
 
         it("should reject numbers out of range, poorly formatted strings, and objects", () => {
             [
-                -1, 0, 6, "-100", "600", "Tier 7", "tier 1", "L1", "blah-di-blah", undefined, {}, /Tier 1/
+                -1, 0, 6, "-100", "600", "Tier 7", "tier 1", "L1", "blah-di-blah", undefined, {}, /Tier 1/,
             ].forEach((v) => {
                 expect(() => RaidManager.validateTier(v)).toThrow();
             });
@@ -156,7 +156,7 @@ describe("raidManager", () => {
                 ["hooh", "Ho-oh"],
             ].forEach((test) => {
                 let boss = rm.validateBoss(test[0]);
-                expect(boss.RaidBoss).toBe(test[1]);
+                expect(boss.name).toBe(test[1]);
             });
         });
 
@@ -178,7 +178,7 @@ describe("raidManager", () => {
                 ["city hall", "Hunting Fox"],
             ].forEach((test) => {
                 let gym = rm.validateGym(test[0]);
-                expect(gym.RaidLocation).toBe(test[1]);
+                expect(gym.name).toBe(test[1]);
             });
         });
 
@@ -213,8 +213,8 @@ describe("raidManager", () => {
                 expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
 
                 expect(raid.state).toBe(RaidManager.RaidStateEnum.hatched);
-                expect(raid.raidLocation.RaidLocation).toBe(test[3]);
-                expect(raid.pokemon.RaidBoss).toBe(test[4]);
+                expect(raid.raidLocation.name).toBe(test[3]);
+                expect(raid.pokemon.name).toBe(test[4]);
                 expect(raid.tier).toBe(test[5]);
             });
         });
@@ -245,7 +245,7 @@ describe("raidManager", () => {
 
             let bossRaid = rm.setRaidBoss("ttar", "painted");
             expect(bossRaid).toBeDefined();
-            expect(bossRaid.pokemon.RaidBoss).toBe("Tyranitar");
+            expect(bossRaid.pokemon.name).toBe("Tyranitar");
         });
 
         it("should replace the boss of an existing raid with a boss, regardless of tier", () => {
@@ -257,7 +257,7 @@ describe("raidManager", () => {
 
             let bossRaid = rm.setRaidBoss("ttar", "painted");
             expect(bossRaid).toBeDefined();
-            expect(bossRaid.pokemon.RaidBoss).toBe("Tyranitar");
+            expect(bossRaid.pokemon.name).toBe("Tyranitar");
         });
 
         it("should fail if no raid exists", () => {
@@ -440,6 +440,4 @@ describe("raidManager", () => {
             });
         });
     });
-
-
 });

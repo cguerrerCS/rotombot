@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jasmine --config=test/support/jasmine.json",
     "cover": "nyc --reporter=lcov jasmine --config=test/support/jasmine.json",
-    "lint": "eslint lib raidManager3.js test/unit"
+    "lint": "eslint rotombot.js lib test/unit",
+    "fixlint": "eslint rotombot.js lib test/unit --fix"
   },
   "repository": {
     "type": "git",
