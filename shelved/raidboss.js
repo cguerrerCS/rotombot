@@ -25,7 +25,7 @@ class raidboss extends commando.Command{
       // cannot remove from dms
       if (message.channel.type.toString() == "dm")
       {
-          client.ReportError(message, "!raidboss", "cannot set raid boss via DMs.");
+          client.reportError(message, "!raidboss", "cannot set raid boss via DMs.");
           return;
       }
 
@@ -34,14 +34,14 @@ class raidboss extends commando.Command{
       if (!parsed.success) return;
       if (parsed.arguments.length < 2)
       {
-        client.ReportError(message, "!raidboss", "too few arguments.", this.examples[0]);
+        client.reportError(message, "!raidboss", "too few arguments.", this.examples[0]);
         return;
       }
 
       var pkmn = parsed.arguments[0];
       var pkmnSearchResults = client.RaidBossFuzzySearch.search(pkmn);
       if (pkmnSearchResults.length < 1) {
-        client.ReportError(message, "!raidboss", "no raid boss pokemon matching [" + pkmn + "] found in search results", this.examples[0]);
+        client.reportError(message, "!raidboss", "no raid boss pokemon matching [" + pkmn + "] found in search results", this.examples[0]);
         return;
       }
 
@@ -52,7 +52,7 @@ class raidboss extends commando.Command{
       var searchResults = client.RaidsFuzzySearch.search(raidToraidbossFor);
       if (searchResults.length < 1)
       {
-        client.ReportError(message, "!raidboss", "no gym found.", this.examples[0]);
+        client.reportError(message, "!raidboss", "no gym found.", this.examples[0]);
         return;
       }
 
@@ -61,7 +61,7 @@ class raidboss extends commando.Command{
       try {
         client.RaidManager.setRaidBoss(closestPkmnResult.RaidBoss, tier, closestResult.RaidLocation);
       } catch(err) {
-        client.ReportError(message, "!raidboss", err, this.examples[0]);
+        client.reportError(message, "!raidboss", err, this.examples[0]);
         return;
       }
 

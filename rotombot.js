@@ -11,7 +11,7 @@ const client = new CommandoClient({
 
 client.registry.registerGroup("raids", "Raids");
 client.registry.registerDefaults();
-client.registry.registerCommandsIn(__dirname + "/Commands");
+client.registry.registerCommandsIn(__dirname + "/commands");
 
 const fs = require("fs");
 const CsvReader = require("csv-reader");

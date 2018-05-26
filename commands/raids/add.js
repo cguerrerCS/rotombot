@@ -61,7 +61,7 @@ class raid extends commando.Command {
         message.channel.send(output);
 
         if (message.channel.type.toString() === "dm") {
-            client.ReportError(message, "!raid", "cannot add active raids via DMs.");
+            client.reportError(message, "!raid", "cannot add active raids via DMs.");
             return;
         }
 
@@ -73,7 +73,7 @@ class raid extends commando.Command {
                 message.channel.send(client.raidManager.listFormatted());
             }
             catch (e) {
-                client.ReportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
+                client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
             }
             return;
         }
@@ -86,7 +86,7 @@ class raid extends commando.Command {
                 message.channel.send(client.raidManager.listFormatted());
             }
             catch (err) {
-                client.ReportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
+                client.reportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
                 return;
             }
             return;
@@ -102,7 +102,7 @@ class raid extends commando.Command {
             }
             catch (err) {
                 let commandSyntax = this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
-                client.ReportError(message, "!add", err, commandSyntax);
+                client.reportError(message, "!add", err, commandSyntax);
                 return;
             }
             return;
@@ -118,13 +118,13 @@ class raid extends commando.Command {
             catch (err) {
                 // If we get this error, the raid is likely not in the active list, so give the
                 // help for adding the raid.
-                client.ReportError(message, "!add", err, this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex]);
+                client.reportError(message, "!add", err, this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex]);
                 return;
             }
             return;
         }
 
-        client.ReportError(
+        client.reportError(
             message,
             "!add",
             "My circuitzzz are tingling! I didn't understand that command...",

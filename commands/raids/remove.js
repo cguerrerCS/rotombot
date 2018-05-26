@@ -21,7 +21,7 @@ class remove extends commando.Command {
 
         // cannot remove from dms
         if (message.channel.type.toString() === "dm") {
-            client.ReportError(message, "!remove", "cannot remove active raids via DMs.");
+            client.reportError(message, "!remove", "cannot remove active raids via DMs.");
             return;
         }
 
@@ -29,20 +29,20 @@ class remove extends commando.Command {
         let parsed = cmdParser.parse(message, "!");
         if (!parsed.success) { return; }
         if (parsed.arguments.length === 0) {
-            client.ReportError(message, "!remove", "no gym name provided.", this.examples[0]);
+            client.reportError(message, "!remove", "no gym name provided.", this.examples[0]);
             return;
         }
 
         var raidToRemove = parsed.arguments.join(" ");
         try {
-            client.RaidManager.removeRaid(raidToRemove);
+            client.raidManager.removeRaid(raidToRemove);
         }
         catch (err) {
-            client.ReportError(message, "!remove", err, this.examples[0]);
+            client.reportError(message, "!remove", err, this.examples[0]);
             return;
         }
 
-        message.channel.send(client.RaidManager.listFormatted());
+        message.channel.send(client.raidManager.listFormatted());
         return;
     }
 }

@@ -21,14 +21,14 @@ class info extends commando.Command {
 
         // if no arguments provided (null or empty string)
         if (!(args)) {
-            client.ReportError(message, "!info", "no gym name provided.", "!info <gym name>");
+            client.reportError(message, "!info", "no gym name provided.", "!info <gym name>");
             return;
         }
 
         var raidToGetInfoFor = args.match(/\S+/g).join(" ");
         var gym = client.raidManager.tryGetGym(raidToGetInfoFor);
         if (!gym) {
-            client.ReportError(message, "!info", "no gym found.", "!info <gym name>");
+            client.reportError(message, "!info", "no gym found.", "!info <gym name>");
             return;
         }
 
