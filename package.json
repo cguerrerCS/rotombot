@@ -5,7 +5,7 @@
   "main": "rotombot.js",
   "scripts": {
     "test": "jasmine --config=test/support/jasmine.json",
-    "cover": "istanbul cover --include-all-sources jasmine -- --config=test/support/jasmine.json",
+    "cover": "nyc --reporter=lcov jasmine --config=test/support/jasmine.json",
     "lint": "eslint lib raidManager3.js test/unit"
   },
   "repository": {
@@ -34,7 +34,7 @@
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.8.0",
     "eslint-plugin-standard": "^3.1.0",
-    "istanbul": "^0.4.5",
-    "jasmine": "^3.1.0"
+    "jasmine": "^3.1.0",
+    "nyc": "^11.8.0"
   }
 }
