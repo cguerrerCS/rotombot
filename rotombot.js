@@ -1,6 +1,6 @@
 "use strict";
 
-const RaidManager = require("./lib/raidmanager.js");
+const RaidManager = require("./lib/raidManager.js");
 const { CommandoClient } = require("discord.js-commando");
 const isDevelopment = false;
 

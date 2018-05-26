@@ -32,10 +32,11 @@ class info extends commando.Command {
             return;
         }
 
-        var infoContent = "*Name: " + gym.name + "*\n";
-        infoContent += "*Friendly Name: " + gym.friendlyName + "*\n";
-        infoContent += "*City: " + gym.city + " *\n";
-        infoContent += "*Directions: " + gym.mapLink + " *\n";
+        var infoContent =
+            `Name: *${gym.name}*\n` +
+            `Friendly Name: *${gym.friendlyName}*\n` +
+            `City: *${gym.city}*\n` + 
+            `Directions: *${gym.mapLink}*\n`;
 
         message.channel.send(infoContent);
     }
