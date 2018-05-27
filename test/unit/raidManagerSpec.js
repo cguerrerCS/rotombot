@@ -64,8 +64,8 @@ const gyms = [
     { city: "Redmond", name: "Education Hill Pig", friendlyName: "Education Hill Pig", lng: "47.674945", lat: "-122.111546" },
 ];
 
-function getTestRaidManager() {
-    let rm = new RaidManager();
+function getTestRaidManager(strict) {
+    let rm = new RaidManager({ logToConsole: false, strict: (strict ? true : false) });
     rm.setBossData(bosses);
     rm.setGymData(gyms);
     return rm;
@@ -81,9 +81,13 @@ describe("raidManager", () => {
             });
         });
 
+        it("should default to tier 5 for undefined tier request", () => {
+            expect(RaidManager.validateTier()).toBe(5);
+        });
+
         it("should reject numbers out of range, poorly formatted strings, and objects", () => {
             [
-                -1, 0, 6, "-100", "600", "Tier 7", "tier 1", "L1", "blah-di-blah", undefined, {}, /Tier 1/,
+                -1, 0, 6, "-100", "600", "Tier 7", "tier 1", "L1", "blah-di-blah", {}, /Tier 1/,
             ].forEach((v) => {
                 expect(() => RaidManager.validateTier(v)).toThrow();
             });

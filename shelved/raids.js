@@ -1,3 +1,4 @@
+"use strict";
 const commando = require('discord.js-commando');
 
 //!raids command

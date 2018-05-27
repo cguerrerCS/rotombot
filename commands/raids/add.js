@@ -70,7 +70,7 @@ class raid extends commando.Command {
             const [, tier, gym, startTime] = match;
             try {
                 client.raidManager.addEggAbsolute(tier, gym, startTime);
-                message.channel.send(client.raidManager.listFormatted());
+                message.channel.send(client.raidManager.listFormatted(tier, tier));
             }
             catch (e) {
                 client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
@@ -83,7 +83,7 @@ class raid extends commando.Command {
             const [, tier, gym, timer] = match;
             try {
                 client.raidManager.addEggCountdown(tier, gym, timer);
-                message.channel.send(client.raidManager.listFormatted());
+                message.channel.send(client.raidManager.listFormatted(tier, tier));
             }
             catch (err) {
                 client.reportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
@@ -97,8 +97,8 @@ class raid extends commando.Command {
             const [, boss, gym, timer] = match;
 
             try {
-                client.raidManager.addRaid(boss, gym, timer);
-                message.channel.send(client.raidManager.listFormatted());
+                let raid = client.raidManager.addRaid(boss, gym, timer);
+                message.channel.send(client.raidManager.listFormatted(raid.pokemon.tier, raid.pokemon.tier));
             }
             catch (err) {
                 let commandSyntax = this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
@@ -112,8 +112,8 @@ class raid extends commando.Command {
         if (match !== null) {
             const [, boss, gym] = match;
             try {
-                client.raidManager.setRaidBoss(boss, gym);
-                message.channel.send(client.raidManager.listFormatted());
+                let raid = client.raidManager.setRaidBoss(boss, gym);
+                message.channel.send(client.raidManager.listFormatted(raid.pokemon.tier, raid.pokemon.tier));
             }
             catch (err) {
                 // If we get this error, the raid is likely not in the active list, so give the

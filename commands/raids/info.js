@@ -25,8 +25,8 @@ class info extends commando.Command {
             return;
         }
 
-        var raidToGetInfoFor = args.match(/\S+/g).join(" ");
-        var gym = client.raidManager.tryGetGym(raidToGetInfoFor);
+        var gymToGetInfoFor = args.match(/\S+/g).join(" ");
+        var gym = client.raidManager.tryGetGym(gymToGetInfoFor);
         if (!gym) {
             client.reportError(message, "!info", "no gym found.", "!info <gym name>");
             return;
@@ -35,7 +35,7 @@ class info extends commando.Command {
         var infoContent =
             `Name: *${gym.name}*\n` +
             `Friendly Name: *${gym.friendlyName}*\n` +
-            `City: *${gym.city}*\n` + 
+            `City: *${gym.city}*\n` +
             `Directions: *${gym.mapLink}*\n`;
 
         message.channel.send(infoContent);
