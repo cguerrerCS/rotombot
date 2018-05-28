@@ -30,6 +30,13 @@ const bosses = [
     { name: "Snorunt", tier: "Tier 1" },
 ];
 
+const badBosses = [
+    { Name: "Latias", tier: "Tier 5" },
+    { name: "Tyranitar", TIER: "Tier 6" },
+    { name: "Ho-oh" },
+    { tier: "Tier 4" },
+];
+
 const gyms = [
     { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595" },
     { city: "Redmond", name: "Gridlock Light Sculpture", friendlyName: "Gridlock", lng: "47.673298", lat: "-122.125256" },
@@ -64,6 +71,10 @@ const gyms = [
     { city: "Redmond", name: "Education Hill Pig", friendlyName: "Education Hill Pig", lng: "47.674945", lat: "-122.111546" },
 ];
 
+let badGyms = [
+    { name: "Gridlock Light Sculpture", friendlyName: "Gridlock", lng: "47.673298", lat: "-122.125256" },
+];
+
 function getTestRaidManager(options) {
     options = options || { logger: undefined, strict: false };
     let rm = new RaidManager(options);
@@ -84,7 +95,85 @@ TestLogger.prototype.log = function (msg) {
     this.output.push(msg);
 };
 
+var TestSearch = function () {
+    this.contents = {};
+};
+
+TestSearch.prototype.search = function (str) {
+    return this.contents[str];
+};
+
 describe("raidManager", () => {
+    describe("setGymData method", () => {
+        it("should accept valid gym data", () => {
+            let rm = new RaidManager();
+            rm.setGymData(gyms);
+            expect(rm.gyms.length).toBe(gyms.length);
+        });
+
+        it("should initialize the search object if no search is supplied", () => {
+            let rm = new RaidManager();
+            rm.setGymData(gyms);
+            expect(rm.gymSearch).toBeDefined();
+        });
+
+        it("should use a prebuilt search object if supplied", () => {
+            let searchObject = new TestSearch();
+            let rm = new RaidManager();
+            rm.setGymData(gyms, searchObject);
+            expect(rm.gymSearch).toBe(searchObject);
+        });
+
+        it("should throw for invalid gym data", () => {
+            let rm = new RaidManager();
+            expect(() => rm.setGymData(badGyms)).toThrowError();
+        });
+
+        it("should add a mapLink if none is supplied", () => {  
+            let rm = new RaidManager();
+            let myGyms = [
+                { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595" },
+            ];
+            rm.setGymData(myGyms);
+            expect(rm.gyms[0].mapLink).toBeDefined();
+        });
+
+        it("should use the supplied mapLink if present", () => {  
+            let rm = new RaidManager();
+            let myGyms = [
+                { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595", mapLink: "test" },
+            ];
+            rm.setGymData(myGyms);
+            expect(rm.gyms[0].mapLink).toBe("test");
+        });
+    });
+
+    describe("setBossData method", () => {
+        it("should accept valid boss data", () => {
+            let rm = new RaidManager();
+            rm.setBossData(bosses);
+            expect(rm.bosses.length).toBe(bosses.length);
+        });
+
+        it("should initialize the search object if no search is supplied", () => {
+            let rm = new RaidManager();
+            rm.setBossData(bosses);
+            expect(rm.bossSearch).toBeDefined();
+        });
+
+        it("should use a prebuilt search object if supplied", () => {
+            let searchObject = new TestSearch();
+            let rm = new RaidManager();
+            rm.setBossData(bosses, searchObject);
+            expect(rm.bossSearch).toBe(searchObject);
+        });
+
+        it("should throw for invalid boss data", () => {
+            let rm = new RaidManager();
+            expect(() => rm.setBossData(badBosses)).toThrowError();
+        });
+    });
+
     describe("validateTier static method", () => {
         it("should accept numbers in range and well-formatted strings", () => {
             [
@@ -188,6 +277,17 @@ describe("raidManager", () => {
                 expect(() => rm.validateBoss(bossName)).toThrow();
             });
         });
+
+        it("should use a valid boss object if supplied", () => {
+            let rm = getTestRaidManager();
+            let boss = rm.validateBoss(bosses[3]);
+            expect(boss).toBe(bosses[3]);
+        });
+
+        it("should throw if an invalid boss object is supplied", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.validateBoss(badBosses[0])).toThrowError();
+        });
     });
 
     describe("validateGym method", () => {
@@ -214,6 +314,17 @@ describe("raidManager", () => {
             ["BOGOGYM", "WTF"].forEach((gymName) => {
                 expect(() => rm.validateGym(gymName)).toThrow();
             });
+        });
+
+        it("should use a valid gym object if supplied", () => {
+            let rm = getTestRaidManager();
+            let gym = rm.validateGym(gyms[3]);
+            expect(gym).toBe(gyms[3]);
+        });
+
+        it("should throw if an invalid gym object is supplied", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.validateGym(badGyms[0])).toThrowError();
         });
     });
 
