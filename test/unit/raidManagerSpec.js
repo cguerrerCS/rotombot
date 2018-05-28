@@ -72,6 +72,10 @@ function getTestRaidManager(options) {
     return rm;
 }
 
+function getOffsetDate(offsetInMinutes) {
+    return new Date(Date.now() + (offsetInMinutes * 60 * 1000));
+}
+
 var TestLogger = function () {
     this.output = [];
 };
@@ -106,7 +110,7 @@ describe("raidManager", () => {
     describe("validateHatchTime static method", () => {
         it("should accept valid times", () => {
             [1, 10, 59].forEach((minutes) => {
-                let date = new Date(Date.now() + (minutes * 60 * 1000));
+                let date = getOffsetDate(minutes);
                 let time = new FlexTime(date);
                 let validTime = RaidManager.validateHatchTime(time.toString());
                 expect(validTime.getHours()).toBe(time.getHours());
@@ -116,7 +120,7 @@ describe("raidManager", () => {
 
         it("should reject invalid times", () => {
             [-2, 65].forEach((minutes) => {
-                let date = new Date(Date.now() + (minutes * 60 * 1000));
+                let date = getOffsetDate(minutes);
                 let time = new FlexTime(date);
                 expect(() => RaidManager.validateHatchTime(time.toString())).toThrow();
             });
@@ -269,8 +273,8 @@ describe("raidManager", () => {
     describe("setRaidBoss method", () => {
         it("should add a boss to an existing raid with no boss, regardless of tier", () => {
             let rm = getTestRaidManager();
-            let hatch = FlexTime.getFlexTime(Date.now(), -5);
-            let raid = rm._forceRaid("painted", 5, undefined, hatch.toString());
+            let hatch = getOffsetDate(-5);
+            let raid = rm._forceRaid("painted", 5, undefined, hatch);
 
             expect(raid).toBeDefined();
 
@@ -281,8 +285,8 @@ describe("raidManager", () => {
 
         it("should replace the boss of an existing raid with a boss, regardless of tier", () => {
             let rm = getTestRaidManager();
-            let hatch = FlexTime.getFlexTime(Date.now(), -5);
-            let raid = rm._forceRaid("painted", 5, "latias", hatch.toString());
+            let hatch = getOffsetDate(-5);
+            let raid = rm._forceRaid("painted", 5, "latias", hatch);
 
             expect(raid).toBeDefined();
 
@@ -519,10 +523,84 @@ describe("raidManager", () => {
                 test.expected.forEach((index) => {
                     let regex = expected[index];
                     let line = lines.shift();
-                    // console.log(`${line}.match(${regex}) = ${regex.test(line)}`)
-                    expect(regex.test(line)).toBe(true);
+                    // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
+                    // expect(regex.test(line)).toBe(true);
+                    expect(line).toMatch(regex);
                 });
             });
+        });
+        it("should list hatched eggs as active raids with unknown boss", () => {
+            let rm = getTestRaidManager();
+            let hatch = getOffsetDate(-5);
+            rm._forceRaid("painted", 5, undefined, hatch);
+
+            let output = rm.listFormatted(5, 5);
+            let lines = output.split("\n");
+
+            [
+                /^.*ACTIVE RAIDS.*$/,
+                /^.*Tier 5 Undefined.*ends @.*$/,
+            ].forEach((regex) => {
+                let line = lines.shift();
+                // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
+                expect(line).toMatch(regex);
+            });
+        });
+        it("should show raid levels when reporting that no raids are available", () => {
+            let rm = getTestRaidManager();
+            expect(rm.listFormatted(4, 5)).toMatch(/^.*No raids.*\(T4-T5\).*$/);
+            expect(rm.listFormatted(3, 3)).toMatch(/^.*No raids.*\(T3\).*$/);
+        });
+    });
+
+    describe("raidListRefresh method", () => {
+        it("should remove expired raids", () => {
+            let rm = getTestRaidManager();
+            let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+            rm._forceRaid("painted", 5, "latias", hatch);
+            expect(rm.list(5).length).toBe(1);
+            rm.raidListRefresh();
+            expect(rm.list(5).length).toBe(0);
+        });
+
+        it("should move hatched eggs to active raid with unknown boss", () => {
+            let rm = getTestRaidManager();
+            let hatch = getOffsetDate(-5);
+            rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+
+            let raids = rm.list(5, 5);
+            expect(raids.length).toBe(1);
+            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raids[0].pokemon).toBe(undefined);
+
+            rm.raidListRefresh();
+
+            raids = rm.list(5, 5);
+            expect(rm.list(5).length).toBe(1);
+            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
+            expect(raids[0].pokemon).toBe(undefined);
+        });
+
+        it("should log when raids expire or hatch", () => {
+            let testLogger = new TestLogger();
+            let rm = getTestRaidManager({ strict: false, logger: testLogger });
+            let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+            rm._forceRaid("painted", 5, "latias", hatch);
+
+            hatch = getOffsetDate(-5);
+            rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+
+            let raids = rm.list(1, 5);
+            expect(raids.length).toBe(2);
+
+            rm.raidListRefresh();
+
+            raids = rm.list(1, 5);
+            expect(raids.length).toBe(1);
+
+            expect(testLogger.output.length).toBe(2);
+            expect(testLogger.output[0]).toMatch(/^.*Raid Expired.*$/);
+            expect(testLogger.output[1]).toMatch(/^.*Raid Egg Hatched.*$/);
         });
     });
 });
