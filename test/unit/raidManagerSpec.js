@@ -36,7 +36,7 @@ const gyms = [
     { city: "Redmond", name: "Painted Parking Lot", friendlyName: "Painted Parking Lot", lng: "47.672712", lat: "-122.124617" },
     { city: "Redmond", name: "Redmond Town Center Fish Statue", friendlyName: "Farmers Market", lng: "47.671892", lat: "-122.124425" },
     { city: "Redmond", name: "Redmond Clock Tower", friendlyName: "Clock Tower", lng: "47.674170", lat: "-122.123056" },
-    { city: "Redmond", name: "Victors Coffee Co. and Rosters", friendlyName: "Victors Coffeeshop", lng: "47.674577", lat: "-122.121900" },
+    { city: "Redmond", name: "Victors Coffee Co. and Roasters", friendlyName: "Victors Coffeeshop", lng: "47.674577", lat: "-122.121900" },
     { city: "Redmond", name: "Redmond's Erratic", friendlyName: "Redmond Erratic", lng: "47.671955", lat: "-122.119251" },
     { city: "Redmond", name: "Kids Playing Baseball Mural", friendlyName: "Mattress Firm", lng: "47.672620", lat: "-122.116819" },
     { city: "Redmond", name: "BJ's Brewmural", friendlyName: "BJs Brewhouse", lng: "47.668914", lat: "-122.119748" },
@@ -64,12 +64,21 @@ const gyms = [
     { city: "Redmond", name: "Education Hill Pig", friendlyName: "Education Hill Pig", lng: "47.674945", lat: "-122.111546" },
 ];
 
-function getTestRaidManager(strict) {
-    let rm = new RaidManager({ logToConsole: false, strict: (strict ? true : false) });
+function getTestRaidManager(options) {
+    options = options || { logger: undefined, strict: false };
+    let rm = new RaidManager(options);
     rm.setBossData(bosses);
     rm.setGymData(gyms);
     return rm;
 }
+
+var TestLogger = function () {
+    this.output = [];
+};
+
+TestLogger.prototype.log = function (msg) {
+    this.output.push(msg);
+};
 
 describe("raidManager", () => {
     describe("validateTier static method", () => {
@@ -151,6 +160,11 @@ describe("raidManager", () => {
     });
 
     describe("validateBoss method", () => {
+        it("should throw an appropriate error if bosses aren't initialized", () => {
+            let rm = new RaidManager();
+            expect(() => rm.validateBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
+        });
+
         it("should match a valid boss", () => {
             let rm = getTestRaidManager();
             [
@@ -173,6 +187,11 @@ describe("raidManager", () => {
     });
 
     describe("validateGym method", () => {
+        it("should throw an appropriate error if gyms aren't initialized", () => {
+            let rm = new RaidManager();
+            expect(() => rm.validateGym("luke")).toThrowError("RaidManager not ready - gyms not initialized.");
+        });
+
         it("should match a valid gym", () => {
             let rm = getTestRaidManager();
             [
@@ -236,6 +255,14 @@ describe("raidManager", () => {
                     rm.addRaid(test[0], test[1], test[2]);
                 }).toThrowError(test[3]);
             });
+        });
+
+        it("should log the added raid", () => {
+            let logger = new TestLogger();
+            let rm = getTestRaidManager({ logger: logger, strict: false });
+            rm.addRaid("ttar", "wells", 20);
+            expect(logger.output.length).toBe(1);
+            expect(logger.output[0]).toMatch(/.*Active Raid Added.*/i);
         });
     });
 
@@ -324,6 +351,14 @@ describe("raidManager", () => {
             expect(() => rm.addEggCountdown(5, "painted", -15)).toThrowError("Egg timer -15 is out of range (1..60).");
             expect(() => rm.addEggCountdown(5, "painted", 75)).toThrowError("Egg timer 75 is out of range (1..60).");
         });
+
+        it("should log the added raid", () => {
+            let logger = new TestLogger();
+            let rm = getTestRaidManager({ logger: logger, strict: false });
+            rm.addEggCountdown(5, "wells", 20);
+            expect(logger.output.length).toBe(1);
+            expect(logger.output[0]).toMatch(/.*Raid egg added with relative time.*/i);
+        });
     });
 
     describe("addEggAbsolute method", () => {
@@ -380,6 +415,16 @@ describe("raidManager", () => {
                 expect(() => rm.addEggAbsolute(5, "painted", time)).toThrowError(expected);
             });
         });
+
+        it("should log the added raid", () => {
+            let logger = new TestLogger();
+            let rm = getTestRaidManager({ logger: logger, strict: false });
+            let validHatch = FlexTime.getFlexTime(Date.now(), 20).toString();
+
+            rm.addEggAbsolute(5, "wells", validHatch);
+            expect(logger.output.length).toBe(1);
+            expect(logger.output[0]).toMatch(/.*Raid egg added with absolute time.*/i);
+        });
     });
 
     describe("removeRaid method", () => {
@@ -421,26 +466,62 @@ describe("raidManager", () => {
         it("should list raids in time order", () => {
             let rm = getTestRaidManager();
             expect(rm.addEggCountdown(5, "painted", 30)).toBeDefined();
-            expect(rm.addEggCountdown(5, "market", 20)).toBeDefined();
             expect(rm.addEggCountdown(4, "luke", 10)).toBeDefined();
-            expect(rm.addRaid("ttar", "wells", 10));
-            expect(rm.addRaid("aggron", "city hall", 15));
+            expect(rm.addEggCountdown(3, "soul foods", 20)).toBeDefined();
+            expect(rm.addEggCountdown(2, "victors", 15)).toBeDefined();
+            expect(rm.addEggCountdown(1, "clock tower", 25)).toBeDefined();
+            expect(rm.addRaid("hooh", "wells", 10));
+            expect(rm.addRaid("ttar", "city hall", 40));
+            expect(rm.addRaid("machamp", "anderson", 30));
+            expect(rm.addRaid("sableeye", "erratic", 25));
+            expect(rm.addRaid("magickarp", "salmon circles", 15));
 
-            let output = rm.listFormatted();
-            let lines = output.split("\n");
-
-            [
+            let expected = [
                 /^.*ACTIVE RAIDS.*$/,
-                /^.*Tyranitar.*Wells Fargo.*ends @.*$/,
-                /^.*Aggron.*Hunting Fox.*ends @.*$/,
+                /^.*Ho-oh.*Wells Fargo.*ends @.*$/,
+                /^.*Magikarp.*Ironcycle.*ends @.*$/,
+                /^.*Sableye.*Erratic.*ends @.*$/,
+                /^.*Machamp.*Redmond Town Center.*ends @.*$/,
+                /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
                 /^.*$/,
                 /^.*UPCOMING RAIDS.*$/,
                 /^.*Tier 4.*Beavers @.*$/,
-                /^.*Tier 5.*Fish Statue @.*$/,
+                /^.*Tier 2.*Roasters @.*$/,
+                /^.*Tier 3.*Soulfood.*Cafe @.*$/,
+                /^.*Tier 1.*Clock Tower @.*$/,
                 /^.*Tier 5.*Parking Lot @.*$/,
-            ].forEach((regex) => {
-                let line = lines.shift();
-                expect(regex.test(line)).toBe(true);
+            ];
+
+            [
+                {
+                    min: 1,
+                    max: 5,
+                    expected: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+                },
+                {
+                    min: 4,
+                    max: 5,
+                    expected: [0, 1, 5, 6, 7, 8, 12],
+                },
+                {
+                    min: 3,
+                    max: 3,
+                    expected: [0, 4, 6, 7, 10],
+                },
+                {
+                    min: 2,
+                    max: 3,
+                    expected: [0, 3, 4, 6, 7, 9, 10],
+                },
+            ].forEach((test) => {
+                let output = rm.listFormatted(test.min, test.max);
+                let lines = output.split("\n");
+                test.expected.forEach((index) => {
+                    let regex = expected[index];
+                    let line = lines.shift();
+                    // console.log(`${line}.match(${regex}) = ${regex.test(line)}`)
+                    expect(regex.test(line)).toBe(true);
+                });
             });
         });
     });

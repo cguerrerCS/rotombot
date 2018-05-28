@@ -5,7 +5,7 @@
   "main": "rotombot.js",
   "scripts": {
     "test": "jasmine --config=test/support/jasmine.json",
-    "cover": "nyc --reporter=lcov jasmine --config=test/support/jasmine.json",
+    "cover": "nyc --reporter=lcov --reporter=text jasmine --config=test/support/jasmine.json",
     "lint": "eslint rotombot.js lib commands test/unit",
     "fixlint": "eslint rotombot.js lib commands test/unit --fix"
   },
