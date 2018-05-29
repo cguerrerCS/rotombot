@@ -539,12 +539,23 @@ describe("raidManager", () => {
                 expect(raid.hatchTime).toBe(hatch);
             });
 
-            it("should throw if the raid has a different boss", () => {
+            it("should throw if the raid already has a different boss", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addRaid("hooh", "luke", 30);
+                expect(() => rm.setRaidBoss("latias", "luke")).toThrowError(/Raid.*already has.*boss.*/);
+            });
 
+            it("should succeed if the raid already has the same boss", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addRaid("hooh", "luke", 30);
+                expect(() => rm.setRaidBoss("hooh", "luke")).not.toThrowError();
             });
 
             it("should throw if boss is of the wrong tier", () => {
-
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let hatch = getOffsetDate(-10);
+                rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
+                expect(() => rm.setRaidBoss("ttar", "wells")).toThrowError(/Cannot set.*as boss for a tier.*raid/);
             });
         });
     });
@@ -604,6 +615,37 @@ describe("raidManager", () => {
             rm.addEggCountdown(5, "wells", 20);
             expect(logger.output.length).toBe(1);
             expect(logger.output[0]).toMatch(/.*Raid egg added with relative time.*/i);
+        });
+
+        describe("in strict mode", () => {
+            it("should succeed if existing raid has matching tier and expiry within tolerance", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let originalExpiry = rm.addEggCountdown(5, "erratic", 20).expiryTime;
+                let newExpiry = rm.addEggCountdown(5, "erratic", 22).expiryTime;
+
+                expect(newExpiry).toBeGreaterThan(originalExpiry);
+
+                newExpiry = rm.addEggCountdown(5, "erratic", 18).expiryTime;
+                expect(newExpiry).toBeLessThan(originalExpiry);
+            });
+
+            it("should throw if the raid already has a boss", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addRaid("hooh", "luke", 30);
+                expect(() => rm.addEggCountdown(5, "luke", 20)).toThrowError(/Cannot replace existing Ho-oh.*/);
+            });
+
+            it("should throw if an existing egg has a different tier", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addEggCountdown(4, "ironcycle", 20);
+                expect(() => rm.addEggCountdown(5, "ironcycle", 20)).toThrowError(/Cannot replace existing tier 4.*/);
+            });
+
+            it("should throw if the new timer is too far from the existing one", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addEggCountdown(4, "ironcycle", 20);
+                expect(() => rm.addEggCountdown(4, "ironcycle", 40)).toThrowError(/New end time.*too far from existing end.*/);
+            });
         });
     });
 
