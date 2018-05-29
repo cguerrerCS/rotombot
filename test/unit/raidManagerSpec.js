@@ -129,7 +129,7 @@ describe("raidManager", () => {
             expect(() => rm.setGymData(badGyms)).toThrowError();
         });
 
-        it("should add a mapLink if none is supplied", () => {  
+        it("should add a mapLink if none is supplied", () => {
             let rm = new RaidManager();
             let myGyms = [
                 { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595" },
@@ -138,7 +138,7 @@ describe("raidManager", () => {
             expect(rm.gyms[0].mapLink).toBeDefined();
         });
 
-        it("should use the supplied mapLink if present", () => {  
+        it("should use the supplied mapLink if present", () => {
             let rm = new RaidManager();
             let myGyms = [
                 { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595", mapLink: "test" },
@@ -290,6 +290,38 @@ describe("raidManager", () => {
         });
     });
 
+    describe("tryGetBoss method", () => {
+        it("should throw an appropriate error if bosses aren't initialized", () => {
+            let rm = new RaidManager();
+            expect(() => rm.validateBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
+        });
+
+        it("should match a valid boss", () => {
+            let rm = getTestRaidManager();
+            [
+                ["latias", "Latias"],
+                ["ho-oh", "Ho-oh"],
+                ["ttar", "Tyranitar"],
+                ["hooh", "Ho-oh"],
+            ].forEach((test) => {
+                let boss = rm.tryGetBoss(test[0]);
+                expect(boss.name).toBe(test[1]);
+            });
+        });
+
+        it("should return undefined for an invalid boss", () => {
+            let rm = getTestRaidManager();
+            ["BOGOBOSS", "WTF"].forEach((bossName) => {
+                expect(rm.tryGetBoss(bossName)).toBeUndefined();
+            });
+        });
+
+        it("should throw if an object is supplied", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.tryGetBoss(bosses[3])).toThrowError("Must use boss name for tryGetBoss.");
+        });
+    });
+
     describe("validateGym method", () => {
         it("should throw an appropriate error if gyms aren't initialized", () => {
             let rm = new RaidManager();
@@ -325,6 +357,38 @@ describe("raidManager", () => {
         it("should throw if an invalid gym object is supplied", () => {
             let rm = getTestRaidManager();
             expect(() => rm.validateGym(badGyms[0])).toThrowError();
+        });
+    });
+
+    describe("tryGetGym method", () => {
+        it("should throw an appropriate error if gyms aren't initialized", () => {
+            let rm = new RaidManager();
+            expect(() => rm.validateGym("market")).toThrowError("RaidManager not ready - gyms not initialized.");
+        });
+
+        it("should match a valid gym", () => {
+            let rm = getTestRaidManager();
+            [
+                ["painted", "Painted Parking Lot"],
+                ["market", "Redmond Town Center Fish Statue"],
+                ["pd", "Weiner Elephants"],
+                ["city hall", "Hunting Fox"],
+            ].forEach((test) => {
+                let boss = rm.tryGetGym(test[0]);
+                expect(boss.name).toBe(test[1]);
+            });
+        });
+
+        it("should return undefined for an invalid gym", () => {
+            let rm = getTestRaidManager();
+            ["XYZZY", "WTF"].forEach((gymName) => {
+                expect(rm.tryGetGym(gymName)).toBeUndefined();
+            });
+        });
+
+        it("should throw if an object is supplied", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.tryGetGym(gyms[3])).toThrowError("Must use gym name for tryGetGym.");
         });
     });
 
