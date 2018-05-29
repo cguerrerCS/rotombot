@@ -522,6 +522,31 @@ describe("raidManager", () => {
             expect(() => rm.setRaidBoss("XYZZY", "painted")).toThrowError("No known boss matches requested name \"XYZZY\".");
             expect(() => rm.setRaidBoss("ttar", "XYZZY")).toThrowError("No known gym matches requested name \"XYZZY\".");
         });
+
+        it("should throw if the egg has not hached yet", () => {
+            let rm = getTestRaidManager();
+            rm.addEggCountdown(5, "market", 10);
+            expect(() => rm.setRaidBoss("hooh", "market")).toThrowError("Cannot set raid boss for unhatched egg.  Please update the raid time.");
+        });
+
+        describe("in strict mode", () => {
+            it("should succeed if the egg is hatched, boss is unknown and new boss is of the right tier", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let hatch = getOffsetDate(-10);
+                rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
+                let raid = rm.setRaidBoss("hooh", "wells");
+                expect(raid.pokemon.name).toBe("Ho-oh");
+                expect(raid.hatchTime).toBe(hatch);
+            });
+
+            it("should throw if the raid has a different boss", () => {
+
+            });
+
+            it("should throw if boss is of the wrong tier", () => {
+
+            });
+        });
     });
 
     describe("addEggCountdown method", () => {
