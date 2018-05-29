@@ -255,6 +255,7 @@ describe("raidManager", () => {
     describe("validateBoss method", () => {
         it("should throw an appropriate error if bosses aren't initialized", () => {
             let rm = new RaidManager();
+            rm.setGymData(gyms);
             expect(() => rm.validateBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
         });
 
@@ -293,7 +294,8 @@ describe("raidManager", () => {
     describe("tryGetBoss method", () => {
         it("should throw an appropriate error if bosses aren't initialized", () => {
             let rm = new RaidManager();
-            expect(() => rm.validateBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
+            rm.setGymData(gyms);
+            expect(() => rm.tryGetBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
         });
 
         it("should match a valid boss", () => {
@@ -325,6 +327,7 @@ describe("raidManager", () => {
     describe("validateGym method", () => {
         it("should throw an appropriate error if gyms aren't initialized", () => {
             let rm = new RaidManager();
+            rm.setBossData(bosses);
             expect(() => rm.validateGym("luke")).toThrowError("RaidManager not ready - gyms not initialized.");
         });
 
@@ -363,7 +366,8 @@ describe("raidManager", () => {
     describe("tryGetGym method", () => {
         it("should throw an appropriate error if gyms aren't initialized", () => {
             let rm = new RaidManager();
-            expect(() => rm.validateGym("market")).toThrowError("RaidManager not ready - gyms not initialized.");
+            rm.setBossData(bosses);
+            expect(() => rm.tryGetGym("market")).toThrowError("RaidManager not ready - gyms not initialized.");
         });
 
         it("should match a valid gym", () => {
@@ -442,6 +446,44 @@ describe("raidManager", () => {
             rm.addRaid("ttar", "wells", 20);
             expect(logger.output.length).toBe(1);
             expect(logger.output[0]).toMatch(/.*Active Raid Added.*/i);
+        });
+
+        describe("in strict mode", () => {
+            it("should throw if a different raid is already reported for the location", () => {
+                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                rm.addRaid("hooh", "painted", 20);
+                expect(() => rm.addRaid("latias", "painted", 40)).toThrowError(/^.*Raid.*already has.*boss.*$/);
+                expect(() => rm.addRaid("hooh", "painted", 40)).toThrowError(/^New end time.*too far from existing.*$/);
+                expect(() => rm.addRaid("hooh", "painted", 10)).toThrowError(/^New end time.*too far from existing.*$/);
+            });
+
+            it("should adjust the end time of an existing raid within tolerance if other details match", () => {
+                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let originalExpiry = rm.addRaid("hooh", "painted", 20).expiryTime;
+                let newRaid = rm.addRaid("hooh", "painted", 22);
+                expect(newRaid.expiryTime).toBeGreaterThan(originalExpiry);
+
+                newRaid = rm.addRaid("hooh", "painted", 18);
+                expect(newRaid.expiryTime).toBeLessThan(originalExpiry);
+            });
+
+            it("should add a boss to an undefined raid of the same tier, adjusting time within tolerance", () => {
+                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let hatch = getOffsetDate(-25); // 20 left
+                let originalExpiry = rm._forceRaid("painted", 5, undefined, hatch).expiryTime;
+                let newRaid = rm.addRaid("hooh", "painted", 22);
+                expect(newRaid.expiryTime).toBeGreaterThan(originalExpiry);
+                expect(newRaid.pokemon.name).toBe("Ho-oh");
+            });
+
+            it("should throw for an undefined raid if tier does not match or if time is out of tolerance", () => {
+                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let hatch = getOffsetDate(-25); // 20 left
+                rm._forceRaid("painted", 5, undefined, hatch);
+                expect(() => rm.addRaid("ttar", "painted", 20)).toThrowError(/Cannot add.*existing tier 5.*$/);
+                expect(() => rm.addRaid("latias", "painted", 10)).toThrowError(/New end time.*too far from existing.*$/);
+                expect(() => rm.addRaid("hooh", "painted", 40)).toThrowError(/New end time.*too far from existing.*$/);
+            });
         });
     });
 
@@ -776,6 +818,35 @@ describe("raidManager", () => {
             expect(testLogger.output.length).toBe(2);
             expect(testLogger.output[0]).toMatch(/^.*Raid Expired.*$/);
             expect(testLogger.output[1]).toMatch(/^.*Raid Egg Hatched.*$/);
+        });
+
+        it("should be called at least once per minute but not less than 10 seconds", () => {
+            jasmine.clock().install();
+            let rm = getTestRaidManager();
+            spyOn(rm, "raidListRefresh");
+            jasmine.clock().tick(10 * 1000);
+            expect(rm.raidListRefresh).not.toHaveBeenCalled();
+            jasmine.clock().tick(50 * 1000);
+            expect(rm.raidListRefresh).toHaveBeenCalled();
+            jasmine.clock().uninstall();
+        });
+
+        it("should respect the refresh option", () => {
+            jasmine.clock().install();
+            let rm = getTestRaidManager({ logger: undefined, refresh: 5, strict: false });
+            spyOn(rm, "raidListRefresh");
+            jasmine.clock().tick(6000);
+            expect(rm.raidListRefresh).toHaveBeenCalled();
+            jasmine.clock().uninstall();
+        });
+
+        it("should disable refresh if refresh is 0", () => {
+            jasmine.clock().install();
+            let rm = getTestRaidManager({ logger: undefined, refresh: 0, strict: false });
+            spyOn(rm, "raidListRefresh");
+            jasmine.clock().tick(60 * 60 * 1000);
+            expect(rm.raidListRefresh).not.toHaveBeenCalled();
+            jasmine.clock().uninstall();
         });
     });
 });
