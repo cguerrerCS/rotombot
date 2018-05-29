@@ -154,7 +154,7 @@
       "dev": true
     },
     "botsbits": {
-      "version": "git+https://github.com/DidjaRedo/BotsBits.git#76069880ed88f73c207dd44847f6dc71465242de",
+      "version": "git+https://github.com/DidjaRedo/BotsBits.git#d821e4e26a707f69370be84a890dfb04ec414212",
       "from": "git+https://github.com/DidjaRedo/BotsBits.git",
       "dependencies": {
         "abbrev": {

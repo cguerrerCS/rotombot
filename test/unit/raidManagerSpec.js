@@ -378,8 +378,8 @@ describe("raidManager", () => {
                 ["pd", "Weiner Elephants"],
                 ["city hall", "Hunting Fox"],
             ].forEach((test) => {
-                let boss = rm.tryGetGym(test[0]);
-                expect(boss.name).toBe(test[1]);
+                let gym = rm.tryGetGym(test[0]);
+                expect(gym.name).toBe(test[1]);
             });
         });
 
@@ -393,6 +393,74 @@ describe("raidManager", () => {
         it("should throw if an object is supplied", () => {
             let rm = getTestRaidManager();
             expect(() => rm.tryGetGym(gyms[3])).toThrowError("Must use gym name for tryGetGym.");
+        });
+    });
+
+    describe("tryGetRaid method", () => {
+        it("should throw an appropriate error if gyms aren't initialized", () => {
+            let rm = new RaidManager();
+            rm.setBossData(bosses);
+            expect(() => rm.tryGetRaid("market")).toThrowError("RaidManager not ready - gyms not initialized.");
+        });
+
+        it("should return a raid or undefined for any valid gym", () => {
+            let rm = getTestRaidManager();
+            rm.addRaid("ttar", "painted", 20);
+            rm.addEggCountdown(5, "elephants", 20);
+
+            [
+                ["Painted Parking Lot", "Painted Parking Lot", true],
+                ["market", "Redmond Town Center Fish Statue", false],
+                ["pd", "Weiner Elephants", true],
+                ["city hall", "Hunting Fox", false],
+            ].forEach((test) => {
+                let raid = rm.tryGetRaid(test[0]);
+                if (test[2]) {
+                    expect(raid.gym.name).toBe(test[1]);
+                }
+                else {
+                    expect(raid).toBeUndefined();
+                }
+            });
+        });
+
+        it("should return undefined for an invalid gym", () => {
+            let rm = getTestRaidManager();
+            ["XYZZY", "WTF"].forEach((gymName) => {
+                expect(rm.tryGetRaid(gymName)).toBeUndefined();
+            });
+        });
+
+        it("should throw if an object is supplied", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.tryGetRaid(gyms[3])).toThrowError("Must use gym name for tryGetGym.");
+        });
+    });
+
+    describe("_forceRaid test helper method", () => {
+        it("should return undefined if no gym is specified", () => {
+            let rm = getTestRaidManager();
+            expect(rm._forceRaid(undefined, 5, undefined, new Date())).toBeUndefined();
+        });
+
+        it("should use a gym object if supplied", () => {
+            let rm = getTestRaidManager();
+            let gym = rm.validateGym("painted");
+            let raid = rm._forceRaid(gym, 5, undefined, new Date());
+            expect(raid.gym).toBe(gym);
+        });
+
+        it("should accept a time string", () => {
+            let rm = getTestRaidManager();
+            let farFutureRaidTime = FlexTime.getFlexTime(Date.now(), 365);
+            let raid = rm._forceRaid("market", 5, undefined, farFutureRaidTime.toString());
+            expect(raid.hatchTime).toBeGreaterThan(new Date());
+        });
+
+        it("should accept bad data", () => {
+            let rm = getTestRaidManager();
+            rm._forceRaid("market", 5, undefined, "0110", 117);
+            expect(() => rm.listFormatted()).toThrowError("Internal error: unexpected raid state 117");
         });
     });
 
@@ -713,6 +781,45 @@ describe("raidManager", () => {
             expect(logger.output.length).toBe(1);
             expect(logger.output[0]).toMatch(/.*Raid egg added with absolute time.*/i);
         });
+
+        describe("in strict mode", () => {
+            it("should succeed if existing raid has matching tier and expiry is within tolerance", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let originalHatch = getOffsetDate(20);
+                let laterHatch = getOffsetDate(22);
+                let earlierHatch = getOffsetDate(18);
+
+                let originalRaid = rm.addEggAbsolute(5, "erratic", originalHatch);
+                expect(originalRaid.hatchTime).toBe(originalHatch);
+
+                let laterRaid = rm.addEggAbsolute(5, "erratic", laterHatch);
+                expect(laterRaid.hatchTime).toBe(laterHatch);
+
+                let earlierRaid = rm.addEggAbsolute(5, "erratic", earlierHatch);
+                expect(earlierRaid.hatchTime).toBe(earlierHatch);
+            });
+
+            it("should throw if the raid already has a boss", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addRaid("hooh", "luke", 30);
+                let hatch = getOffsetDate(30);
+                expect(() => rm.addEggAbsolute(5, "luke", hatch)).toThrowError(/Cannot replace existing Ho-oh.*/);
+            });
+
+            it("should throw if an existing egg has a different tier", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addEggCountdown(4, "ironcycle", 20);
+                let hatch = getOffsetDate(20);
+                expect(() => rm.addEggAbsolute(5, "ironcycle", hatch)).toThrowError(/Cannot replace existing tier 4.*/);
+            });
+
+            it("should throw if the new timer is too far from the existing one", () => {
+                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                rm.addEggCountdown(4, "ironcycle", 20);
+                let hatch = getOffsetDate(40);
+                expect(() => rm.addEggAbsolute(4, "ironcycle", hatch)).toThrowError(/New end time.*too far from existing end.*/);
+            });
+        });
     });
 
     describe("removeRaid method", () => {
@@ -808,11 +915,111 @@ describe("raidManager", () => {
                     let regex = expected[index];
                     let line = lines.shift();
                     // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
-                    // expect(regex.test(line)).toBe(true);
                     expect(line).toMatch(regex);
                 });
             });
         });
+
+        it("should list when only upcoming raids exist", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addEggCountdown(5, "painted", 30)).toBeDefined();
+            expect(rm.addEggCountdown(4, "luke", 10)).toBeDefined();
+            expect(rm.addEggCountdown(3, "soul foods", 20)).toBeDefined();
+            expect(rm.addEggCountdown(2, "victors", 15)).toBeDefined();
+            expect(rm.addEggCountdown(1, "clock tower", 25)).toBeDefined();
+
+            let expected = [
+                /^.*UPCOMING RAIDS.*$/,
+                /^.*Tier 4.*Beavers @.*$/,
+                /^.*Tier 2.*Roasters @.*$/,
+                /^.*Tier 3.*Soulfood.*Cafe @.*$/,
+                /^.*Tier 1.*Clock Tower @.*$/,
+                /^.*Tier 5.*Parking Lot @.*$/,
+            ];
+
+            [
+                {
+                    min: 1,
+                    max: 5,
+                    expected: [0, 1, 2, 3, 4, 5],
+                },
+                {
+                    min: 4,
+                    max: 5,
+                    expected: [0, 1, 5],
+                },
+                {
+                    min: 3,
+                    max: 3,
+                    expected: [0, 3],
+                },
+                {
+                    min: 2,
+                    max: 3,
+                    expected: [0, 2, 3],
+                },
+            ].forEach((test) => {
+                let output = rm.listFormatted(test.min, test.max);
+                let lines = output.split("\n");
+                test.expected.forEach((index) => {
+                    let regex = expected[index];
+                    let line = lines.shift();
+                    // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
+                    expect(line).toMatch(regex);
+                });
+            });
+        });
+
+        it("should list when only active raids exist", () => {
+            let rm = getTestRaidManager();
+            expect(rm.addRaid("hooh", "wells", 10));
+            expect(rm.addRaid("ttar", "city hall", 40));
+            expect(rm.addRaid("machamp", "anderson", 30));
+            expect(rm.addRaid("sableeye", "erratic", 25));
+            expect(rm.addRaid("magickarp", "salmon circles", 15));
+
+            let expected = [
+                /^.*ACTIVE RAIDS.*$/,
+                /^.*Ho-oh.*Wells Fargo.*ends @.*$/,
+                /^.*Magikarp.*Ironcycle.*ends @.*$/,
+                /^.*Sableye.*Erratic.*ends @.*$/,
+                /^.*Machamp.*Redmond Town Center.*ends @.*$/,
+                /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
+            ];
+
+            [
+                {
+                    min: 1,
+                    max: 5,
+                    expected: [0, 1, 2, 3, 4, 5],
+                },
+                {
+                    min: 4,
+                    max: 5,
+                    expected: [0, 1, 5],
+                },
+                {
+                    min: 3,
+                    max: 3,
+                    expected: [0, 4],
+                },
+                {
+                    min: 2,
+                    max: 3,
+                    expected: [0, 3, 4],
+                },
+            ].forEach((test) => {
+                let output = rm.listFormatted(test.min, test.max);
+                let lines = output.split("\n");
+                test.expected.forEach((index) => {
+                    let regex = expected[index];
+                    let line = lines.shift();
+                    // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
+                    expect(line).toMatch(regex);
+                });
+            });
+        });
+
         it("should list hatched eggs as active raids with unknown boss", () => {
             let rm = getTestRaidManager();
             let hatch = getOffsetDate(-5);
@@ -830,6 +1037,33 @@ describe("raidManager", () => {
                 expect(line).toMatch(regex);
             });
         });
+
+        it("should format dates using am/pm", () => {
+            let rm = getTestRaidManager();
+            let morning = new Date(2018, 1, 1, 0, 0);
+            let afternoon = new Date(2018, 1, 1, 14, 0);
+            rm._forceRaid("painted", 5, undefined, morning, RaidManager.RaidStateEnum.egg);
+            rm._forceRaid("market", 5, undefined, afternoon, RaidManager.RaidStateEnum.egg);
+            rm._forceRaid("erratic", 5, "hooh", morning, RaidManager.RaidStateEnum.hatched);
+            rm._forceRaid("victors", 5, "latias", afternoon, RaidManager.RaidStateEnum.hatched);
+
+            let output = rm.listFormatted(5, 5);
+            let lines = output.split("\n");
+            [
+                /^.*ACTIVE RAIDS.*$/,
+                /^.*Redmond's Erratic ends @ 12:45 AM/,
+                /^.*Victors Coffee Co. and Roasters ends @ 2:45 PM/,
+                /^.*$/,
+                /^.*UPCOMING RAIDS.*$/,
+                /^.*Painted Parking Lot @ 12:00 AM/,
+                /^.*Fish Statue @ 2:00 PM/,
+            ].forEach((regex) => {
+                let line = lines.shift();
+                // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
+                expect(line).toMatch(regex);
+            });
+        });
+
         it("should show raid levels when reporting that no raids are available", () => {
             let rm = getTestRaidManager();
             expect(rm.listFormatted(4, 5)).toMatch(/^.*No raids.*\(T4-T5\).*$/);
