@@ -42,6 +42,14 @@ class info extends commando.Command {
         if (raid) {
             let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
             infoContent += raidInfo.description;
+            for (let key in raid.raiders) {
+                if (raid.raiders.hasOwnProperty(key)) {
+                    let raider = raid.raiders[key];
+                    if (!raider.endTime) {
+                        infoContent += `        ${RaidManager.formatRaider(raider)}\n`;
+                    }
+                }
+            }
         }
 
         infoContent += `Directions: *${gym.mapLink}*\n`;
