@@ -1,5 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
+const RaidManager = require("../../lib/raidManager");
 
 //!info command
 class info extends commando.Command {
@@ -35,8 +36,15 @@ class info extends commando.Command {
         var infoContent =
             `Name: *${gym.name}*\n` +
             `Friendly Name: *${gym.friendlyName}*\n` +
-            `City: *${gym.city}*\n` +
-            `Directions: *${gym.mapLink}*\n`;
+            `City: *${gym.city}*\n`;
+
+        let raid = client.raidManager.tryGetRaid(gym.name);
+        if (raid) {
+            let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
+            infoContent += raidInfo.description;
+        }
+
+        infoContent += `Directions: *${gym.mapLink}*\n`;
 
         message.channel.send(infoContent);
     }

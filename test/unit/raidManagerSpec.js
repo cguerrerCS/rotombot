@@ -880,11 +880,11 @@ describe("raidManager", () => {
                 /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
                 /^.*$/,
                 /^.*UPCOMING RAIDS.*$/,
-                /^.*Tier 4.*Beavers @.*$/,
-                /^.*Tier 2.*Roasters @.*$/,
-                /^.*Tier 3.*Soulfood.*Cafe @.*$/,
-                /^.*Tier 1.*Clock Tower @.*$/,
-                /^.*Tier 5.*Parking Lot @.*$/,
+                /^.*T.*4.+Beavers @.*$/,
+                /^.*T.*2.+Roasters @.*$/,
+                /^.*T.*3.+Soulfood.*Cafe @.*$/,
+                /^.*T.*1.+Clock Tower @.*$/,
+                /^.*T.*5.+Parking Lot @.*$/,
             ];
 
             [
@@ -930,11 +930,11 @@ describe("raidManager", () => {
 
             let expected = [
                 /^.*UPCOMING RAIDS.*$/,
-                /^.*Tier 4.*Beavers @.*$/,
-                /^.*Tier 2.*Roasters @.*$/,
-                /^.*Tier 3.*Soulfood.*Cafe @.*$/,
-                /^.*Tier 1.*Clock Tower @.*$/,
-                /^.*Tier 5.*Parking Lot @.*$/,
+                /^.*T.*4.+Beavers @.*$/,
+                /^.*T.*2.+Roasters @.*$/,
+                /^.*T.*3.+Soulfood.*Cafe @.*$/,
+                /^.*T.*1.+Clock Tower @.*$/,
+                /^.*T.*5.+Parking Lot @.*$/,
             ];
 
             [
@@ -1030,7 +1030,7 @@ describe("raidManager", () => {
 
             [
                 /^.*ACTIVE RAIDS.*$/,
-                /^.*Tier 5 Undefined.*ends @.*$/,
+                /^.*T.*5 Undefined.*ends @.*$/,
             ].forEach((regex) => {
                 let line = lines.shift();
                 // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
