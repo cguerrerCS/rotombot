@@ -2,7 +2,7 @@
 
 const RaidManager = require("./lib/raidManager.js");
 const { CommandoClient } = require("discord.js-commando");
-const isDevelopment = false;
+const isDevelopment = true;
 
 //Discord related commands
 const client = new CommandoClient({
