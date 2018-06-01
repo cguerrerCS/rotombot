@@ -7,8 +7,18 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Start Bot",
             "program": "${workspaceFolder}\\rotombot.js"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Unit Tests (Jasmine)",
+            "program": "${workspaceRoot}/node_modules/jasmine/bin/jasmine",
+            "args": [
+                "--config=test/support/jasmine.json"
+            ],
+            "internalConsoleOptions": "openOnFirstSessionStart"
         }
     ]
 }

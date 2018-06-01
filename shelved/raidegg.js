@@ -27,7 +27,7 @@ class raidegg extends commando.Command{
 
         if (message.channel.type.toString() == "dm")
         {
-            client.ReportError(message, "!raidegg", "cannot add raid eggs via DMs.");
+            client.reportError(message, "!raidegg", "cannot add raid eggs via DMs.");
             return;
         }
 
@@ -58,7 +58,7 @@ class raidegg extends commando.Command{
           var searchResults = client.RaidsFuzzySearch.search(location);
           if (searchResults.length < 1)
           {
-            client.ReportError(message, "!raidegg", "no gym found matching search results", this.examples[2]);
+            client.reportError(message, "!raidegg", "no gym found matching search results", this.examples[2]);
             return;
           }
           var closestResult = searchResults[0];
@@ -66,7 +66,7 @@ class raidegg extends commando.Command{
           try {
             client.RaidManager.addEggCountdown(tier, closestResult.RaidLocation, countdown );
           } catch(err) {
-            client.ReportError(message, "!raidegg", err, this.examples[2]);
+            client.reportError(message, "!raidegg", err, this.examples[2]);
             return;
           }
 
@@ -110,13 +110,13 @@ class raidegg extends commando.Command{
           minAllowablePredictionTime.setMinutes(minAllowablePredictionTime.getMinutes());
           if (eggHatchTime > maxAllowablePredictionTime)
           {
-            client.ReportError(message, "!raidegg", "My circuitzzz are tingling! That raid egg hatch time is too far in the future...", this.examples[0]);
+            client.reportError(message, "!raidegg", "My circuitzzz are tingling! That raid egg hatch time is too far in the future...", this.examples[0]);
             return;
           }
 
           if (eggHatchTime < minAllowablePredictionTime)
           {
-            client.ReportError(message, "!raidegg", "My circuitzzz are tingling! That raid egg already hatched. Report the active raid.", this.examples[0]);
+            client.reportError(message, "!raidegg", "My circuitzzz are tingling! That raid egg already hatched. Report the active raid.", this.examples[0]);
             return;
           }
 
@@ -124,7 +124,7 @@ class raidegg extends commando.Command{
           var searchResults = client.RaidsFuzzySearch.search(location);
           if (searchResults.length < 1)
           {
-            client.ReportError(message, "!raidegg", "no gym found matching search results", this.examples[0]);
+            client.reportError(message, "!raidegg", "no gym found matching search results", this.examples[0]);
             return;
           }
           var closestResult = searchResults[0];
@@ -132,7 +132,7 @@ class raidegg extends commando.Command{
           try {
             client.RaidManager.addEggAbsolute(tier, closestResult.RaidLocation, eggHatchTime );
           } catch(err) {
-            client.ReportError(message, "!raidegg", err, this.examples[0]);
+            client.reportError(message, "!raidegg", err, this.examples[0]);
             return;
           }
 
@@ -141,7 +141,7 @@ class raidegg extends commando.Command{
           return;
         }
 
-        client.ReportError(
+        client.reportError(
                   message,
                    "!raidegg",
                    "invalid command argument, try !help command.",
