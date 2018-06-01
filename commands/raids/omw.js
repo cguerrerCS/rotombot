@@ -1,18 +1,17 @@
 "use strict";
 const commando = require("discord.js-commando");
-const RaidManager = require("../../lib/raidManager");
 
 const omwNoEtaRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s*$/i;
 const omwEtaRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+eta\s+((?:\d\d?)|((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)|hatch)\s*$/i;
 const omwStartRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+(?:starting|start)\s*(\w+(?:\s|\w)*)*\s*$/i;
 const omwOtherRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+(never|here|done)\s*$/i;
 
-const omwNoEtaExampleIndex = 2;
+const omwNoEtaExampleIndex = [2];
 const omwEtaExampleIndexes = [5, 6, 7];
-const omwHereExampleIndex = 10;
+const omwHereExampleIndex = [10];
 const omwStartExampleIndexes = [13, 14];
-const omwDoneExampleIndex = 17;
-const omwCanceExampleIndex = 20;
+const omwDoneExampleIndex = [17];
+const omwCanceExampleIndex = [20];
 
 //!raids command
 class raids extends commando.Command {
@@ -53,7 +52,8 @@ class raids extends commando.Command {
 
         let wantGym = undefined;
         let raiderInfo = {
-            name: message.member.user.username,
+            raiderName: message.member.user.username,
+            gym: undefined,
             etaTime: undefined,
             arrivalTime: undefined,
             startTime: undefined,
@@ -126,7 +126,7 @@ class raids extends commando.Command {
         try {
             if (raiderInfo) {
                 let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo);
-                message.channel.send(`${raid.gym.name}: ${RaidManager.formatRaider(raid.raiders[raiderInfo.name])}`);
+                message.channel.send(`${raid.gym.name}: ${raid.raiders[raiderInfo.name].toString()}`);
             }
             else {
                 let raid = client.raidManager.removeRaider(wantGym, message.member.user.username);
@@ -134,7 +134,10 @@ class raids extends commando.Command {
             }
         }
         catch (err) {
-            let help = (typeof helpExamples === "number") ? this.examples[helpExamples] : "oops";
+            let help = "";
+            helpExamples.forEach((i) => {
+                help += this.examples[i] + "\n";
+            });
             client.reportError(message, "!omw", err, help);
         }
     }

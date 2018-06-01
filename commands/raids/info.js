@@ -46,7 +46,7 @@ class info extends commando.Command {
                 if (raid.raiders.hasOwnProperty(key)) {
                     let raider = raid.raiders[key];
                     if (!raider.endTime) {
-                        infoContent += `        ${RaidManager.formatRaider(raider)}\n`;
+                        infoContent += `        ${raider.toString()}\n`;
                     }
                 }
             }
