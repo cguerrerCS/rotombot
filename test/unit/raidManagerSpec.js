@@ -909,7 +909,7 @@ describe("raidManager", () => {
                     expected: [0, 3, 4, 6, 7, 9, 10],
                 },
             ].forEach((test) => {
-                let output = rm.listFormatted(test.min, test.max);
+                let output = rm.listFormatted((r) => (r.tier >= test.min) && (r.tier <= test.max));
                 let lines = output.split("\n");
                 test.expected.forEach((index) => {
                     let regex = expected[index];
@@ -959,7 +959,7 @@ describe("raidManager", () => {
                     expected: [0, 2, 3],
                 },
             ].forEach((test) => {
-                let output = rm.listFormatted(test.min, test.max);
+                let output = rm.listFormatted((r) => (r.tier >= test.min) && (r.tier <= test.max));
                 let lines = output.split("\n");
                 test.expected.forEach((index) => {
                     let regex = expected[index];
@@ -1009,7 +1009,7 @@ describe("raidManager", () => {
                     expected: [0, 3, 4],
                 },
             ].forEach((test) => {
-                let output = rm.listFormatted(test.min, test.max);
+                let output = rm.listFormatted((r) => (r.tier >= test.min) && (r.tier <= test.max));
                 let lines = output.split("\n");
                 test.expected.forEach((index) => {
                     let regex = expected[index];
@@ -1025,7 +1025,7 @@ describe("raidManager", () => {
             let hatch = getOffsetDate(-5);
             rm._forceRaid("painted", 5, undefined, hatch);
 
-            let output = rm.listFormatted(5, 5);
+            let output = rm.listFormatted((r) => r.tier === 5);
             let lines = output.split("\n");
 
             [
@@ -1047,7 +1047,7 @@ describe("raidManager", () => {
             rm._forceRaid("erratic", 5, "hooh", morning, RaidManager.RaidStateEnum.hatched);
             rm._forceRaid("victors", 5, "latias", afternoon, RaidManager.RaidStateEnum.hatched);
 
-            let output = rm.listFormatted(5, 5);
+            let output = rm.listFormatted((r) => r.tier === 5);
             let lines = output.split("\n");
             [
                 /^.*ACTIVE RAIDS.*$/,
@@ -1066,8 +1066,8 @@ describe("raidManager", () => {
 
         it("should show raid levels when reporting that no raids are available", () => {
             let rm = getTestRaidManager();
-            expect(rm.listFormatted(4, 5)).toMatch(/^.*No raids.*\(T4-T5\).*$/);
-            expect(rm.listFormatted(3, 3)).toMatch(/^.*No raids.*\(T3\).*$/);
+            expect(rm.listFormatted((r) => (r.tier >= 4) && (r.tier <= 5), "T4-T5")).toMatch(/^.*No raids.*\(T4-T5\).*$/);
+            expect(rm.listFormatted((r) => (r.tier === 3), "T3")).toMatch(/^.*No raids.*\(T3\).*$/);
         });
     });
 
@@ -1076,9 +1076,9 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
             rm._forceRaid("painted", 5, "latias", hatch);
-            expect(rm.list(5).length).toBe(1);
+            expect(rm.list((r) => r.tier === 5).length).toBe(1);
             rm.raidListRefresh();
-            expect(rm.list(5).length).toBe(0);
+            expect(rm.list((r) => r.tier === 5).length).toBe(0);
         });
 
         it("should move hatched eggs to active raid with unknown boss", () => {
@@ -1086,15 +1086,15 @@ describe("raidManager", () => {
             let hatch = getOffsetDate(-5);
             rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
 
-            let raids = rm.list(5, 5);
+            let raids = rm.list((r) => r.tier === 5);
             expect(raids.length).toBe(1);
             expect(raids[0].state).toBe(RaidManager.RaidStateEnum.egg);
             expect(raids[0].pokemon).toBe(undefined);
 
             rm.raidListRefresh();
 
-            raids = rm.list(5, 5);
-            expect(rm.list(5).length).toBe(1);
+            raids = rm.list((r) => r.tier === 5);
+            expect(raids.length).toBe(1);
             expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
             expect(raids[0].pokemon).toBe(undefined);
         });
@@ -1108,12 +1108,12 @@ describe("raidManager", () => {
             hatch = getOffsetDate(-5);
             rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
 
-            let raids = rm.list(1, 5);
+            let raids = rm.list((r) => (r.tier >= 1) && (r.tier >= 5));
             expect(raids.length).toBe(2);
 
             rm.raidListRefresh();
 
-            raids = rm.list(1, 5);
+            raids = rm.list((r) => (r.tier >= 1) && (r.tier <= 5));
             expect(raids.length).toBe(1);
 
             expect(testLogger.output.length).toBe(2);

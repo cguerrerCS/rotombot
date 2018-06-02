@@ -1,10 +1,10 @@
 "use strict";
 const commando = require("discord.js-commando");
 
-const defaultRaidsRegex = /^!raids\s*$/i;
-const allRaidsRegex = /^!raids\s+all\s*$/i;
-const minRaidsRegex = /^!raids\s+(\d)([+]?)\s*$/i;
-const rangeRaidsRegex = /^!raids\s+(\d)\s*-\s*(\d)\s*$/i;
+const defaultRaidsRegex = /^!raids\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
+const allRaidsRegex = /^!raids\s+all\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
+const minRaidsRegex = /^!raids\s+(?:T)?(\d)([+]?)\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
+const rangeRaidsRegex = /^!raids\s+(?:T)?(\d)\s*-\s*(?:T)?(\d)\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
 
 //!raids command
 class raids extends commando.Command {
@@ -36,23 +36,28 @@ class raids extends commando.Command {
         let client = message.client;
         let minTier = 4;
         let maxTier = 5;
+        let city = undefined;
+        let cityRegex = /.*/;
 
         let match = message.content.match(allRaidsRegex);
         if (match !== null) {
             minTier = 1;
             maxTier = 5;
+            city = match[1];
         }
         else {
             match = message.content.match(minRaidsRegex);
             if (match !== null) {
                 minTier = match[1];
                 maxTier = (match[2] === "+" ? 5 : minTier);
+                city = match[3];
             }
             else {
                 match = message.content.match(rangeRaidsRegex);
                 if (match !== null) {
                     minTier = match[1];
                     maxTier = match[2];
+                    city = match[3];
                 }
                 else {
                     match = message.content.match(defaultRaidsRegex);
@@ -63,11 +68,22 @@ class raids extends commando.Command {
                             "My circuitzzz are tingling! I didn't understand that command..."
                         );
                     }
+
+                    if (match[1]) {
+                        city = match[1];
+                    }
                 }
             }
         }
 
-        message.channel.send(client.raidManager.listFormatted(minTier, maxTier));
+        if (city) {
+            cityRegex = new RegExp(`.*${city}.*`, "i");
+        }
+
+        let description = (((minTier === maxTier) ? `T${minTier}` : `T${minTier}-T${maxTier}`) + (city ? ` in ${city}` : ""));
+        message.channel.send(client.raidManager.listFormatted((r) => {
+            return (r.tier >= minTier) && (r.tier <= maxTier) && cityRegex.test(r.gym.city);
+        }, description));
     }
 }
 

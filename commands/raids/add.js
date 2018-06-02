@@ -70,7 +70,7 @@ class raid extends commando.Command {
             const [, tier, gym, startTime] = match;
             try {
                 client.raidManager.addEggAbsolute(tier, gym, startTime);
-                message.channel.send(client.raidManager.listFormatted(tier, tier));
+                message.channel.send(client.raidManager.listFormatted());
             }
             catch (e) {
                 client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
@@ -83,7 +83,7 @@ class raid extends commando.Command {
             const [, tier, gym, timer] = match;
             try {
                 client.raidManager.addEggCountdown(tier, gym, timer);
-                message.channel.send(client.raidManager.listFormatted(tier, tier));
+                message.channel.send(client.raidManager.listFormatted());
             }
             catch (err) {
                 client.reportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
@@ -98,7 +98,7 @@ class raid extends commando.Command {
 
             try {
                 let raid = client.raidManager.addRaid(boss, gym, timer);
-                message.channel.send(client.raidManager.listFormatted(raid.pokemon.tier, raid.pokemon.tier));
+                message.channel.send(client.raidManager.listFormatted());
             }
             catch (err) {
                 let commandSyntax = this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
@@ -113,7 +113,7 @@ class raid extends commando.Command {
             const [, boss, gym] = match;
             try {
                 let raid = client.raidManager.setRaidBoss(boss, gym);
-                message.channel.send(client.raidManager.listFormatted(raid.pokemon.tier, raid.pokemon.tier));
+                message.channel.send(client.raidManager.listFormatted());
             }
             catch (err) {
                 // If we get this error, the raid is likely not in the active list, so give the
