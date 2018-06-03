@@ -63,13 +63,7 @@ function reportError(message, cmd, error, syntax) {
     message.channel.send(output);
 }
 
-// on client ready, load in any data and setup raid manager
-client.on("ready", () => {
-    process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
-    client.reportError = reportError;
-    client.isDevelopment = isDevelopment;
-    client.raidManager = raidManager;
-
+function addRaidChannels() {
     console.log("Serving channels:\n");
     for (let kvp of client.channels) {
         let channel = kvp[1];
@@ -92,6 +86,16 @@ client.on("ready", () => {
             }
         }
     }
+}
+
+// on client ready, load in any data and setup raid manager
+client.on("ready", () => {
+    process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
+    client.reportError = reportError;
+    client.isDevelopment = isDevelopment;
+    client.raidManager = raidManager;
+
+    addRaidChannels();
 
     // read in all raid data
     inputRaidDataStream
