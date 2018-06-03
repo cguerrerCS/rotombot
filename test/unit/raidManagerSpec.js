@@ -1273,4 +1273,44 @@ describe("raidManager", () => {
             expect(rm.reportRaidsUpdate).toHaveBeenCalled();
         });
     });
+
+    describe("getSaveState method", () => {
+        it("should include all raids in list order", () => {
+            let rm = getTestRaidManager();
+            rm.addEggCountdown(5, "erratic", 20);
+            rm.addEggCountdown(4, "wells", 10);
+            rm.addRaid("machamp", "elephants", 40);
+            let raids = rm.list();
+            let savedRaids = rm.getSaveState();
+            expect(savedRaids.length).toBe(raids.length);
+            for (let i = 0; i < raids.length; i++) {
+                let raid = raids[i];
+                let saved = savedRaids[i];
+                expect(saved.gym).toBe(raid.gym.name);
+                expect(saved.hatch).toBe(raid.hatchTime.getTime());
+                expect(saved.expiry).toBe(raid.expiryTime.getTime());
+                expect(saved.boss).toBe(raid.pokemon ? raid.pokemon.name : undefined);
+                expect(saved.tier).toBe(raid.tier);
+            }
+        });
+    });
+
+    describe("restoreFromSaveState method", () => {
+        it("should restore all raids that are still active", () => {
+            let rm = getTestRaidManager();
+            rm.addEggCountdown(5, "market", 10);
+            rm.addRaid("ttar", "painted", 20);
+            let saved = rm.getSaveState();
+
+            let rm2 = getTestRaidManager();
+            rm2.restoreFromSaveState(saved);
+
+            let r1 = rm.list();
+            let r2 = rm2.list();
+            expect(r1.length).toBe(r2.length);
+            for (let i = 0; i < r1.length; i++) {
+                expect(r1[i]).toEqual(r2[i]);
+            }
+        });
+    });
 });
