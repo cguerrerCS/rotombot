@@ -1,6 +1,9 @@
 "use strict";
 
+const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
+const RaidChannel = require("./lib/raidChannel");
+
 const { CommandoClient } = require("discord.js-commando");
 const isDevelopment = false;
 
@@ -66,6 +69,29 @@ client.on("ready", () => {
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
+
+    console.log("Serving channels:\n");
+    for (let kvp of client.channels) {
+        let channel = kvp[1];
+        if (channel.type === "text") {
+            let permissions = channel.permissionsFor(client.user);
+            let canManage = permissions.has(Discord.Permissions.FLAGS.MANAGE_MESSAGES);
+            let canSend = permissions.has(Discord.Permissions.FLAGS.SEND_MESSAGES);
+            let canRead = permissions.has(Discord.Permissions.FLAGS.READ_MESSAGES);
+            let canReadHistory = permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY);
+            if (canRead && canSend) {
+                if (canManage && canReadHistory && channel.topic.startsWith("!raids ")) {
+                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic);
+                    client.raidManager.addRaidChannel(raidChannel);
+                    raidChannel.update();
+                    console.log(`    Reporting "${channel.topic}" on ${channel.guild.name}/${channel.name}\n`);
+                }
+                else {
+                    console.log(`    Listening on ${channel.guild.name}/${channel.name}\n`);
+                }
+            }
+        }
+    }
 
     // read in all raid data
     inputRaidDataStream
