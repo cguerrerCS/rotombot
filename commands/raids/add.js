@@ -98,7 +98,7 @@ class raid extends commando.Command {
 
             try {
                 let raid = client.raidManager.addRaid(boss, gym, timer);
-                message.channel.send(client.raidManager.listFormatted());
+                message.channel.send(client.raidManager.listFormatted((r) => r.tier >= raid));
             }
             catch (err) {
                 let commandSyntax = this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
@@ -113,7 +113,7 @@ class raid extends commando.Command {
             const [, boss, gym] = match;
             try {
                 let raid = client.raidManager.setRaidBoss(boss, gym);
-                message.channel.send(client.raidManager.listFormatted());
+                message.channel.send(client.raidManager.listFormatted((r) => r.tier >= raid));
             }
             catch (err) {
                 // If we get this error, the raid is likely not in the active list, so give the
