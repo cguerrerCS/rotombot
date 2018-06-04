@@ -1,5 +1,6 @@
 .DS_Store
 node_modules/
+state/
 BotToken.csv
 .nyc_output/
 coverage/
