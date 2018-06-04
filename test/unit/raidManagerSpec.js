@@ -76,7 +76,7 @@ let badGyms = [
 ];
 
 function getTestRaidManager(options) {
-    options = options || { logger: undefined, strict: false };
+    options = options || { logger: undefined, strict: false, autosaveFile: undefined };
     let rm = new RaidManager(options);
     rm.setBossData(bosses);
     rm.setGymData(gyms);
@@ -146,6 +146,13 @@ describe("raidManager", () => {
             rm.setGymData(myGyms);
             expect(rm.gyms[0].mapLink).toBe("test");
         });
+
+        it("should try to restore state", () => {
+            let rm = new RaidManager();
+            spyOn(rm, "tryRestoreState");
+            rm.setGymData(gyms);
+            expect(rm.tryRestoreState).toHaveBeenCalled();
+        });
     });
 
     describe("setBossData method", () => {
@@ -171,6 +178,13 @@ describe("raidManager", () => {
         it("should throw for invalid boss data", () => {
             let rm = new RaidManager();
             expect(() => rm.setBossData(badBosses)).toThrowError();
+        });
+
+        it("should try to restore state", () => {
+            let rm = new RaidManager();
+            spyOn(rm, "tryRestoreState");
+            rm.setBossData(bosses);
+            expect(rm.tryRestoreState).toHaveBeenCalled();
         });
     });
 
@@ -462,6 +476,15 @@ describe("raidManager", () => {
             rm._forceRaid("market", 5, undefined, "0110", 117);
             expect(() => rm.listFormatted()).toThrowError("Internal error: unexpected raid state 117");
         });
+
+        it("should not report a raids update", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+
+            let farFutureRaidTime = FlexTime.getFlexTime(Date.now(), 365);
+            rm._forceRaid("market", 5, undefined, farFutureRaidTime.toString());
+            expect(rm.reportRaidsUpdate).not.toHaveBeenCalled();
+        });
     });
 
     describe("addRaid method", () => {
@@ -510,15 +533,23 @@ describe("raidManager", () => {
 
         it("should log the added raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: undefined });
             rm.addRaid("ttar", "wells", 20);
             expect(logger.output.length).toBe(1);
             expect(logger.output[0]).toMatch(/.*Active Raid Added.*/i);
         });
 
+        it("should report a raids update", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+
+            rm.addRaid("ttar", "wells", 20);
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+
         describe("in strict mode", () => {
             it("should throw if a different raid is already reported for the location", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
                 rm.addRaid("hooh", "painted", 20);
                 expect(() => rm.addRaid("latias", "painted", 40)).toThrowError(/^.*Raid.*already has.*boss.*$/);
                 expect(() => rm.addRaid("hooh", "painted", 40)).toThrowError(/^New end time.*too far from existing.*$/);
@@ -526,7 +557,7 @@ describe("raidManager", () => {
             });
 
             it("should adjust the end time of an existing raid within tolerance if other details match", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
                 let originalExpiry = rm.addRaid("hooh", "painted", 20).expiryTime;
                 let newRaid = rm.addRaid("hooh", "painted", 22);
                 expect(newRaid.expiryTime).toBeGreaterThan(originalExpiry);
@@ -536,7 +567,7 @@ describe("raidManager", () => {
             });
 
             it("should add a boss to an undefined raid of the same tier, adjusting time within tolerance", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
                 let hatch = getOffsetDate(-25); // 20 left
                 let originalExpiry = rm._forceRaid("painted", 5, undefined, hatch).expiryTime;
                 let newRaid = rm.addRaid("hooh", "painted", 22);
@@ -545,7 +576,7 @@ describe("raidManager", () => {
             });
 
             it("should throw for an undefined raid if tier does not match or if time is out of tolerance", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true });
+                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
                 let hatch = getOffsetDate(-25); // 20 left
                 rm._forceRaid("painted", 5, undefined, hatch);
                 expect(() => rm.addRaid("ttar", "painted", 20)).toThrowError(/Cannot add.*existing tier 5.*$/);
@@ -597,9 +628,28 @@ describe("raidManager", () => {
             expect(() => rm.setRaidBoss("hooh", "market")).toThrowError("Cannot set raid boss for unhatched egg.  Please update the raid time.");
         });
 
+        it("should log the updated raid", () => {
+            let logger = new TestLogger();
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: undefined });
+            rm._forceRaid("painted", 5, undefined, getOffsetDate(-5));
+            expect(logger.output.length).toBe(0);
+            rm.setRaidBoss("hooh", "painted");
+            expect(logger.output.length).toBe(1);
+            expect(logger.output[0]).toMatch(/.*Updated boss for raid.*/i);
+        });
+
+        it("should report a raids update", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+            rm._forceRaid("painted", 5, undefined, getOffsetDate(-5));
+            expect(rm.reportRaidsUpdate).not.toHaveBeenCalled();
+            rm.setRaidBoss("latias", "painted");
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+
         describe("in strict mode", () => {
             it("should succeed if the egg is hatched, boss is unknown and new boss is of the right tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 let hatch = getOffsetDate(-10);
                 rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
                 let raid = rm.setRaidBoss("hooh", "wells");
@@ -608,19 +658,19 @@ describe("raidManager", () => {
             });
 
             it("should throw if the raid already has a different boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 rm.addRaid("hooh", "luke", 30);
                 expect(() => rm.setRaidBoss("latias", "luke")).toThrowError(/Raid.*already has.*boss.*/);
             });
 
             it("should succeed if the raid already has the same boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 rm.addRaid("hooh", "luke", 30);
                 expect(() => rm.setRaidBoss("hooh", "luke")).not.toThrowError();
             });
 
             it("should throw if boss is of the wrong tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 let hatch = getOffsetDate(-10);
                 rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
                 expect(() => rm.setRaidBoss("ttar", "wells")).toThrowError(/Cannot set.*as boss for a tier.*raid/);
@@ -685,9 +735,16 @@ describe("raidManager", () => {
             expect(logger.output[0]).toMatch(/.*Raid egg added with relative time.*/i);
         });
 
+        it("should report a raids update", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+            rm.addEggCountdown(5, "market", 20);
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+
         describe("in strict mode", () => {
             it("should succeed if existing raid has matching tier and expiry within tolerance", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 let originalExpiry = rm.addEggCountdown(5, "erratic", 20).expiryTime;
                 let newExpiry = rm.addEggCountdown(5, "erratic", 22).expiryTime;
 
@@ -698,19 +755,19 @@ describe("raidManager", () => {
             });
 
             it("should throw if the raid already has a boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 rm.addRaid("hooh", "luke", 30);
                 expect(() => rm.addEggCountdown(5, "luke", 20)).toThrowError(/Cannot replace existing Ho-oh.*/);
             });
 
             it("should throw if an existing egg has a different tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 expect(() => rm.addEggCountdown(5, "ironcycle", 20)).toThrowError(/Cannot replace existing tier 4.*/);
             });
 
             it("should throw if the new timer is too far from the existing one", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 expect(() => rm.addEggCountdown(4, "ironcycle", 40)).toThrowError(/New end time.*too far from existing end.*/);
             });
@@ -774,7 +831,7 @@ describe("raidManager", () => {
 
         it("should log the added raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: false });
             let validHatch = FlexTime.getFlexTime(Date.now(), 20).toString();
 
             rm.addEggAbsolute(5, "wells", validHatch);
@@ -782,9 +839,16 @@ describe("raidManager", () => {
             expect(logger.output[0]).toMatch(/.*Raid egg added with absolute time.*/i);
         });
 
+        it("should report a raids update", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+            rm.addEggAbsolute(5, "market", getOffsetDate(10));
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+
         describe("in strict mode", () => {
             it("should succeed if existing raid has matching tier and expiry is within tolerance", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
                 let originalHatch = getOffsetDate(20);
                 let laterHatch = getOffsetDate(22);
                 let earlierHatch = getOffsetDate(18);
@@ -800,21 +864,21 @@ describe("raidManager", () => {
             });
 
             it("should throw if the raid already has a boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
                 rm.addRaid("hooh", "luke", 30);
                 let hatch = getOffsetDate(30);
                 expect(() => rm.addEggAbsolute(5, "luke", hatch)).toThrowError(/Cannot replace existing Ho-oh.*/);
             });
 
             it("should throw if an existing egg has a different tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 let hatch = getOffsetDate(20);
                 expect(() => rm.addEggAbsolute(5, "ironcycle", hatch)).toThrowError(/Cannot replace existing tier 4.*/);
             });
 
             it("should throw if the new timer is too far from the existing one", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 let hatch = getOffsetDate(40);
                 expect(() => rm.addEggAbsolute(4, "ironcycle", hatch)).toThrowError(/New end time.*too far from existing end.*/);
@@ -835,6 +899,26 @@ describe("raidManager", () => {
         it("should throw if no raid exists", () => {
             let rm = getTestRaidManager();
             expect(() => rm.removeRaid("painted")).toThrowError("No raid reported at Painted Parking Lot.");
+        });
+
+        it("should log the added raid", () => {
+            let logger = new TestLogger();
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: false });
+
+            expect(rm._forceRaid("painted", 5, undefined, getOffsetDate(20))).toBeDefined();
+            expect(logger.output.length).toBe(0);
+            expect(rm.removeRaid("painted")).toBeDefined();
+            expect(logger.output.length).toBe(1);
+            expect(logger.output[0]).toMatch(/.*Raid removed.*/i);
+        });
+
+        it("should report a raids update", () => {
+            let rm = getTestRaidManager();
+            rm._forceRaid("erratic", 5, undefined, getOffsetDate(10));
+
+            spyOn(rm, "reportRaidsUpdate");
+            expect(rm.removeRaid("erratic")).toBeDefined();
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
         });
     });
 
@@ -909,7 +993,7 @@ describe("raidManager", () => {
                     expected: [0, 3, 4, 6, 7, 9, 10],
                 },
             ].forEach((test) => {
-                let output = rm.listFormatted(test.min, test.max);
+                let output = rm.listFormatted((r) => (r.tier >= test.min) && (r.tier <= test.max));
                 let lines = output.split("\n");
                 test.expected.forEach((index) => {
                     let regex = expected[index];
@@ -959,7 +1043,7 @@ describe("raidManager", () => {
                     expected: [0, 2, 3],
                 },
             ].forEach((test) => {
-                let output = rm.listFormatted(test.min, test.max);
+                let output = rm.listFormatted((r) => (r.tier >= test.min) && (r.tier <= test.max));
                 let lines = output.split("\n");
                 test.expected.forEach((index) => {
                     let regex = expected[index];
@@ -1009,7 +1093,7 @@ describe("raidManager", () => {
                     expected: [0, 3, 4],
                 },
             ].forEach((test) => {
-                let output = rm.listFormatted(test.min, test.max);
+                let output = rm.listFormatted((r) => (r.tier >= test.min) && (r.tier <= test.max));
                 let lines = output.split("\n");
                 test.expected.forEach((index) => {
                     let regex = expected[index];
@@ -1025,7 +1109,7 @@ describe("raidManager", () => {
             let hatch = getOffsetDate(-5);
             rm._forceRaid("painted", 5, undefined, hatch);
 
-            let output = rm.listFormatted(5, 5);
+            let output = rm.listFormatted((r) => r.tier === 5);
             let lines = output.split("\n");
 
             [
@@ -1047,7 +1131,7 @@ describe("raidManager", () => {
             rm._forceRaid("erratic", 5, "hooh", morning, RaidManager.RaidStateEnum.hatched);
             rm._forceRaid("victors", 5, "latias", afternoon, RaidManager.RaidStateEnum.hatched);
 
-            let output = rm.listFormatted(5, 5);
+            let output = rm.listFormatted((r) => r.tier === 5);
             let lines = output.split("\n");
             [
                 /^.*ACTIVE RAIDS.*$/,
@@ -1066,8 +1150,9 @@ describe("raidManager", () => {
 
         it("should show raid levels when reporting that no raids are available", () => {
             let rm = getTestRaidManager();
-            expect(rm.listFormatted(4, 5)).toMatch(/^.*No raids.*\(T4-T5\).*$/);
-            expect(rm.listFormatted(3, 3)).toMatch(/^.*No raids.*\(T3\).*$/);
+            expect(rm.listFormatted((r) => (r.tier >= 4) && (r.tier <= 5), "T4-T5")).toMatch(/^.*No raids.*\(T4-T5\).*$/);
+            expect(rm.listFormatted((r) => (r.tier === 3), "T3")).toMatch(/^.*No raids.*\(T3\).*$/);
+            expect(rm.listFormatted(() => false)).toMatch("No raids to report.");
         });
     });
 
@@ -1076,9 +1161,9 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
             rm._forceRaid("painted", 5, "latias", hatch);
-            expect(rm.list(5).length).toBe(1);
+            expect(rm.list((r) => r.tier === 5).length).toBe(1);
             rm.raidListRefresh();
-            expect(rm.list(5).length).toBe(0);
+            expect(rm.list((r) => r.tier === 5).length).toBe(0);
         });
 
         it("should move hatched eggs to active raid with unknown boss", () => {
@@ -1086,34 +1171,34 @@ describe("raidManager", () => {
             let hatch = getOffsetDate(-5);
             rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
 
-            let raids = rm.list(5, 5);
+            let raids = rm.list((r) => r.tier === 5);
             expect(raids.length).toBe(1);
             expect(raids[0].state).toBe(RaidManager.RaidStateEnum.egg);
             expect(raids[0].pokemon).toBe(undefined);
 
             rm.raidListRefresh();
 
-            raids = rm.list(5, 5);
-            expect(rm.list(5).length).toBe(1);
+            raids = rm.list((r) => r.tier === 5);
+            expect(raids.length).toBe(1);
             expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
             expect(raids[0].pokemon).toBe(undefined);
         });
 
         it("should log when raids expire or hatch", () => {
             let testLogger = new TestLogger();
-            let rm = getTestRaidManager({ strict: false, logger: testLogger });
+            let rm = getTestRaidManager({ strict: false, logger: testLogger, autosaveFile: undefined });
             let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
             rm._forceRaid("painted", 5, "latias", hatch);
 
             hatch = getOffsetDate(-5);
             rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
 
-            let raids = rm.list(1, 5);
+            let raids = rm.list((r) => (r.tier >= 1) && (r.tier >= 5));
             expect(raids.length).toBe(2);
 
             rm.raidListRefresh();
 
-            raids = rm.list(1, 5);
+            raids = rm.list((r) => (r.tier >= 1) && (r.tier <= 5));
             expect(raids.length).toBe(1);
 
             expect(testLogger.output.length).toBe(2);
@@ -1134,7 +1219,7 @@ describe("raidManager", () => {
 
         it("should respect the refresh option", () => {
             jasmine.clock().install();
-            let rm = getTestRaidManager({ logger: undefined, refresh: 5, strict: false });
+            let rm = getTestRaidManager({ logger: undefined, refresh: 5, strict: false, autosaveFile: undefined });
             spyOn(rm, "raidListRefresh");
             jasmine.clock().tick(6000);
             expect(rm.raidListRefresh).toHaveBeenCalled();
@@ -1143,11 +1228,89 @@ describe("raidManager", () => {
 
         it("should disable refresh if refresh is 0", () => {
             jasmine.clock().install();
-            let rm = getTestRaidManager({ logger: undefined, refresh: 0, strict: false });
+            let rm = getTestRaidManager({ logger: undefined, refresh: 0, strict: false, autosaveFile: undefined });
             spyOn(rm, "raidListRefresh");
             jasmine.clock().tick(60 * 60 * 1000);
             expect(rm.raidListRefresh).not.toHaveBeenCalled();
             jasmine.clock().uninstall();
+        });
+
+        it("should not updates if nothing has changed", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+
+            // Raid in progress or egg with future hatch shoud not trigger an update
+            let hatch = getOffsetDate(20);
+            rm._forceRaid("luke mcredmond", 4, undefined, hatch);
+
+            expect(rm.list().length).toBe(1);
+            rm.raidListRefresh();
+            expect(rm.list().length).toBe(1);
+            expect(rm.reportRaidsUpdate).not.toHaveBeenCalled();
+        });
+
+        it("should report updates if a raid expires", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+
+            let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+            rm._forceRaid("painted", 5, "latias", hatch);
+            expect(rm.list().length).toBe(1);
+            rm.raidListRefresh();
+            expect(rm.list().length).toBe(0);
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+
+        it("should report updates if an egg hatches", () => {
+            let rm = getTestRaidManager();
+            spyOn(rm, "reportRaidsUpdate");
+
+            let hatch = getOffsetDate(-5);
+            rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+            expect(rm.list().length).toBe(1);
+            rm.raidListRefresh();
+            expect(rm.list().length).toBe(1);
+            expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+    });
+
+    describe("getSaveState method", () => {
+        it("should include all raids in list order", () => {
+            let rm = getTestRaidManager();
+            rm.addEggCountdown(5, "erratic", 20);
+            rm.addEggCountdown(4, "wells", 10);
+            rm.addRaid("machamp", "elephants", 40);
+            let raids = rm.list();
+            let savedRaids = rm.getSaveState();
+            expect(savedRaids.length).toBe(raids.length);
+            for (let i = 0; i < raids.length; i++) {
+                let raid = raids[i];
+                let saved = savedRaids[i];
+                expect(saved.gym).toBe(raid.gym.name);
+                expect(saved.hatch).toBe(raid.hatchTime.getTime());
+                expect(saved.expiry).toBe(raid.expiryTime.getTime());
+                expect(saved.boss).toBe(raid.pokemon ? raid.pokemon.name : undefined);
+                expect(saved.tier).toBe(raid.tier);
+            }
+        });
+    });
+
+    describe("restoreFromSaveState method", () => {
+        it("should restore all raids that are still active", () => {
+            let rm = getTestRaidManager();
+            rm.addEggCountdown(5, "market", 10);
+            rm.addRaid("ttar", "painted", 20);
+            let saved = rm.getSaveState();
+
+            let rm2 = getTestRaidManager();
+            rm2.restoreFromSaveState(saved);
+
+            let r1 = rm.list();
+            let r2 = rm2.list();
+            expect(r1.length).toBe(r2.length);
+            for (let i = 0; i < r1.length; i++) {
+                expect(r1[i]).toEqual(r2[i]);
+            }
         });
     });
 });
