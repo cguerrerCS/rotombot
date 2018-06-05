@@ -37,7 +37,7 @@ class remove extends commando.Command {
         var raidToRemove = parsed.arguments.join(" ");
         try {
             let removed = client.raidManager.removeRaid(raidToRemove);
-            message.channel.send(`Removed ${RaidManager.getFormattedRaidDescription(removed).description}.`);
+            message.channel.send(`Removed ${RaidManager.getFormattedRaidDescription(removed).description}.\n`);
         }
         catch (err) {
             client.reportError(message, "!remove", err, this.examples[0]);
