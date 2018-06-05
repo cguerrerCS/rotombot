@@ -1,6 +1,7 @@
 "use strict";
 const commando = require("discord.js-commando");
 const cmdParser = require("discord-command-parser");
+const RaidManager = require("../../lib/raidManager");
 
 //!remove command
 class remove extends commando.Command {
@@ -35,14 +36,14 @@ class remove extends commando.Command {
 
         var raidToRemove = parsed.arguments.join(" ");
         try {
-            client.raidManager.removeRaid(raidToRemove);
+            let removed = client.raidManager.removeRaid(raidToRemove);
+            message.channel.send(`Removed ${RaidManager.getFormattedRaidDescription(removed).description}.`);
         }
         catch (err) {
             client.reportError(message, "!remove", err, this.examples[0]);
             return;
         }
 
-        message.channel.send(client.raidManager.listFormatted());
         return;
     }
 }
