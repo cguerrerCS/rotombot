@@ -1,11 +1,10 @@
 "use strict";
 const commando = require("discord.js-commando");
 
-const omwNoEtaRegex = /^!iam\s+omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s*$/i;
-const omwEtaRegex = /^!iam\s+omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+eta\s+((?:\d\d?)|((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)|hatch)\s*$/i;
-const omwStartWithCodeRegex = /^!iam\s+(?:start|starting)\s+(?:(?:at|@)\s+)?(\w+(?:\s|\w)*)\s*(?:\s+code\s+(\w(?:\w|\s)*))/i;
-const omwStartNoCodeRegex = /^!iam\s+(?:start|starting)\s+(?:(?:at|@)\s+)?(\w+(?:\s|\w)*)\s*/i;
-const omwOtherRegex = /^!iam\s+(here|done|skipping)(?:\s+(?:at|@))?\s+(\w+(?:\s|\w)*)$/i;
+const omwNoEtaRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s*$/i;
+const omwEtaRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+eta\s+((?:\d\d?)|((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)|hatch)\s*$/i;
+const omwStartRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+(?:starting|start)\s*(\w+(?:\s|\w)*)*\s*$/i;
+const omwOtherRegex = /^!omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+(never|here|done)\s*$/i;
 
 const omwNoEtaExampleIndex = [2];
 const omwEtaExampleIndexes = [5, 6, 7];
@@ -18,32 +17,32 @@ const omwCanceExampleIndex = [20];
 class raids extends commando.Command {
     constructor(client) {
         super(client, {
-            name: "iam",
+            name: "omw",
             group: "raids",
-            memberName: "iam",
-            description: "RSVP for a raid, report location and status",
+            memberName: "omw",
+            description: "RSVP for a raid",
             examples: [
                 "On my way (no eta):",
-                "  !iam omw [to] <gym>",
-                "  !iam omw to painted",
+                "  !omw [to] <gym>",
+                "  !omw to painted",
                 "On my way with ETA as absolute or delta:",
-                "  !iam omw [to] <gym> eta (<minutes>|<time>|hatch)",
-                "  !iam omw to market eta 20",
-                "  !iam omw to market eta 1130",
-                "  !iam omw to market eta hatch",
+                "  !omw [to] <gym> eta (<minutes>|<time>|hatch)",
+                "  !omw to market eta 20",
+                "  !omw to market eta 1130",
+                "  !omw to market eta hatch",
                 "Arrived at the raid:",
-                "  !iam here [at|@] <gym> OR",
-                "  !iam here at market",
+                "  !omw [to] <gym> here",
+                "  !omw market here",
                 "Started the raid:",
-                "  !iam starting [at|@] <gym> [code <optional message>]",
-                "  !iam starting luke",
-                "  !iam starting soul foods code mystic pika pika bulba",
+                "  !omw [to] <gym> start <optional message>",
+                "  !omw luke start",
+                "  !omw soul foods start mystic pika pika bulba",
                 "Finished the raid:",
-                "  !iam done [at|@] <gym>",
-                "  !iam done at soul foods",
+                "  !omw [to] <gym> done",
+                "  !omw soul foods done",
                 "Cancel an RSVP",
-                "  !iam skipping <gym>",
-                "  !iam skipping luke",
+                "  !omw [to] <gym> never",
+                "  !omw to luke never",
             ],
         });
     }
@@ -73,10 +72,7 @@ class raids extends commando.Command {
             helpExamples = omwEtaExampleIndexes;
         }
         else {
-            match = message.content.match(omwStartWithCodeRegex);
-            if (match === null) {
-                match = message.content.match(omwStartNoCodeRegex);
-            }
+            match = message.content.match(omwStartRegex);
             if (match !== null) {
                 console.log(`started raid: ${match}\n`);
                 let [, gymName, wantCode] = match;
@@ -89,7 +85,7 @@ class raids extends commando.Command {
                 match = message.content.match(omwOtherRegex);
                 if (match !== null) {
                     console.log(`omw other: ${match}`);
-                    let [, verb, gymName] = match;
+                    let [, gymName, verb] = match;
                     wantGym = gymName;
                     switch (verb.toLowerCase()) {
                         case "here":
@@ -130,7 +126,7 @@ class raids extends commando.Command {
         try {
             if (raiderInfo) {
                 let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo);
-                message.channel.send(`${raid.gym.name}: ${raid.raiders[raiderInfo.raiderName].toString()}`);
+                message.channel.send(`${raid.gym.name}: ${raid.raiders[raiderInfo.name].toString()}`);
             }
             else {
                 let raid = client.raidManager.removeRaider(wantGym, message.member.user.username);
