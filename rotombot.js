@@ -121,6 +121,7 @@ client.on("ready", () => {
             let data = {
                 name: row[0],
                 tier: row[1],
+                status: row[2],
             };
             raidBossData.push(data);
         })
