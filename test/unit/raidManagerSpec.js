@@ -951,16 +951,16 @@ describe("raidManager", () => {
             expect(rm.addEggCountdown(1, "clock tower", 25)).toBeDefined();
             expect(rm.addRaid("hooh", "wells", 10));
             expect(rm.addRaid("ttar", "city hall", 40));
-            expect(rm.addRaid("machamp", "anderson", 30));
+            expect(rm.addRaid("machamp", "library", 30));
             expect(rm.addRaid("sableeye", "erratic", 25));
-            expect(rm.addRaid("magickarp", "salmon circles", 15));
+            expect(rm.addRaid("magickarp", "ben franklin", 15));
 
             let expected = [
                 /^.*ACTIVE RAIDS.*$/,
                 /^.*Ho-oh.*Wells Fargo.*ends @.*$/,
                 /^.*Magikarp.*Ironcycle.*ends @.*$/,
                 /^.*Sableye.*Erratic.*ends @.*$/,
-                /^.*Machamp.*Redmond Town Center.*ends @.*$/,
+                /^.*Machamp.*Wisdom Seekers.*ends @.*$/,
                 /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
                 /^.*$/,
                 /^.*UPCOMING RAIDS.*$/,
@@ -1058,16 +1058,16 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             expect(rm.addRaid("hooh", "wells", 10));
             expect(rm.addRaid("ttar", "city hall", 40));
-            expect(rm.addRaid("machamp", "anderson", 30));
+            expect(rm.addRaid("machamp", "library", 30));
             expect(rm.addRaid("sableeye", "erratic", 25));
-            expect(rm.addRaid("magickarp", "salmon circles", 15));
+            expect(rm.addRaid("magickarp", "leaf inlay", 15));
 
             let expected = [
                 /^.*ACTIVE RAIDS.*$/,
                 /^.*Ho-oh.*Wells Fargo.*ends @.*$/,
-                /^.*Magikarp.*Ironcycle.*ends @.*$/,
+                /^.*Magikarp.*Leaf Inlay.*ends @.*$/,
                 /^.*Sableye.*Erratic.*ends @.*$/,
-                /^.*Machamp.*Redmond Town Center.*ends @.*$/,
+                /^.*Machamp.*Wisdom Seekers.*ends @.*$/,
                 /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
             ];
 
