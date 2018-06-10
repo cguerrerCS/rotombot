@@ -1,42 +1,109 @@
-Raid Boss,Raid Tier,Active
-Mewtwo,Tier 5,inactive
-Latios,Tier 5,inactive
-Latias,Tier 5,inactive
-Kyogre,Tier 5,active
-Ho-oh,Tier 5,inactive
-Houndoom,Tier 4,active
-Golem,Tier 4,active
-Rhydon,Tier 4,active
-Tyranitar,Tier 4,active
-Aggron,Tier 4,active
-Absol,Tier 4,active
-Walrein,Tier 4,active
-Shuckle,Tier 3,active
-Machamp,Tier 3,active
-Aerodactyl,Tier 3,active
-Lunatone,Tier 3,active
-Solrock,Tier 3,active
-Gengar,Tier 3,active
-Jynx,Tier 3,active
-Pinsir,Tier 3,active
-Granbull,Tier 3,active
-Piloswine,Tier 3,active
-Sudowoodo,Tier 2,active
-Magcargo,Tier 2,active
-Exeggutor,Tier 2,active
-Misdreavus,Tier 2,active
-Nosepass,Tier 2,active
-Sneasel,Tier 2,active
-Sableye,Tier 2,active
-Mawile,Tier 2,active
-Kabuto,Tier 1,active
-Omanyte,Tier 1,active
-Anorith,Tier 1,active
-Lileep,Tier 1,active
-Magikarp,Tier 1,active
-Wailmer,Tier 1,active
-Swablu,Tier 1,active
-Shuppet,Tier 1,active
-Duskull,Tier 1,active
-Snorunt,Tier 1,active
-,active
+Tier,Status,Name,Fast Moves,Charge Moves
+5,active,Kyogre,Waterfall,Blizzard|Hydro Pump|Thunder
+4,active,Absol,Psycho Cut|Snarl,Dark Pulse|Megahorn|Thunder
+4,active,Aggron,Dragon Tail|Iron Tail,Heavy Slam|Stone Edge|Thunder
+4,active,Tyranitar,Bite|Iron Tail,Crunch|Fire Blast|Stone Edge
+4,active,Walrein,Frost Breath|Waterfall,Blizzard|Earthquake|Water Pulse
+3,active,Machamp,Bullet Punch|Counter,Close Combat|Dynamic Punch|Heavy Slam
+3,active,Sharpedo,Bite|Waterfall,Crunch|Hydro Pump|Poison Fang
+3,active,Starmie,Hidden Power|Water Gun,Hydro Pump|Power Gem|Psychic
+3,active,Vaporeon,Water Gun,Aqua Tail|Hydro Pump|Water Pulse
+2,active,Croconaw,Scratch|Water Gun,Crunch|Ice Punch|Water Pulse
+2,active,Marshtomp,Mud Shot|Water Gun,Mud Bomb|Sludge|Surf
+2,active,Mawile,Astonish|Bite,Iron Head|Play Rough|Vice Grip
+2,active,Tentacruel,Acid|Poison Jab,Blizzard|Hydro Pump|Sludge Wave
+1,active,Kabuto,Mud Shot|Scratch,Ancient Power|Aqua Jet|Rock Tomb
+1,active,Magikarp,Splash,Struggle
+1,active,Omanyte,Mud Shot|Water Gun,Ancient Power|Bubble Beam|Rock Blast
+1,active,Shellder,Ice Shard|Tackle,Bubble Beam|Icy Wind|Water Pulse
+1,active,Wailmer,Splash|Water Gun,Body Slam|Heavy Slam|Water Pulse
+5,inactive,Mewtwo,Confusion|Psycho Cut,Shadow Ball|Hyper Beam|Psychic|Focus Blast
+5,inactive,Articuno,Frost Breath,Blizzard|Ice Beam|Icy Wind
+5,inactive,Entei,Fire Fang|Fire Spin,Fire Blast|Flamethrower|Overheat
+5,inactive,Groudon,Dragon Tail|Mud Shot,Earthquake|Fire Blast|Solar Beam
+5,inactive,Ho-oh,Extrasensory|Steel Wing,Brave Bird|Fire Blast|Solar Beam
+5,inactive,Latias,Dragon Breath|Zen Headbutt,Outrage|Psychic|Thunder
+5,inactive,Latios,Dragon Breath|Zen Headbutt,Dragon Claw|Psychic|Solar Beam
+5,inactive,Lugia,Dragon Tail|Extrasensory,Future Sight|Hydro Pump|Sky Attack
+5,inactive,Moltres,Fire Spin,Fire Blast|Heat Wave|Overheat
+5,inactive,Raikou,Thunder Shock|Volt Switch,Thunder|Thunderbolt|Wild Charge
+5,inactive,Rayquaza,Air Slash|Dragon Tail,Aerial Ace|Ancient Power|Outrage
+5,inactive,Regirock,Rock Smash|Rock Throw,Focus Blast|Stone Edge|Zap Cannon
+5,inactive,Regice,Frost Breath|Rock Smash,Blizzard|Earthquake|Focus Blast
+5,inactive,Registeel,Metal Claw|Rock Smash,Flash Cannon|Focus Blast|Hyper Beam
+5,inactive,Suicune,Extrasensory|Snarl,BubbleBeam|Hydro Pump|Water Pulse
+5,inactive,Zapdos,Charge Beam,Thunder|Thunderbolt|Zap Cannon
+4,inactive,Blastoise,
+4,inactive,Charizard,
+4,inactive,Feraligatr,
+4,inactive,Golem,
+4,inactive,Houndoom,
+4,inactive,Lapras,
+4,inactive,Nidoking,
+4,inactive,Nidoqueen,
+4,inactive,Poliwrath,
+4,inactive,Rhydon,
+4,inactive,Snorlax,
+4,inactive,Venusaur,
+4,inactive,Victreebel,
+3,inactive,Aerodactyl,
+3,inactive,Alakazam,
+3,inactive,Arcanine,
+3,inactive,Azumarill,
+3,inactive,Breloom,
+3,inactive,Claydol,
+3,inactive,Flareon,
+3,inactive,Gengar,
+3,inactive,Granbull,
+3,inactive,Hitmonchan,
+3,inactive,Hitmonlee,
+3,inactive,Jolteon
+3,inactive,Jynx,
+3,inactive,Kabutops,
+3,inactive,Lunatone,
+3,inactive,Ninetales,
+3,inactive,Omastar,
+3,inactive,Onix,
+3,inactive,Piloswine,
+3,inactive,Pinsir,
+3,inactive,Porygon,
+3,inactive,Scyther,
+3,inactive,Shuckle,
+3,inactive,Solrock,
+2,inactive,Cloyster,
+2,inactive,Combusken,
+2,inactive,Dewgong,
+2,inactive,Electabuzz,
+2,inactive,Exeggutor,
+2,inactive,Lickitung,
+2,inactive,Magcargo,
+2,inactive,Magmar,
+2,inactive,Magneton,
+2,inactive,Manectric,
+2,inactive,Marowak,
+2,inactive,Misdreavus,
+2,inactive,Muk
+2,inactive,Nosepass,
+2,inactive,Primeape,
+2,inactive,Sableye,
+2,inactive,Sandslash,
+2,inactive,Slowbro,
+2,inactive,Sneasel,
+2,inactive,Sudowoodo,
+2,inactive,Venomoth,
+2,inactive,Weezing,
+1,inactive,Anorith,
+1,inactive,Bayleef,
+1,inactive,Bulbasaur,
+1,inactive,Charmander,
+1,inactive,Croconaw,
+1,inactive,Duskull,
+1,inactive,Ivysaur,
+1,inactive,Lileep,
+1,inactive,Metapod,
+1,inactive,Quilava,
+1,inactive,Shuppet,
+1,inactive,Snorunt,
+1,inactive,Squirtle,
+1,inactive,Swablu,
+1,inactive,Wartortle,
