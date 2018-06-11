@@ -156,5 +156,82 @@ describe("GymZone object", () => {
             expect(found[2].score).toEqual(1);
             expect(found[2].gym.officialName).toBe("Find shiny deals at Sprint");
         });
+
+        it("should return all matches for a fuzzy match", () => {
+            let found = zone.tryGetGyms("sprint");
+            expect(found.length).toBe(3);
+            expect(found[0].score).toBeLessThan(1);
+            expect(found[0].gym.officialName).toBe("Find shiny deals at Sprint");
+            expect(found[1].score).toBeLessThan(1);
+            expect(found[1].gym.officialName).toBe("Find shiny deals at Sprint");
+            expect(found[2].score).toBeLessThan(1);
+            expect(found[2].gym.officialName).toBe("Find shiny deals at Sprint");
+        });
+
+        it("should filter exact matches by city if supplied", () => {
+            [
+                { cities: ["redmond", "bellevue"], expectedCount: 2 },
+                { cities: ["redmond"], expectedCount: 1 },
+                { cities: ["woodinville", "redmond", "kirkland", "seattle"], expectedCount: 2 },
+            ].forEach((test) => {
+                let found = zone.tryGetGyms("find shiny deals at sprint", test.cities);
+                expect(found.length).toBe(test.expectedCount);
+                found.forEach((match) => {
+                    expect(match.score).toEqual(1);
+                    expect(match.gym.officialName).toBe("Find shiny deals at Sprint");
+                    expect(test.cities.filter((c) => c.toLowerCase() === match.gym.city.toLowerCase()).length).toBe(1);
+                });
+            });
+        });
+
+        it("should return all exact matches with lower score if no supplied city matches", () => {
+            let cities = ["kirkland", "seattle"];
+            let baseline = zone.tryGetGyms("find shiny deals at sprint");
+            let found = zone.tryGetGyms("find shiny deals at sprint", cities);
+
+            expect(found.length).toBe(baseline.length);
+            for (let i = 0; i < found.length; i++) {
+                let match = found[i];
+                expect(match.score).toBeLessThan(1);
+                expect(match.score).toBeLessThan(baseline[i].score);
+                expect(match.gym.officialName).toBe("Find shiny deals at Sprint");
+                expect(cities.filter((c) => c.toLowerCase() === match.gym.city.toLowerCase()).length).toBe(0);
+            }
+        });
+
+        it("should filter fuzzy matches by cities if supplied", () => {
+            [
+                { cities: ["redmond", "bellevue"], expectedCount: 2 },
+                { cities: ["redmond"], expectedCount: 1 },
+                { cities: ["woodinville", "redmond", "kirkland", "seattle"], expectedCount: 2 },
+            ].forEach((test) => {
+                let found = zone.tryGetGyms("sprint", test.cities);
+                expect(found.length).toBe(test.expectedCount);
+                found.forEach((match) => {
+                    expect(match.score).toBeLessThan(1);
+                    expect(match.gym.officialName).toBe("Find shiny deals at Sprint");
+                    expect(test.cities.filter((c) => c.toLowerCase() === match.gym.city.toLowerCase()).length).toBe(1);
+                });
+            });
+        });
+
+        it("should return all fuzzy matches with reduced score if no supplied city matches", () => {
+            let cities = ["kirkland", "seattle"];
+            let baseline = zone.tryGetGyms("sprint");
+            let found = zone.tryGetGyms("sprint", cities);
+
+            expect(found.length).toBe(baseline.length);
+            for (let i = 0; i < found.length; i++) {
+                let match = found[i];
+                expect(match.score).toBeLessThan(1);
+                expect(match.score).toBeLessThan(baseline[i].score);
+                expect(match.gym.officialName).toBe("Find shiny deals at Sprint");
+                expect(cities.filter((c) => c.toLowerCase() === match.gym.city.toLowerCase()).length).toBe(0);
+            }
+        });
+
+        it("should return an empty array if no matching gym is found", () => {
+            expect(zone.tryGetGyms("xyzzy").length).toBe(0);
+        });
     });
 });
