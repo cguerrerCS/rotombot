@@ -14,13 +14,11 @@ const goodGyms = [
         expected: {
             zones: ["Redmond"],
             city: "Redmond",
-            officialName: {
-                display: "Cleveland Fountain",
-                normalized: "clevelandfountain",
-            },
-            friendlyName: {
-                display: "Cleveland Fountain",
-                normalized: "clevelandfountain",
+            officialName: "Cleveland Fountain",
+            friendlyName: "Cleveland Fountain",
+            normalized: {
+                officialName: "clevelandfountain",
+                friendlyName: "clevelandfountain",
             },
             longitude: 47.673667,
             latitude: -122.125595,
@@ -39,13 +37,11 @@ const goodGyms = [
         expected: {
             zones: ["Redmond"],
             city: "Redmond",
-            officialName: {
-                display: "Mysterious Hatch",
-                normalized: "mysterioushatch",
-            },
-            friendlyName: {
-                display: "Reservoir Park",
-                normalized: "reservoirpark",
+            officialName: "Mysterious Hatch",
+            friendlyName: "Reservoir Park",
+            normalized: {
+                officialName: "mysterioushatch",
+                friendlyName: "reservoirpark",
             },
             longitude: 47.685378,
             latitude: -122.122394,
@@ -62,13 +58,11 @@ const goodGyms = [
         expected: {
             zones: ["Redmond", "Kirkland"],
             city: "Rose Hill",
-            officialName: {
-                display: "Tech City Bowl",
-                normalized: "techcitybowl",
-            },
-            friendlyName: {
-                display: "Tech City Bowl",
-                normalized: "techcitybowl",
+            officialName: "Tech City Bowl",
+            friendlyName: "Tech City Bowl",
+            normalized: {
+                officialName: "techcitybowl",
+                friendlyName: "techcitybowl",
             },
             longitude: 47.666658,
             latitude: -122.165583,
@@ -82,13 +76,11 @@ const goodGyms = [
         expected: {
             zones: ["Redmond", "Kirkland", "Bellevue"],
             city: "Houghton",
-            officialName: {
-                display: "'Bogus-Gym', in Houghton.",
-                normalized: "bogusgyminhoughton",
-            },
-            friendlyName: {
-                display: "Houghton \"Bogus\" gym #1",
-                normalized: "houghtonbogusgym1",
+            officialName: "'Bogus-Gym', in Houghton.",
+            friendlyName: "Houghton \"Bogus\" gym #1",
+            normalized: {
+                officialName: "bogusgyminhoughton",
+                friendlyName: "houghtonbogusgym1",
             },
             longitude: 47.666658,
             latitude: -122.165583,
@@ -101,10 +93,10 @@ const goodGyms = [
 function validateGym(actual, expected) {
     expect(actual.zones).toEqual(expected.zones);
     expect(actual.city).toEqual(expected.city);
-    expect(actual.officialName.display).toEqual(expected.officialName.display);
-    expect(actual.officialName.normalized).toEqual(expected.officialName.normalized);
-    expect(actual.friendlyName.display).toEqual(expected.friendlyName.display);
-    expect(actual.friendlyName.normalized).toEqual(expected.friendlyName.normalized);
+    expect(actual.officialName).toEqual(expected.officialName);
+    expect(actual.normalized.officialName).toEqual(expected.normalized.officialName);
+    expect(actual.friendlyName).toEqual(expected.friendlyName);
+    expect(actual.normalized.friendlyName).toEqual(expected.normalized.friendlyName);
     expect(actual.longitude).toBe(expected.longitude);
     expect(actual.latitude).toBe(expected.latitude);
     expect(actual.isExEligible).toBe(expected.isExEligible);
