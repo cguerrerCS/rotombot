@@ -192,7 +192,7 @@ describe("Gym object", () => {
         });
 
         it("should throw if any names are empty", () => {
-            expect(() => Gym.normalizeNames(["BLAH", "    "])).toThrowError("Cannot normalize an empty name.")
+            expect(() => Gym.normalizeNames(["BLAH", "    "])).toThrowError("Cannot normalize an empty name.");
         });
     });
 });
