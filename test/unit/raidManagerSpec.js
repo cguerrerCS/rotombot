@@ -4,30 +4,31 @@ const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
 const bosses = [
-    { name: "Latias", tier: "Tier 5" },
-    { name: "Ho-oh", tier: "Tier 5" },
-    { name: "Houndoom", tier: "Tier 4" },
-    { name: "Tyranitar", tier: "Tier 4" },
-    { name: "Aggron", tier: "Tier 4" },
-    { name: "Absol", tier: "Tier 4" },
-    { name: "Walrein", tier: "Tier 4" },
-    { name: "Machamp", tier: "Tier 3" },
-    { name: "Gengar", tier: "Tier 3" },
-    { name: "Jynx", tier: "Tier 3" },
-    { name: "Pinsir", tier: "Tier 3" },
-    { name: "Granbull", tier: "Tier 3" },
-    { name: "Piloswine", tier: "Tier 3" },
-    { name: "Exeggutor", tier: "Tier 2" },
-    { name: "Misdreavus", tier: "Tier 2" },
-    { name: "Sneasel", tier: "Tier 2" },
-    { name: "Sableye", tier: "Tier 2" },
-    { name: "Mawile", tier: "Tier 2" },
-    { name: "Magikarp", tier: "Tier 1" },
-    { name: "Wailmer", tier: "Tier 1" },
-    { name: "Swablu", tier: "Tier 1" },
-    { name: "Shuppet", tier: "Tier 1" },
-    { name: "Duskull", tier: "Tier 1" },
-    { name: "Snorunt", tier: "Tier 1" },
+    { name: "Latias", tier: "Tier 5", status: "active" },
+    { name: "Ho-oh", tier: "Tier 5", status: "active" },
+    { name: "Zapdos", tier: "Tier 5", status: "inactive" },
+    { name: "Houndoom", tier: "Tier 4", status: "active" },
+    { name: "Tyranitar", tier: "Tier 4", status: "active" },
+    { name: "Aggron", tier: "Tier 4", status: "active" },
+    { name: "Absol", tier: "Tier 4", status: "active" },
+    { name: "Walrein", tier: "Tier 4", status: "active" },
+    { name: "Machamp", tier: "Tier 3", status: "active" },
+    { name: "Gengar", tier: "Tier 3", status: "active" },
+    { name: "Jynx", tier: "Tier 3", status: "active" },
+    { name: "Pinsir", tier: "Tier 3", status: "active" },
+    { name: "Granbull", tier: "Tier 3", status: "active" },
+    { name: "Piloswine", tier: "Tier 3", status: "active" },
+    { name: "Exeggutor", tier: "Tier 2", status: "active" },
+    { name: "Misdreavus", tier: "Tier 2", status: "active" },
+    { name: "Sneasel", tier: "Tier 2", status: "active" },
+    { name: "Sableye", tier: "Tier 2", status: "active" },
+    { name: "Mawile", tier: "Tier 2", status: "active" },
+    { name: "Magikarp", tier: "Tier 1", status: "active" },
+    { name: "Wailmer", tier: "Tier 1", status: "active" },
+    { name: "Swablu", tier: "Tier 1", status: "active" },
+    { name: "Shuppet", tier: "Tier 1", status: "active" },
+    { name: "Duskull", tier: "Tier 1", status: "active" },
+    { name: "Snorunt", tier: "Tier 1", status: "active" },
 ];
 
 const badBosses = [
@@ -159,7 +160,7 @@ describe("raidManager", () => {
         it("should accept valid boss data", () => {
             let rm = new RaidManager();
             rm.setBossData(bosses);
-            expect(rm.bosses.length).toBe(bosses.length);
+            expect(rm.bosses.length).toBe(bosses.filter((b) => b.status !== "inactive").length);
         });
 
         it("should initialize the search object if no search is supplied", () => {
@@ -185,6 +186,26 @@ describe("raidManager", () => {
             spyOn(rm, "tryRestoreState");
             rm.setBossData(bosses);
             expect(rm.tryRestoreState).toHaveBeenCalled();
+        });
+
+        it("should respect boss active status", () => {
+            let rm = new RaidManager();
+            let numActive = 0;
+            let numInactive = 0;
+
+            rm.setBossData(bosses);
+            bosses.forEach((b) => {
+                if (b.status === "active") {
+                    expect(rm.tryGetBoss(b.name)).toBeDefined();
+                    numActive++;
+                }
+                else {
+                    expect(rm.tryGetBoss(b.name)).toBeUndefined();
+                    numInactive++;
+                }
+            });
+            expect(numActive).toBeGreaterThan(0);
+            expect(numInactive).toBeGreaterThan(0);
         });
     });
 
@@ -1166,7 +1187,7 @@ describe("raidManager", () => {
             expect(rm.list((r) => r.tier === 5).length).toBe(0);
         });
 
-        it("should move hatched eggs to active raid with unknown boss", () => {
+        it("should move hatched eggs to active raid with unknown boss if more than one boss is valid", () => {
             let rm = getTestRaidManager();
             let hatch = getOffsetDate(-5);
             rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
@@ -1183,6 +1204,30 @@ describe("raidManager", () => {
             expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
             expect(raids[0].pokemon).toBe(undefined);
         });
+
+        it("should move hatched eggs to active raid with expected boss if only one boss is valid", () => {
+            let myBosses = [{ name: "Latias", tier: "Tier 5", status: "active" }];
+            let rm = new RaidManager({ logger: undefined, strict: false, autosaveFile: undefined });
+            rm.setGymData(gyms);
+            rm.setBossData(myBosses);
+
+            let hatch = getOffsetDate(-5);
+            rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+
+            let raids = rm.list((r) => r.tier === 5);
+            expect(raids.length).toBe(1);
+            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raids[0].pokemon).toBeUndefined();
+
+            rm.raidListRefresh();
+
+            raids = rm.list((r) => r.tier === 5);
+            expect(raids.length).toBe(1);
+            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
+            expect(raids[0].pokemon).toBeDefined();
+            expect(raids[0].pokemon.name).toBe("Latias");
+        });
+
 
         it("should log when raids expire or hatch", () => {
             let testLogger = new TestLogger();
