@@ -161,12 +161,12 @@ const badGyms = [
 ];
 
 describe("Gym object", () => {
-    describe("fromCsvRecord", () => {
+    describe("fromCsvRow", () => {
         describe("with valid gyms", () => {
             goodGyms.forEach((gymSpec) => {
                 it(`should ${gymSpec.description}`, () => {
                     gymSpec.csv.forEach((csv) => {
-                        let gym = Gym.fromCsvRecord(csv);
+                        let gym = Gym.fromCsvRow(csv);
                         validateGym(gym, gymSpec.expected);
                     });
                 });
@@ -177,10 +177,22 @@ describe("Gym object", () => {
             badGyms.forEach((gymSpec) => {
                 it(`should throw on ${gymSpec.description}`, () => {
                     gymSpec.csv.forEach((csv) => {
-                        expect(() => Gym.fromCsvRecord(csv)).toThrowError(gymSpec.expectedError);
+                        expect(() => Gym.fromCsvRow(csv)).toThrowError(gymSpec.expectedError);
                     });
                 });
             });
+        });
+    });
+
+    describe("normalizeNames", () => {
+        it("should normalize all names in an array", () => {
+            expect(Gym.normalizeNames(["BLAH", "Some name with spaces and punctuation!", "this-is-a-test"])).toEqual([
+                "blah", "somenamewithspacesandpunctuation", "thisisatest",
+            ]);
+        });
+
+        it("should throw if any names are empty", () => {
+            expect(() => Gym.normalizeNames(["BLAH", "    "])).toThrowError("Cannot normalize an empty name.")
         });
     });
 });

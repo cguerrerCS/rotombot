@@ -111,23 +111,32 @@ Bellevue,Lake Hills,The Ridgedale Apartment Homes,The Ridgedale Apartment Homes,
 Bellevue,Lake Hills,Watching Washington,Watching Washington,47.600058,-122.1476750,NonEx
 Bellevue,Lake Hills,Sunset Hills Memorial Park North Entrance,Sunset Hills Memorial Park North Entrance,47.599717,-122.1528310,NonEx
 Bellevue,Lake Hills,Church Of Christ Lake Hills,Church Of Christ Lake Hills,47.597962,-122.1506150,NonEx
-Bellevue,Lake Hills,Starbucks (Lake Hills),Starbucks (Lake Hills),47.596722,-122.1487740,NonEx
+Bellevue,Lake Hills,Starbucks (Lake Hills),Starbucks (Lake Hills),47.596722,-122.1487740,ExEligible
 Bellevue,Lake Hills,Sunset Hills Memorial Park,Sunset Hills Memorial Park,47.596132,-122.1504920,NonEx
 Bellevue,Lake Hills,Bellevue College Fountain,Bellevue College Fountain,47.584392,-122.1495150,NonEx
 Bellevue,Lake Hills,The Other Woman,The Other Woman,47.583665,-122.1497270,NonEx
 Bellevue,Lake Hills,Sunset Park,Sunset Park,47.587397,-122.1554420,NonEx
 Bellevue,Lake Hills,Balance of Order,Balance of Order,47.580375,-122.1522270,NonEx
 Bellevue,Lake Hills,Freeway Fish,Freeway Fish,47.579568,-122.1516140,NonEx
+Bellevue,Overlake,Brown Bear Car Wash Bel-Red,Brown Bear Car Wash Bel-Red,47.628316,-122.1363500,NonEx
+Bellevue,Overlake,Highland Covenant Church,Highland Covenant Church,47.627729,-122.1381680,NonEx
+Bellevue,Overlake,Starbucks (Overlake),Starbucks (Overlake),47.628162,-122.1411100,ExEligible
+Bellevue,Overlake,Overlake Black Bears,Overlake Black Bears,47.631661,-122.1433360,NonEx
+Bellevue,Overlake,Bellevue Totem,Bellevue Totem,47.629342,-122.1473680,NonEx
+Bellevue,Overlake,Salmon Woman and Raven,Salmon Woman and Raven,47.625192,-122.1505380,NonEx
+Redmond|Bellevue,Overlake,Electric Blue Tower of Power,Electric Blue Tower of Power,47.630915,-122.1346100,NonEx
+Redmond|Bellevue,Overlake,Giant Leaves,Giant Leaves,47.632664,-122.1362880,NonEx
+Redmond|Bellevue,Overlake,All Saints Lutheran Church,All Saints Lutheran Church,47.657134,-122.143459,NonEx
+Redmond|Bellevue,Overlake,North Bellevue Community Center,NBCC,47.647675,-122.1433,NonEx
+Redmond|Bellevue,Overlake,Qdoba Mural,Qdoba Mural,47.631969,-122.1382990,NonEx
 Redmond,Overlake,Running Man Sidewalk,RedWest (Sidewalk),47.660022,-122.141825,NonEx
 Redmond,Overlake,Step Waterfall,RedWest (Waterfall),47.65896,-122.140784,NonEx
 Redmond,Overlake,Microsoft Redwest Wetlands East,RedWest (Wetlands),47.656599,-122.138512,NonEx
-Redmond,Overlake,All Saints Lutheran Church,All Saints Lutheran Church,47.657134,-122.143459,NonEx
 Redmond,Overlake,Tree Cave,RedWest (Tree Cave),47.655397,-122.140535,NonEx
 Redmond,Overlake,Nintendo Sign,Nintendo Sign,47.654689,-122.141007,NonEx
 Redmond,Overlake,Nintendo of America,Nintendo Building,47.651046,-122.140126,NonEx
 Redmond,Overlake,Running Man Corner,Microsoft B88,47.653868,-122.134799,NonEx
 Redmond,Overlake,Running Man Trail Marker,Microsoft B84,47.649877,-122.134852,NonEx
-Redmond,Overlake,North Bellevue Community Center,NBCC,47.647675,-122.1433,NonEx
 Redmond,Overlake,Ling Shen Ching Tze Temple,Ling Shen Temple,47.646527,-122.112718,NonEx
 Redmond,Overlake,Stormwater Pond,Bel-Red Stormwater Pond,47.64598,-122.114528,NonEx
 Redmond,Overlake,Idylwood Park South Side,Idylwood Park (South Side),47.641949,-122.103427,NonEx
@@ -149,17 +158,8 @@ Redmond,Overlake,Truck In A Tree,Microsoft B30,47.644983,-122.121525,NonEx
 Redmond,Overlake,Microsoft Fitness Trail,Microsoft Fitness Trail,47.643633,-122.120667,NonEx
 Redmond,Overlake,Creekside Covenant Church,Creekside Covenant Church,47.630389,-122.109666,NonEx
 Redmond,Overlake,Overlake Park Presbyterian Church,Overlake Park Prebyterian Church,47.627528,-122.131699,NonEx
-Redmond,Overlake,Electric Blue Tower of Power,Electric Blue Tower of Power,47.630915,-122.1346100,NonEx
-Redmond,Overlake,Giant Leaves,Giant Leaves,47.632664,-122.1362880,NonEx
-Redmond,Overlake,Qdoba Mural,Qdoba Mural,47.631969,-122.1382990,NonEx
-Redmond,Overlake,Brown Bear Car Wash Bel-Red,Brown Bear Car Wash Bel-Red,47.628316,-122.1363500,NonEx
-Redmond,Overlake,Highland Covenant Church,Highland Covenant Church,47.627729,-122.1381680,NonEx
-Redmond,Overlake,Starbucks (Overlake),Starbucks (Overlake),47.628162,-122.1411100,NonEx
-Redmond,Overlake,Overlake Black Bears,Overlake Black Bears,47.631661,-122.1433360,NonEx
 Redmond,Overlake,Commissioner's Waterway,Commissioner's Waterway,47.626196,-122.1434900,NonEx
-Redmond,Overlake,Bellevue Totem,Bellevue Totem,47.629342,-122.1473680,NonEx
 Redmond,Overlake,Brown Bear,Brown Bear,47.616887,-122.1428960,NonEx
-Redmond,Overlake,Salmon Woman and Raven,Salmon Woman and Raven,47.625192,-122.1505380,NonEx
 Redmond,Overlake,Lake Sammamish Foursquare Church,Foursquare Church,47.617415,-122.1464740,NonEx
 Redmond,Overlake,Leaf Seat,Leaf Seat,47.616016,-122.1535190,NonEx
 Redmond,Overlake,Islamic Center of the Eastside,Islamic Center of the Eastside,47.610085,-122.1440990,NonEx
@@ -198,7 +198,7 @@ Redmond,Redmond,Wild Silhouettes,Avondale Bus Stop,47.678821,-122.104461,NonEx
 Redmond,Redmond,Ashford Park Gazebo,Ashford Park Gazebo,47.682791,-122.100218,NonEx
 Redmond,Redmond,Sunset Grove Park Gazebo,Sunset Grove Gazebo,47.685978,-122.096297,NonEx
 Redmond,Redmond,Anderson Park,Anderson Park,47.67374,-122.116119,NonEx
-Redmond,Redmond,Find shiny deals at Sprint,Redmond Sprint,47.670882,-122.114047,NonEx
+Redmond,Redmond,Find shiny deals at Sprint,Redmond Sprint,47.670882,-122.114047,ExEligible
 Redmond,Redmond,Salmon Circles II,Red Robin,47.670266,-122.113983,NonEx
 Redmond,Redmond,Bear Creek Crossing,Redmond Panera,47.671026,-122.110648,NonEx
 Redmond,Redmond,Riparian Area,Safeway/Riparian,47.67182,-122.108778,ExEligible
