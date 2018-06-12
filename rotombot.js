@@ -64,7 +64,7 @@ function reportError(message, cmd, error, syntax) {
 }
 
 function addRaidChannels() {
-    console.log("Serving channels:\n");
+    let output = [];
     for (let kvp of client.channels) {
         let channel = kvp[1];
         if (channel.type === "text") {
@@ -78,13 +78,19 @@ function addRaidChannels() {
                     let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic);
                     client.raidManager.addRaidChannel(raidChannel);
                     raidChannel.update();
-                    console.log(`    Reporting "${channel.topic}" on ${channel.guild.name}/${channel.name}\n`);
+                    output.push(`    Reporting on ${channel.guild.name}/${channel.name} [${channel.topic}]\n`);
                 }
                 else {
-                    console.log(`    Listening on ${channel.guild.name}/${channel.name}\n`);
+                    output.push(`    Listening on ${channel.guild.name}/${channel.name}\n`);
                 }
             }
         }
+    }
+
+    if (output.length > 0) {
+        console.log("Serving channels:\n");
+        output.sort();
+        output.forEach((line) => console.log(line));
     }
 }
 
