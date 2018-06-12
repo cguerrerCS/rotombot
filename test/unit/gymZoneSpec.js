@@ -125,10 +125,11 @@ describe("GymZone object", () => {
             ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
             ["Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
             ["Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
-            ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
-            ["Bellevue", "Bellevue", "Find shiny deals at Sprint", "Bellevue Sprint (fake)", 47.622703, -122.1625050, "NonEx"],
+            ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint (defunct)", 47.670882, -122.114047, "ExEligible"],
+            ["Bellevue|Redmond", "Bellevue", "Find shiny deals at Sprint", "Bellevue Sprint (imaginary)", 47.622703, -122.1625050, "NonEx"],
             ["Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
             ["Bellevue", "Lake Hills", "Starbucks", "Starbucks (Lake Hills)", 47.596722, -122.1487740, "ExEligible"],
+            ["Bellevue", "Overlake", "Starbucks", "Ezell's Starbucks", 47.625049, 122.155033, "ExEligible"],
             ["Bellevue", "Overlake", "Starbucks (Overlake)", "Starbucks", 47.628162, -122.1411100, "ExEligible"],
             ["Bellevue", "Bridle Trails", "Westminster \"W\"", "Westminster \"W\"", 47.632738, -122.1573250, "NonEx"],
         ];
