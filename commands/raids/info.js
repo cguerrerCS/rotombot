@@ -36,7 +36,8 @@ class info extends commando.Command {
         var infoContent =
             `Name: *${gym.officialName}*\n` +
             `Friendly Name: *${gym.friendlyName}*\n` +
-            `City: *${gym.city}*\n`;
+            `City: *${gym.city}*\n` +
+            `Zones: *${gym.zones.join(",")}*\n`;
 
         let raid = client.raidManager.tryGetRaid(gym.key);
         if (raid) {
@@ -52,7 +53,7 @@ class info extends commando.Command {
             }
         }
 
-        infoContent += `Directions: *${gym.mapLink}*\n`;
+        infoContent += `Directions: *<${gym.mapLink}>*\n`;
 
         message.channel.send(infoContent);
     }
