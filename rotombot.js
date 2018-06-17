@@ -75,7 +75,7 @@ function addRaidChannels() {
             let canReadHistory = permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY);
             if (canRead && canSend) {
                 if (canManage && canReadHistory && channel.topic && channel.topic.startsWith("!raids ")) {
-                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic);
+                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic, client.user);
                     client.raidManager.addRaidChannel(raidChannel);
                     raidChannel.update();
                     output.push(`    Reporting on ${channel.guild.name}/${channel.name} [${channel.topic}]\n`);
