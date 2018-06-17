@@ -105,7 +105,7 @@ class raids extends commando.Command {
                             helpExamples = omwCanceExampleIndex;
                             break;
                         default:
-                            client.reportError(message, "!omw", `My circuitzzz are tingling! I didn't recognize the verb "${verb}"`);
+                            client.reportError(message, "!iam", `My circuitzzz are tingling! I didn't recognize the verb "${verb}"`);
                             return;
                     }
                 }
@@ -114,7 +114,7 @@ class raids extends commando.Command {
                     if (match === null) {
                         client.reportError(
                             message,
-                            "!add",
+                            "!iam",
                             "My circuitzzz are tingling! I didn't understand that command..."
                         );
                         return;
@@ -142,7 +142,7 @@ class raids extends commando.Command {
             helpExamples.forEach((i) => {
                 help += this.examples[i] + "\n";
             });
-            client.reportError(message, "!omw", err, help);
+            client.reportError(message, "!iam", err, help);
         }
     }
 }

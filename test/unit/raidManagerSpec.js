@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs");
 const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
@@ -94,6 +95,10 @@ var TestLogger = function () {
 
 TestLogger.prototype.log = function (msg) {
     this.output.push(msg);
+};
+
+TestLogger.prototype._reset = function () {
+    this.output = [];
 };
 
 var TestSearch = function () {
@@ -496,6 +501,29 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             rm._forceRaid("market", 5, undefined, "0110", 117);
             expect(() => rm.listFormatted()).toThrowError("Internal error: unexpected raid state 117");
+        });
+
+        it("should preserve raiders when updating a raid", () => {
+            let raiderInfo = {
+                raiderName: "Test Raider",
+                gym: undefined,
+                etaTime: undefined,
+                arrivalTime: undefined,
+                startTime: undefined,
+                endTime: undefined,
+                code: undefined,
+            };
+            let rm = getTestRaidManager();
+            let raid = rm._forceRaid("painted", 5, undefined, new Date());
+            expect(raid.raiders["Test Raider"]).toBeUndefined();
+            rm.addOrUpdateRaider("painted", raiderInfo);
+            raid = rm.tryGetRaid("painted");
+            expect(raid.raiders["Test Raider"]).toBeDefined();
+
+            rm._forceRaid("painted", 4, undefined, new Date());
+            raid = rm.tryGetRaid("painted");
+            expect(raid.tier).toBe(4);
+            expect(raid.raiders["Test Raider"]).toBeDefined();
         });
 
         it("should not report a raids update", () => {
@@ -1356,6 +1384,174 @@ describe("raidManager", () => {
             for (let i = 0; i < r1.length; i++) {
                 expect(r1[i]).toEqual(r2[i]);
             }
+        });
+    });
+
+    describe("tryRestoreState method", () => {
+        function getBaselineState(extra) {
+            let baseline = getTestRaidManager();
+            baseline.addEggCountdown(5, "erratic", 20);
+            baseline.addEggCountdown(4, "wells", 10);
+            baseline.addRaid("machamp", "elephants", 40);
+            baseline.addOrUpdateRaider("erratic", { raiderName: "Fake Raider" });
+            if (extra) {
+                extra(baseline);
+            }
+            return JSON.stringify(baseline.getSaveState());
+        }
+
+        it("should silently continue if the restore file does not exist", () => {
+            let logger = new TestLogger();
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            spyOn(fs, "existsSync").and.returnValue(false);
+            spyOn(fs, "readFileSync").and.returnValue("");
+            getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            expect(fs.existsSync).toHaveBeenCalled();
+            expect(fs.readFileSync).not.toHaveBeenCalled();
+            expect(fs.writeFileSync).not.toHaveBeenCalled();
+        });
+
+        it("should restore from the raid file if it exists", () => {
+            let logger = new TestLogger();
+            let baselineState = getBaselineState();
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            spyOn(fs, "existsSync").and.returnValue(true);
+            spyOn(fs, "readFileSync").and.callFake(() => { return baselineState; });
+
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            expect(fs.existsSync).toHaveBeenCalled();
+            expect(fs.readFileSync).toHaveBeenCalled();
+            expect(fs.writeFileSync).toHaveBeenCalled();
+
+            expect(JSON.stringify(rm.getSaveState())).toBe(baselineState);
+        });
+
+        it("should remove any expired raids on restore", () => {
+            let logger = new TestLogger();
+            let baselineState = getBaselineState((rm) => {
+                let hatch = getOffsetDate(-50);
+                rm._forceRaid("reservoir", 5, "machamp", hatch);
+            });
+
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            spyOn(fs, "existsSync").and.returnValue(true);
+            spyOn(fs, "readFileSync").and.callFake(() => { return baselineState; });
+
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            expect(fs.existsSync).toHaveBeenCalled();
+            expect(fs.readFileSync).toHaveBeenCalled();
+            expect(fs.writeFileSync).toHaveBeenCalled();
+
+            expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);
+        });
+
+        it("should log and ignore unknown gyms", () => {
+            let logger = new TestLogger();
+            let baselineState = getBaselineState().replace("Elephants", "Camels");
+
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            spyOn(fs, "existsSync").and.returnValue(true);
+            spyOn(fs, "readFileSync").and.callFake(() => { return baselineState; });
+
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            expect(fs.existsSync).toHaveBeenCalled();
+            expect(fs.readFileSync).toHaveBeenCalled();
+            expect(fs.writeFileSync).toHaveBeenCalled();
+
+            expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);
+        });
+
+        it("should log an error but catch any exception if restore fails", () => {
+            let logger = new TestLogger();
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            spyOn(fs, "existsSync").and.returnValue(true);
+            spyOn(fs, "readFileSync").and.throwError("fake error");
+            getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            expect(fs.existsSync).toHaveBeenCalled();
+            expect(fs.readFileSync).toHaveBeenCalled();
+            expect(fs.writeFileSync).not.toHaveBeenCalled();
+            expect(logger.output[logger.output.length - 1]).toMatch(/error restoring.*fake error/i);
+        });
+
+        it("should log an error but catch any exception if the file is corrupt", () => {
+            let logger = new TestLogger();
+            let fakeFileContents = undefined;
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            spyOn(fs, "existsSync").and.returnValue(true);
+            spyOn(fs, "readFileSync").and.callFake(() => fakeFileContents);
+            [
+                { contents: "{\n", expectedError: /error restoring.*json/i },
+                { contents: "{}", expectedError: /error restoring.*not a function/i },
+            ].forEach((badValue) => {
+                fakeFileContents = badValue;
+                getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+                expect(fs.existsSync).toHaveBeenCalled();
+                expect(fs.readFileSync).toHaveBeenCalled();
+                expect(fs.writeFileSync).not.toHaveBeenCalled();
+                expect(logger.output[logger.output.length - 1]).toMatch(/error restoring.*JSON/i);
+            });
+        });
+    });
+
+    describe("trySaveState method", () => {
+        function verifyWriteFileCall(file, state, options, expectedState) {
+            expect(file).toMatch(/test\.json/i);
+            expect(options.encoding).toBe("utf8");
+            expect(options.flag).toBe("w");
+            if (expectedState) {
+                expect(state).toBe(expectedState);
+            }
+        }
+
+        it("should try to write state to the autosave file", () => {
+            spyOn(fs, "writeFileSync").and.callFake(myVerifyWrite);
+            let rm = getTestRaidManager({ logger: undefined, strict: false, autosaveFile: "state/test.json" });
+            rm.addEggCountdown(5, "erratic", 20);
+            rm.addEggCountdown(4, "wells", 10);
+            rm.addRaid("machamp", "elephants", 40);
+            rm.addOrUpdateRaider("elephants", { raiderName: "fake raider" });
+
+            let expectedCount = fs.writeFileSync.calls.count() + 1;
+            let expectedState = JSON.stringify(rm.getSaveState());
+            rm.trySaveState();
+            expect(fs.writeFileSync.calls.count()).toEqual(expectedCount);
+
+            function myVerifyWrite(file, state, options) {
+                verifyWriteFileCall(file, state, options, expectedState);
+            }
+        });
+
+        it("should log a successful write to the autosave file", () => {
+            let logger = new TestLogger();
+            spyOn(fs, "writeFileSync").and.returnValue(true);
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            rm.addEggCountdown(5, "erratic", 20);
+            rm.addEggCountdown(4, "wells", 10);
+            rm.addRaid("machamp", "elephants", 40);
+
+            logger._reset();
+            rm.trySaveState();
+            expect(logger.output[0]).toMatch(/saved state to/i);
+        });
+
+        it("should log a failed write to the autosave file and catch the exception", () => {
+            let shouldFail = false;
+            let logger = new TestLogger();
+            spyOn(fs, "writeFileSync").and.callFake(() => { 
+                if (shouldFail) {
+                    throw new Error("fake error");
+                }
+            });
+
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+            rm.addEggCountdown(5, "erratic", 20);
+            rm.addEggCountdown(4, "wells", 10);
+            rm.addRaid("machamp", "elephants", 40);
+
+            shouldFail = true;
+            logger._reset();
+            rm.trySaveState();
+            expect(logger.output[0]).toMatch(/error saving raid state/i);
         });
     });
 });
