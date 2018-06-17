@@ -195,4 +195,26 @@ describe("Gym object", () => {
             expect(() => Gym.normalizeNames(["BLAH", "    "])).toThrowError("Cannot normalize an empty name.");
         });
     });
+
+    describe("belongsToZone", () => {
+        let gymSpec = [["Redmond", "Kirkland", "Greater Seattle"], "Rose Hill", "Tech City Bowl", "Tech City Bowl", 47.666658, -122.165583, false];
+        let gym = Gym.fromCsvRow(gymSpec);
+
+        it("should accept a single zone as a string", () => {
+            expect(gym.belongsToZone("redmond")).toBe(true);
+            expect(gym.belongsToZone("kirkland")).toBe(true);
+            expect(gym.belongsToZone("greaterseattle")).toBe(true);
+        });
+
+        it("should accept a several zones as an array", () => {
+            expect(gym.belongsToZone(["redmond", "kirkland", "greaterseattle"])).toBe(true);
+        });
+
+        it("should normalize the specified zone or zones", () => {
+            expect(gym.belongsToZone("Redmond")).toBe(true);
+            expect(gym.belongsToZone("Kirkland")).toBe(true);
+            expect(gym.belongsToZone("Greater Seattle")).toBe(true);
+            expect(gym.belongsToZone(["Redmond", "Kirkland", "Greater Seattle"])).toBe(true);
+        });
+    });
 });

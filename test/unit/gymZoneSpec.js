@@ -42,6 +42,18 @@ describe("GymZone object", () => {
                 expect(zone.all.length).toBe(gyms.length);
             });
 
+            it("should allow fuzzy matching threshold to be set", () => {
+                let gyms = [
+                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                ];
+                [0.4, 0.8].forEach((threshold) => {
+                    let zone = GymZone.fromCsvData(gyms, "Redmond", { fuzzyThreshold: threshold });
+                    expect(zone).toBeDefined();
+                    expect(zone.all.length).toBe(gyms.length);
+                    expect(zone.fuzzyThreshold).toBe(threshold);
+                });
+            });
+
             it("should throw if any gyms are not from the zone", () => {
                 let gyms = [
                     ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
