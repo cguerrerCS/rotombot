@@ -3,6 +3,7 @@
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
 const RaidChannel = require("./lib/raidChannel");
+const Utils = require("./lib/utils");
 
 const { CommandoClient } = require("discord.js-commando");
 const isDevelopment = false;
@@ -18,13 +19,11 @@ client.registry.registerCommandsIn(__dirname + "/commands");
 
 const fs = require("fs");
 const CsvReader = require("csv-reader");
-let inputRaidDataStream = fs.createReadStream("RaidLocations.csv", "utf8");
+let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
 let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
 
 let raidManager = new RaidManager();
-let raidData = [];
-let raidBossData = [];
 let tokens = {};
 
 // Login logic for the bot:
@@ -103,35 +102,17 @@ client.on("ready", () => {
 
     addRaidChannels();
 
-    // read in all raid data
-    inputRaidDataStream
-        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-        .on("data", function (row) {
-            let data = {
-                city: row[0],
-                name: row[1],
-                friendlyName: row[2],
-                lng: row[3],
-                lat: row[4],
-                mapLink: `https://www.google.com/maps/dir/?api=1&destination=${row[3]},${row[4]}`,
-            };
-            raidData.push(data);
-        })
-        .on("end", function () {
-            client.raidManager.setGymData(raidData);
-        });
+    client.raidManager.initGymDataAsync(inputRaidDataStream);
 
-    inputRaidBossDataStream
-        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-        .on("data", function (row) {
-            let data = {
+    Utils.processCsvAsync(inputRaidBossDataStream,
+        (row) => {
+            return {
                 name: row[0],
                 tier: row[1],
                 status: row[2],
             };
-            raidBossData.push(data);
-        })
-        .on("end", function () {
-            client.raidManager.setBossData(raidBossData);
+        },
+        (collection) => {
+            client.raidManager.setBossData(collection);
         });
 });
