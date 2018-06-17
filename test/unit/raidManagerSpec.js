@@ -972,7 +972,7 @@ describe("raidManager", () => {
             expect(rm.addEggCountdown(1, "clock tower", 25)).toBeDefined();
             expect(rm.addRaid("hooh", "wells", 10));
             expect(rm.addRaid("ttar", "city hall", 40));
-            expect(rm.addRaid("machamp", "library", 30));
+            expect(rm.addRaid("machamp", "wisdom seekers", 30));
             expect(rm.addRaid("sableeye", "erratic", 25));
             expect(rm.addRaid("magickarp", "ben franklin", 15));
 
@@ -1079,7 +1079,7 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             expect(rm.addRaid("hooh", "wells", 10));
             expect(rm.addRaid("ttar", "city hall", 40));
-            expect(rm.addRaid("machamp", "library", 30));
+            expect(rm.addRaid("machamp", "wisdom seekers", 30));
             expect(rm.addRaid("sableeye", "erratic", 25));
             expect(rm.addRaid("magickarp", "leaf inlay", 15));
 
