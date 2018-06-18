@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require("fs");
+const GymDirectory = require("../../lib/gymDirectory");
 const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
@@ -39,49 +40,52 @@ const badBosses = [
     { tier: "Tier 4" },
 ];
 
-const gyms = [
-    { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595" },
-    { city: "Redmond", name: "Gridlock Light Sculpture", friendlyName: "Gridlock", lng: "47.673298", lat: "-122.125256" },
-    { city: "Redmond", name: "Painted Parking Lot", friendlyName: "Painted Parking Lot", lng: "47.672712", lat: "-122.124617" },
-    { city: "Redmond", name: "Redmond Town Center Fish Statue", friendlyName: "Farmers Market", lng: "47.671892", lat: "-122.124425" },
-    { city: "Redmond", name: "Redmond Clock Tower", friendlyName: "Clock Tower", lng: "47.674170", lat: "-122.123056" },
-    { city: "Redmond", name: "Victors Coffee Co. and Roasters", friendlyName: "Victors Coffeeshop", lng: "47.674577", lat: "-122.121900" },
-    { city: "Redmond", name: "Redmond's Erratic", friendlyName: "Redmond Erratic", lng: "47.671955", lat: "-122.119251" },
-    { city: "Redmond", name: "Kids Playing Baseball Mural", friendlyName: "Mattress Firm", lng: "47.672620", lat: "-122.116819" },
-    { city: "Redmond", name: "BJ's Brewmural", friendlyName: "BJs Brewhouse", lng: "47.668914", lat: "-122.119748" },
-    { city: "Redmond", name: "Mural (Wells Fargo)", friendlyName: "Wells Fargo", lng: "47.678650", lat: "-122.127309" },
-    { city: "Redmond", name: "Wisdom Seekers in Redmond", friendlyName: "Redmond Library", lng: "47.678799", lat: "-122.128532" },
-    { city: "Redmond", name: "Luke McRedmond's Paired Beavers", friendlyName: "Luke McRedmond", lng: "47.673250", lat: "-122.132160" },
-    { city: "Redmond", name: "Soulfood Books and Cafe", friendlyName: "Soul Foods", lng: "47.675219", lat: "-122.130386" },
-    { city: "Redmond", name: "West Ironcycle", friendlyName: "Ben Franklin", lng: "47.675691", lat: "-122.130123" },
-    { city: "Redmond", name: "Hunting Fox", friendlyName: "city Hall", lng: "47.678920", lat: "-122.130520" },
-    { city: "Redmond", name: "Weiner Elephants", friendlyName: "Redmond PD", lng: "47.680386", lat: "-122.128889" },
-    { city: "Redmond", name: "Portal II", friendlyName: "Portal 2", lng: "47.680447", lat: "-122.131723" },
-    { city: "Redmond", name: "The Last Test", friendlyName: "Last Test", lng: "47.682691", lat: "-122.132021" },
-    { city: "Redmond", name: "Community Rockstars", friendlyName: "Community Rockstars", lng: "47.683612", lat: "-122.132734" },
-    { city: "Redmond", name: "Redmond Twist", friendlyName: "Evergreen", lng: "47.681979", lat: "-122.123692" },
-    { city: "Redmond", name: "Mysterious Hatch", friendlyName: "Reservoir Park", lng: "47.685378", lat: "-122.122394" },
-    { city: "Redmond", name: "Nike Park", friendlyName: "Nike Park", lng: "47.683823", lat: "-122.110841" },
-    { city: "Redmond", name: "St. Jude Walking Trail", friendlyName: "St Judes", lng: "47.693495", lat: "-122.116883" },
-    { city: "Redmond", name: "Redmond Meadow Park", friendlyName: "Meadow Park", lng: "47.695703", lat: "-122.126550" },
-    { city: "Redmond", name: "Leaf Inlay in Sidewalk", friendlyName: "Leaf Inlay", lng: "47.689362", lat: "-122.114435" },
-    { city: "Redmond", name: "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", friendlyName: "LDS (Hartman Park)", lng: "47.690909", lat: "-122.110964" },
-    { city: "Redmond", name: "Hartman Park", friendlyName: "Hartman Park Sign", lng: "47.691002", lat: "-122.110177" },
-    { city: "Redmond", name: "Jim Palmquist Memorial Plaque", friendlyName: "Hartman Park (Baseball)", lng: "47.692436", lat: "-122.107328" },
-    { city: "Redmond", name: "Redmond Pool", friendlyName: "Redmond Pool", lng: "47.692516", lat: "-122.106308" },
-    { city: "Redmond", name: "Bear Creek Water Tower", friendlyName: "Bear Creek Water Tower", lng: "47.687974", lat: "-122.103674" },
-    { city: "Redmond", name: "Education Hill Pig", friendlyName: "Education Hill Pig", lng: "47.674945", lat: "-122.111546" },
+const gymSpecs = [
+    // Zones,City,Official Name,Friendly Name,Longitude,Latitude,ExStatus
+    ["Rain City", "Redmond", "Cleveland Fountain", "Cleveland Fountain", 47.673667, -122.125595, "NonEx"],
+    ["Rain City", "Redmond", "Gridlock Light Sculpture", "Gridlock", 47.673298, -122.125256, "ExEligible"],
+    ["Rain City", "Redmond", "Painted Parking Lot", "Painted Parking Lot", 47.672712, -122.124617, "ExEligible"],
+    ["Rain City", "Redmond", "Redmond Town Center Fish Statue", "Farmers Market", 47.671892, -122.124425, "ExEligible"],
+    ["Rain City", "Redmond", "Redmond Clock Tower",  "Clock Tower", 47.674170,  -122.123056, "NonEx"],
+    ["Rain City", "Redmond", "Victors Coffee Co. and Roasters",  "Victors Coffeeshop", 47.674577,  -122.121900, "NonEx"],
+    ["Rain City", "Redmond", "Redmond's Erratic",  "Redmond Erratic", 47.671955,  -122.119251, "NonEx"],
+    ["Rain City", "Redmond", "Kids Playing Baseball Mural",  "Mattress Firm", 47.672620,  -122.116819, "NonEx"],
+    ["Rain City", "Redmond", "BJ's Brewmural", "BJs Brewhouse", 47.668914,  -122.119748, "NonEx"],
+    ["Rain City", "Redmond", "Mural (Wells Fargo)", "Wells Fargo", 47.678650,  -122.127309, "NonEx"],
+    ["Rain City", "Redmond", "Wisdom Seekers in Redmond", "Redmond Library", 47.678799,  -122.128532, "NonEx"],
+    ["Rain City", "Redmond", "Luke McRedmond's Paired Beavers", "Luke McRedmond", 47.673250,  -122.132160, "NonEx"],
+    ["Rain City", "Redmond", "Soulfood Books and Cafe", "Soul Foods", 47.675219,  -122.130386, "NonEx"],
+    ["Rain City", "Redmond", "West Ironcycle", "Ben Franklin", 47.675691,  -122.130123, "NonEx"],
+    ["Rain City", "Redmond", "Hunting Fox", "city Hall", 47.678920,  -122.130520, "NonEx"],
+    ["Rain City", "Redmond", "Weiner Elephants", "Redmond PD", 47.680386,  -122.128889, "NonEx"],
+    ["Rain City", "Redmond", "Portal II", "Portal 2", 47.680447,  -122.131723, "NonEx"],
+    ["Rain City", "Redmond", "The Last Test", "Last Test", 47.682691,  -122.132021, "NonEx"],
+    ["Rain City", "Redmond", "Community Rockstars", "Community Rockstars", 47.683612,  -122.132734, "NonEx"],
+    ["Rain City", "Redmond", "Redmond Twist", "Evergreen", 47.681979,  -122.123692, "NonEx"],
+    ["Rain City", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378,  -122.122394, "NonEx"],
+    ["Rain City", "Redmond", "Nike Park", "Nike Park", 47.683823,  -122.110841, "NonEx"],
+    ["Rain City", "Redmond", "St. Jude Walking Trail", "St Judes", 47.693495,  -122.116883, "NonEx"],
+    ["Rain City", "Redmond", "Redmond Meadow Park", "Meadow Park", 47.695703,  -122.126550, "NonEx"],
+    ["Rain City", "Redmond", "Leaf Inlay in Sidewalk", "Leaf Inlay", 47.689362,  -122.114435, "NonEx"],
+    ["Rain City", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909,  -122.110964, "NonEx"],
+    ["Rain City", "Redmond", "Hartman Park", "Hartman Park Sign", 47.691002,  -122.110177, "NonEx"],
+    ["Rain City", "Redmond", "Jim Palmquist Memorial Plaque", "Hartman Park (Baseball)", 47.692436,  -122.107328, "NonEx"],
+    ["Rain City", "Redmond", "Redmond Pool", "Redmond Pool", 47.692516,  -122.106308, "NonEx"],
+    ["Rain City", "Redmond", "Bear Creek Water Tower", "Bear Creek Water Tower", 47.687974,  -122.103674, "NonEx"],
+    ["Rain City", "Redmond", "Education Hill Pig", "Education Hill Pig", 47.674945,  -122.111546, "NonEx"],
 ];
 
+const gymDirectory = GymDirectory.fromCsvData(gymSpecs);
+
 let badGyms = [
-    { name: "Gridlock Light Sculpture", friendlyName: "Gridlock", lng: "47.673298", lat: "-122.125256" },
+    ["", "", "Gridlock Light Sculpture", "Gridlock", 47.673298, -122.125256, "NonEx"],
 ];
 
 function getTestRaidManager(options) {
     options = options || { logger: undefined, strict: false, autosaveFile: undefined };
     let rm = new RaidManager(options);
     rm.setBossData(bosses);
-    rm.setGymData(gyms);
+    rm.setGymData(gymDirectory);
     return rm;
 }
 
@@ -113,21 +117,10 @@ describe("raidManager", () => {
     describe("setGymData method", () => {
         it("should accept valid gym data", () => {
             let rm = new RaidManager();
-            rm.setGymData(gyms);
-            expect(rm.gyms.length).toBe(gyms.length);
-        });
-
-        it("should initialize the search object if no search is supplied", () => {
-            let rm = new RaidManager();
-            rm.setGymData(gyms);
-            expect(rm.gymSearch).toBeDefined();
-        });
-
-        it("should use a prebuilt search object if supplied", () => {
-            let searchObject = new TestSearch();
-            let rm = new RaidManager();
-            rm.setGymData(gyms, searchObject);
-            expect(rm.gymSearch).toBe(searchObject);
+            rm.setGymData(gymDirectory);
+            let expectGyms = gymSpecs.length;
+            let gotGyms = rm.gyms.numGyms();
+            expect(gotGyms).toBe(expectGyms);
         });
 
         it("should throw for invalid gym data", () => {
@@ -135,28 +128,20 @@ describe("raidManager", () => {
             expect(() => rm.setGymData(badGyms)).toThrowError();
         });
 
-        it("should add a mapLink if none is supplied", () => {
+        it("should add a mapLink", () => {
             let rm = new RaidManager();
             let myGyms = [
-                { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595" },
+                ["Rain City", "Redmond", "Cleveland Fountain", "Cleveland Fountain", 47.673667, -122.125595, "NonEx"],
             ];
-            rm.setGymData(myGyms);
-            expect(rm.gyms[0].mapLink).toBeDefined();
-        });
-
-        it("should use the supplied mapLink if present", () => {
-            let rm = new RaidManager();
-            let myGyms = [
-                { city: "Redmond", name: "Cleveland Fountain", friendlyName: "Cleveland Fountain", lng: "47.673667", lat: "-122.125595", mapLink: "test" },
-            ];
-            rm.setGymData(myGyms);
-            expect(rm.gyms[0].mapLink).toBe("test");
+            rm.setGymData(GymDirectory.fromCsvData(myGyms));
+            let gym = rm.gyms.getAllGyms()[0];
+            expect(gym.mapLink).toBeDefined();
         });
 
         it("should try to restore state", () => {
             let rm = new RaidManager();
             spyOn(rm, "tryRestoreState");
-            rm.setGymData(gyms);
+            rm.setGymData(gymDirectory);
             expect(rm.tryRestoreState).toHaveBeenCalled();
         });
     });
@@ -295,7 +280,7 @@ describe("raidManager", () => {
     describe("validateBoss method", () => {
         it("should throw an appropriate error if bosses aren't initialized", () => {
             let rm = new RaidManager();
-            rm.setGymData(gyms);
+            rm.setGymData(gymDirectory);
             expect(() => rm.validateBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
         });
 
@@ -334,7 +319,7 @@ describe("raidManager", () => {
     describe("tryGetBoss method", () => {
         it("should throw an appropriate error if bosses aren't initialized", () => {
             let rm = new RaidManager();
-            rm.setGymData(gyms);
+            rm.setGymData(gymDirectory);
             expect(() => rm.tryGetBoss("ttar")).toThrowError("RaidManager not ready - bosses not initialized.");
         });
 
@@ -380,7 +365,7 @@ describe("raidManager", () => {
                 ["city hall", "Hunting Fox"],
             ].forEach((test) => {
                 let gym = rm.validateGym(test[0]);
-                expect(gym.name).toBe(test[1]);
+                expect(gym.officialName).toBe(test[1]);
             });
         });
 
@@ -393,8 +378,9 @@ describe("raidManager", () => {
 
         it("should use a valid gym object if supplied", () => {
             let rm = getTestRaidManager();
-            let gym = rm.validateGym(gyms[3]);
-            expect(gym).toBe(gyms[3]);
+            let originalGym = gymDirectory.getAllGyms()[3];
+            let gym = rm.validateGym(originalGym);
+            expect(gym).toBe(originalGym);
         });
 
         it("should throw if an invalid gym object is supplied", () => {
@@ -419,7 +405,7 @@ describe("raidManager", () => {
                 ["city hall", "Hunting Fox"],
             ].forEach((test) => {
                 let gym = rm.tryGetGym(test[0]);
-                expect(gym.name).toBe(test[1]);
+                expect(gym.officialName).toBe(test[1]);
             });
         });
 
@@ -432,7 +418,7 @@ describe("raidManager", () => {
 
         it("should throw if an object is supplied", () => {
             let rm = getTestRaidManager();
-            expect(() => rm.tryGetGym(gyms[3])).toThrowError("Must use gym name for tryGetGym.");
+            expect(() => rm.tryGetGym(gymSpecs[3])).toThrowError("Must use gym name for tryGetGym.");
         });
     });
 
@@ -451,12 +437,13 @@ describe("raidManager", () => {
             [
                 ["Painted Parking Lot", "Painted Parking Lot", true],
                 ["market", "Redmond Town Center Fish Statue", false],
-                ["pd", "Weiner Elephants", true],
+                ["redmond pd", "Weiner Elephants", true],
                 ["city hall", "Hunting Fox", false],
             ].forEach((test) => {
                 let raid = rm.tryGetRaid(test[0]);
                 if (test[2]) {
-                    expect(raid.gym.name).toBe(test[1]);
+                    expect(raid).toBeDefined();
+                    expect(raid.gym.officialName).toBe(test[1]);
                 }
                 else {
                     expect(raid).toBeUndefined();
@@ -473,7 +460,7 @@ describe("raidManager", () => {
 
         it("should throw if an object is supplied", () => {
             let rm = getTestRaidManager();
-            expect(() => rm.tryGetRaid(gyms[3])).toThrowError("Must use gym name for tryGetGym.");
+            expect(() => rm.tryGetRaid(gymSpecs[3])).toThrowError("Must use gym name for tryGetGym.");
         });
     });
 
@@ -559,7 +546,7 @@ describe("raidManager", () => {
                 expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
 
                 expect(raid.state).toBe(RaidManager.RaidStateEnum.hatched);
-                expect(raid.gym.name).toBe(test[3]);
+                expect(raid.gym.officialName).toBe(test[3]);
                 expect(raid.pokemon.name).toBe(test[4]);
                 expect(raid.tier).toBe(test[5]);
             });
@@ -1236,7 +1223,7 @@ describe("raidManager", () => {
         it("should move hatched eggs to active raid with expected boss if only one boss is valid", () => {
             let myBosses = [{ name: "Latias", tier: "Tier 5", status: "active" }];
             let rm = new RaidManager({ logger: undefined, strict: false, autosaveFile: undefined });
-            rm.setGymData(gyms);
+            rm.setGymData(gymSpecs);
             rm.setBossData(myBosses);
 
             let hatch = getOffsetDate(-5);
@@ -1359,7 +1346,7 @@ describe("raidManager", () => {
             for (let i = 0; i < raids.length; i++) {
                 let raid = raids[i];
                 let saved = savedRaids[i];
-                expect(saved.gym).toBe(raid.gym.name);
+                expect(saved.gym).toBe(raid.gym.key);
                 expect(saved.hatch).toBe(raid.hatchTime.getTime());
                 expect(saved.expiry).toBe(raid.expiryTime.getTime());
                 expect(saved.boss).toBe(raid.pokemon ? raid.pokemon.name : undefined);
@@ -1447,7 +1434,7 @@ describe("raidManager", () => {
 
         it("should log and ignore unknown gyms", () => {
             let logger = new TestLogger();
-            let baselineState = getBaselineState().replace("Elephants", "Camels");
+            let baselineState = getBaselineState().replace("redmondpd", "redmondfd");
 
             spyOn(fs, "writeFileSync").and.returnValue(true);
             spyOn(fs, "existsSync").and.returnValue(true);
@@ -1537,7 +1524,7 @@ describe("raidManager", () => {
         it("should log a failed write to the autosave file and catch the exception", () => {
             let shouldFail = false;
             let logger = new TestLogger();
-            spyOn(fs, "writeFileSync").and.callFake(() => { 
+            spyOn(fs, "writeFileSync").and.callFake(() => {
                 if (shouldFail) {
                     throw new Error("fake error");
                 }

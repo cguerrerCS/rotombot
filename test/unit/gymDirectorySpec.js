@@ -500,7 +500,7 @@ describe("GymDirectory object", () => {
             expect(gyms.getOption("throwForNonAllowedZones")).toBe(false);
         });
 
-        it("should get an option from the override if specified", () => { 
+        it("should get an option from the override if specified", () => {
             const overrides = {
                 preferredCities: ["lakehills"],
             };
