@@ -1,0 +1,23 @@
+[
+    {
+        "displayName": "Rain City PoGo",
+        "guildName": "Rain City Pogo",
+        "gymLookupOptions" : {
+            "preferredZones": [ "Rain City" ]
+        }
+    },
+    {
+        "displayName": "Technica",
+        "guildName": "Technica",
+        "gymLookupOptions": {
+            "preferredZones": [ "Rain City" ]
+        }
+    },
+    {
+        "displayName": "West World",
+        "guildName": "West World",
+        "gymLookupOptions": {
+            "preferredZones": [ "Rain City" ]
+        }
+    }
+]
