@@ -24,7 +24,6 @@ class team extends commando.Command {
         });
     }
 
-
     async run(message, args) {
         let client = message.client;
         if (message.channel.type.toString() === "dm") {
@@ -32,8 +31,9 @@ class team extends commando.Command {
             return;
         }
 
-        if (message.channel.guild.name === "RainCityPoGo" && message.channel.name !== allowedChannel) {
-            client.reportError(message, "!team", "Teams can only be assigned in the faction_assignment channel");
+        if (message.channel.name !== allowedChannel) {
+            client.reportError(message, "!team", "Teams can only be assigned in the " + allowedChannel + " channel");
+            return;
         }
 
         let desiredTeam = args.toLowerCase();
@@ -71,6 +71,7 @@ class team extends commando.Command {
 
         console.log("found existing team: " + existingRole);
 
+        // if the user is already assigned a team output and don't reassign
         if (existingRole && newTeam === existingRole) {
             let output = " is already a member of: " + newTeam;
             console.log(message.author.username + output);
@@ -78,17 +79,21 @@ class team extends commando.Command {
             return;
         }
 
+        // if the user is already assigned a different team than requested, output an error
         if (existingRole) {
-            //remove the role
-            console.log("removing " + message.author.username + " from team " + existingRole);
-            let myRole = message.channel.guild.roles.find("name", existingRole);
+            console.log(message.author.username + " requested change from: " + existingRole + " to: " + newTeam);
 
-            console.log("role: " + myRole);
+            let moderatorId = client.getModeratorId();
+            let moderator = message.channel.guild.members.get(moderatorId);
 
-            message.member.removeRole(message.channel.guild.roles.find("name", existingRole));
+            let output = message.author + " is already a member of: " + existingRole
+                + "\nContact " + moderator + " to change your team";
+
+            message.channel.send(output);
+            return;
         }
 
-        // assign the new role
+        // the user doesnt currently have a team so assign the new role
         console.log("Adding " + message.author.username + " to team " + newTeam);
         let role = message.channel.guild.roles.find("name", newTeam);
         message.member.addRole(role);
