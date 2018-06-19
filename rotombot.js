@@ -21,10 +21,14 @@ const CsvReader = require("csv-reader");
 let inputRaidDataStream = fs.createReadStream("RaidLocations.csv", "utf8");
 let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
 let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
+let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
 let raidManager = new RaidManager();
 let raidData = [];
 let raidBossData = [];
+let moderatorData = [];
+
+let moderatorId = undefined;
 let tokens = {};
 
 // Login logic for the bot:
@@ -61,6 +65,10 @@ function reportError(message, cmd, error, syntax) {
 
     process.stdout.write(output);
     message.channel.send(output);
+}
+
+function getModeratorId() {
+    return moderatorId;
 }
 
 function addRaidChannels() {
@@ -100,6 +108,7 @@ client.on("ready", () => {
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
+    client.getModeratorId = getModeratorId;
 
     addRaidChannels();
 
@@ -133,5 +142,19 @@ client.on("ready", () => {
         })
         .on("end", function () {
             client.raidManager.setBossData(raidBossData);
+        });
+
+    inputModeratorIdStream
+        .pipe(CsvReader({ parseNumbers: false, parseBooleans: true, trim: true, skipHeader: true }))
+        .on("data", function (row) {
+            let modObj = {
+                name: row[0],
+                id: row[1],
+            };
+            moderatorData[modObj.name] = modObj;
+            moderatorData.push(modObj);
+        })
+        .on("end", function () {
+            moderatorId = moderatorData.DeusTechnica.id;
         });
 });
