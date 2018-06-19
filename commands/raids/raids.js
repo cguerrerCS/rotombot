@@ -40,11 +40,14 @@ class raids extends commando.Command {
 
     async run(message) {
         let client = message.client;
+        let config = message.client.serverManager.tryGetServer(message.guild.name);
         let minTier = 4;
         let maxTier = 5;
         let city = undefined;
         let cityRegex = /.*/;
 
+        config = config ? config.getEffectiveServerOptions() : {};
+        console.log(`In !raids, config is: ${JSON.stringify(config)}`);
         let match = message.content.match(allRaidsRegex);
         if (match !== null) {
             minTier = 1;

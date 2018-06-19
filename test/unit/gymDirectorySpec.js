@@ -2,6 +2,7 @@
 
 const Gym = require("../../lib/gym");
 const GymDirectory = require("../../lib/gymDirectory");
+const Utils = require("../../lib/utils");
 
 describe("GymDirectory object", () => {
     describe("constructor", () => {
@@ -49,6 +50,49 @@ describe("GymDirectory object", () => {
             ].forEach((test) => {
                 expect(() => new GymDirectory(gymSpecs, test.options)).toThrowError(test.expectedError);
             });
+        });
+    });
+
+    describe("mergeOptions method", () => {
+        it("should return a fully specified object", () => {
+            let baseline = GymDirectory.getOptions({});
+            expect(baseline.hasOwnProperty("preferredZones")).toBe(true); // sanity check
+            let merged = GymDirectory.mergeOptions(baseline, { preferredCities: ["Redmond"] });
+            for (let prop in baseline) {
+                if (baseline.hasOwnProperty(prop)) {
+                    expect(merged.hasOwnProperty(prop)).toBe(true);
+                }
+            }
+        });
+
+        it("should return a new object by default", () => {
+            let baseline = GymDirectory.getOptions({});
+            expect(baseline.hasOwnProperty("preferredZones")).toBe(true); // sanity check
+            let merged = GymDirectory.mergeOptions(baseline, { preferredCities: ["Redmond"] });
+            expect(baseline.preferredCities).not.toEqual(Utils.normalize(merged.preferredCities));
+            expect(merged).not.toBe(baseline);
+        });
+
+        it("should overwrite and return the baseline if clobber is defined", () => {
+            let baseline = GymDirectory.getOptions({});
+            expect(baseline.hasOwnProperty("preferredZones")).toBe(true); // sanity check
+            let merged = GymDirectory.mergeOptions(baseline, { preferredCities: ["Redmond"] }, { clobber: true });
+            expect(baseline.preferredCities).toEqual(Utils.normalize(merged.preferredCities));
+            expect(merged).toBe(baseline);
+        });
+
+        it("should normalize string properties by default", () => {
+            let baseline = GymDirectory.getOptions({});
+            expect(baseline.hasOwnProperty("preferredZones")).toBe(true); // sanity check
+            let merged = GymDirectory.mergeOptions(baseline, { preferredCities: ["Redmond", "Des Moines"] });
+            expect(merged.preferredCities).toEqual(["redmond", "desmoines"]);
+        });
+
+        it("should not normalize string properties if noNormalize is true", () => {
+            let baseline = GymDirectory.getOptions({});
+            expect(baseline.hasOwnProperty("preferredZones")).toBe(true); // sanity check
+            let merged = GymDirectory.mergeOptions(baseline, { preferredCities: ["Redmond", "Des Moines"] }, { noNormalize: true });
+            expect(merged.preferredCities).toEqual(["Redmond", "Des Moines"]);
         });
     });
 
