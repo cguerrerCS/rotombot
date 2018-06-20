@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs");
 const Gym = require("../../lib/gym");
 const GymDirectory = require("../../lib/gymDirectory");
 const Utils = require("../../lib/utils");
@@ -556,6 +557,15 @@ describe("GymDirectory object", () => {
 
         it("should throw for an unknown option", () => {
             expect(() => gyms.getOption("blargle")).toThrowError(/unknown option/i);
+        });
+    });
+
+    describe("processCsvAsync static method", () => {
+        it("should load the actual bot data", () => {
+            let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
+            GymDirectory.processCsvAsync(inputRaidDataStream, (gyms) => {
+                expect(gyms instanceof GymDirectory).toBe(true);
+            });
         });
     });
 });

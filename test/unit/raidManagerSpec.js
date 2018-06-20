@@ -1,12 +1,14 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
 const GymDirectory = require("../../lib/gymDirectory");
 const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
 const bosses = [
     { name: "Latias", tier: "Tier 5", status: "active" },
+    { name: "Kyogre", tier: "Tier 5", status: "active" },
     { name: "Ho-oh", tier: "Tier 5", status: "active" },
     { name: "Zapdos", tier: "Tier 5", status: "inactive" },
     { name: "Houndoom", tier: "Tier 4", status: "active" },
@@ -128,6 +130,11 @@ describe("raidManager", () => {
             expect(() => rm.setGymData(badGyms)).toThrowError();
         });
 
+        it("should throw if parameter is not an array and not a GymDirectory", () => {
+            let rm = new RaidManager();
+            expect(() => rm.setGymData({})).toThrowError(/expected gymdirectory or array/i);
+        });
+
         it("should add a mapLink", () => {
             let rm = new RaidManager();
             let myGyms = [
@@ -143,6 +150,18 @@ describe("raidManager", () => {
             spyOn(rm, "tryRestoreState");
             rm.setGymData(gymDirectory);
             expect(rm.tryRestoreState).toHaveBeenCalled();
+        });
+    });
+
+    describe("initGymDataAsync", () => {
+        it("should load actual raid data", (done) => {
+            let rm = new RaidManager();
+            expect(rm.gyms).not.toBeDefined();
+            rm.initGymDataAsync(fs.createReadStream(path.resolve("data/Gyms.csv"), "utf8"));
+            setTimeout(() => {
+                expect(rm.gyms).toBeDefined();
+                done();
+            }, 1000);
         });
     });
 
@@ -955,6 +974,66 @@ describe("raidManager", () => {
             spyOn(rm, "reportRaidsUpdate");
             expect(rm.removeRaid("erratic")).toBeDefined();
             expect(rm.reportRaidsUpdate).toHaveBeenCalled();
+        });
+    });
+
+    describe("addRaider method", () => {
+        it("should add a new raider", () => {
+            let rm = getTestRaidManager();
+            rm.addRaid("kyogre", "painted", 20);
+            expect(rm.tryGetRaider("painted", "jasmine")).toBeUndefined();
+            rm.addOrUpdateRaider("painted", { raiderName: "jasmine" });
+            expect(rm.tryGetRaider("painted", "jasmine")).toBeDefined();
+        });
+
+        it("should update an existing raider", () => {
+            let rm = getTestRaidManager();
+            rm.addRaid("kyogre", "painted", 20);
+            expect(rm.tryGetRaider("painted", "jasmine")).toBeUndefined();
+            rm.addOrUpdateRaider("painted", { raiderName: "jasmine" });
+            let raider = rm.tryGetRaider("painted", "jasmine");
+            expect(raider).toBeDefined();
+            expect(raider.etaTime).toBeUndefined();
+            rm.addOrUpdateRaider("painted", { raiderName: "jasmine", etaTime: "10" });
+            raider = rm.tryGetRaider("painted", "jasmine");
+            expect(raider).toBeDefined();
+            expect(raider.etaTime).toBeDefined();
+            expect(raider.etaTime.getTime()).toBeGreaterThan(Date.now());
+        });
+
+        it("should throw if there is no raid reported for the requested gym", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.addOrUpdateRaider("painted", { raiderName: "jasmine" })).toThrowError(/no raid reported/i);
+        });
+    });
+
+    describe("tryGetRaider method", () => {
+        it("should throw if there is no raid reported for the requested gym", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.tryGetRaider("painted", "jasmine")).toThrowError(/no raid reported/i);
+        });
+    });
+
+    describe("removeRaider method", () => {
+        it("should succeed if the raider has rsvp'ed", () => {
+            let rm = getTestRaidManager();
+            rm.addRaid("kyogre", "painted", 20);
+            expect(rm.tryGetRaider("painted", "jasmine")).toBeUndefined();
+            rm.addOrUpdateRaider("painted", { raiderName: "jasmine" });
+            expect(rm.tryGetRaider("painted", "jasmine")).toBeDefined();
+            expect(() => rm.removeRaider("painted", "jasmine")).not.toThrow();
+        });
+
+        it("should throw if there is no raid reported for the requested gym", () => {
+            let rm = getTestRaidManager();
+            expect(() => rm.removeRaider("painted", "jasmine")).toThrowError(/no raid reported/i);
+        });
+
+        it("should throw if the raider has not rsvp'ed for the raid at the specified gym", () => {
+            let rm = getTestRaidManager();
+            rm.addRaid("kyogre", "painted", 20);
+            expect(rm.tryGetRaider("painted", "jasmine")).toBeUndefined();
+            expect(() => rm.removeRaider("painted", "jasmine")).toThrowError(/has not rsvp'ed/i);
         });
     });
 
