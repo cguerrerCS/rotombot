@@ -239,9 +239,9 @@ describe("UserConfigManager class", () => {
 
     describe("restore method", () => {
         it("should round trip without loss", () => {
-            let users = new UserConfigManager(goodConfigs);
-            let restored = UserConfigManager.restore(users.getSaveObject());
-            expect(users).toEqual(restored);
+            let orig = new UserConfigManager(goodConfigs);
+            let restored = UserConfigManager.restore(orig.getSaveObject());
+            expect(restored.users).toEqual(orig.users);
         });
 
         it("should return an empty config manager if no save object is supplied", () => {
