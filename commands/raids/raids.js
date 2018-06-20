@@ -40,7 +40,7 @@ class raids extends commando.Command {
 
     async run(message) {
         let client = message.client;
-        let config = message.client.serverManager.tryGetServer(message.guild.name);
+        let config = message.client.config.server.tryGetServer(message.guild.name);
         let minTier = 4;
         let maxTier = 5;
         let city = undefined;

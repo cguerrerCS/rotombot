@@ -1,8 +1,8 @@
 "use strict";
 
-const ServerManager = require("../../lib/serverManager");
+const ServerConfigManager = require("../../lib/serverConfigManager");
 
-describe("ServerManager class", () => {
+describe("ServerConfigManager class", () => {
     describe("constructor", () => {
         const goodServerInit = [
             { displayName: "Server 1", guildName: "Discord 1" },
@@ -50,7 +50,7 @@ describe("ServerManager class", () => {
         ];
 
         it("should initialize from valid initializers", () => {
-            const servers = new ServerManager(goodServerInit);
+            const servers = new ServerConfigManager(goodServerInit);
             goodServerInit.forEach((init) => {
                 [
                     init.displayName,
@@ -73,13 +73,13 @@ describe("ServerManager class", () => {
 
         it("should allow a server to have the same display name and discord name", () => {
             let configs = [{ displayName: "Server 1", guildName: "Server 1" }];
-            expect(() => new ServerManager(configs)).not.toThrow();
+            expect(() => new ServerConfigManager(configs)).not.toThrow();
         });
 
         it("should fail to initialize with invalid initializers", () => {
             badServerConfig.forEach((bad) => {
                 bad.configs.forEach((config) => {
-                    expect(() => new ServerManager([config])).toThrowError(bad.expected);
+                    expect(() => new ServerConfigManager([config])).toThrowError(bad.expected);
                 });
             });
         });
@@ -116,7 +116,7 @@ describe("ServerManager class", () => {
                 },
             ].forEach((test) => {
                 expect(() => {
-                    return new ServerManager(test.configs);
+                    return new ServerConfigManager(test.configs);
                 }).toThrowError(test.expected);
             });
         });

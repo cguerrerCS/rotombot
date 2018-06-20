@@ -2,7 +2,7 @@
 
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
-const ServerManager = require("./lib/serverManager.js");
+const ServerConfigManager = require("./lib/serverConfigManager");
 const UserConfigManager = require("./lib/userConfigManager.js");
 const RaidChannel = require("./lib/raidChannel");
 const Utils = require("./lib/utils");
@@ -101,8 +101,10 @@ client.on("ready", () => {
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
-    client.serverManager = new ServerManager(require("./data/Servers.json"));
-    client.userConfigs = new UserConfigManager("./state/userConfigs.json");
+    client.configu = {
+        server: new ServerConfigManager("./data/Servers.json"),
+        user: new UserConfigManager("./state/userConfigs.json");
+    }
 
     addRaidChannels();
 

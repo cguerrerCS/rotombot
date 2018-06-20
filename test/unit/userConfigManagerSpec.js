@@ -1,7 +1,7 @@
 "use strict";
 
 const UserConfigManager = require("../../lib/userConfigManager");
-const ServerManager = require("../../lib/serverManager");
+const ServerConfigManager = require("../../lib/serverConfigManager");
 const GymDirectory = require("../../lib/gymDirectory");
 const Utils = require("../../lib/utils.js");
 
@@ -145,7 +145,7 @@ describe("UserConfigManager class", () => {
             },
         ];
 
-        const servers = new ServerManager(serverInit);
+        const servers = new ServerConfigManager(serverInit);
         const server1 = servers.tryGetServer("Server 1");
         const server2 = servers.tryGetServer("Server 2");
 
