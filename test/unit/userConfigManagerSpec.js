@@ -52,7 +52,7 @@ describe("UserConfigManager class", () => {
         it("should initialize with an array of good configs", () => {
             const ucm = new UserConfigManager(goodConfigs);
             goodConfigs.forEach((config) => {
-                expect(ucm.getUser(config.id).userName).toBe(config.userName);
+                expect(ucm.tryGetUser(config.id).userName).toBe(config.userName);
             });
         });
 
@@ -64,7 +64,7 @@ describe("UserConfigManager class", () => {
 
             const ucm = new UserConfigManager(init);
             goodConfigs.forEach((config) => {
-                expect(ucm.getUser(config.id).userName).toBe(config.userName);
+                expect(ucm.tryGetUser(config.id).userName).toBe(config.userName);
             });
         });
 
@@ -128,7 +128,7 @@ describe("UserConfigManager class", () => {
             const users = new UserConfigManager();
             expect(users.addOrUpdateUser({ id: "123", userName: "Fred" })).toBeDefined();
             expect(users.addOrUpdateUser({ id: "123", userName: "Schlepprock" })).toBeDefined();
-            expect(users.getUser("123").userName).toBe("Schlepprock");
+            expect(users.tryGetUser("123").userName).toBe("Schlepprock");
         });
     });
 
@@ -155,7 +155,7 @@ describe("UserConfigManager class", () => {
             [server1, server2].forEach((server) => {
                 goodConfigs.forEach((userConfig) => {
                     let userConfigs = new UserConfigManager(goodConfigs);
-                    let user = userConfigs.getUser(userConfig.id);
+                    let user = userConfigs.tryGetUser(userConfig.id);
                     expect(user).toBeDefined();
 
                     let resolved = user.getEffectiveOptions(server);
@@ -173,7 +173,7 @@ describe("UserConfigManager class", () => {
             [server1, server2].forEach((server) => {
                 goodConfigs.forEach((userConfig) => {
                     let userConfigs = new UserConfigManager(goodConfigs);
-                    let user = userConfigs.getUser(userConfig.id);
+                    let user = userConfigs.tryGetUser(userConfig.id);
                     expect(user).toBeDefined();
 
                     let resolved = user.getEffectiveOptions(server);
@@ -191,7 +191,7 @@ describe("UserConfigManager class", () => {
             [server1, server2].forEach((server) => {
                 goodConfigs.forEach((userConfig) => {
                     let userConfigs = new UserConfigManager(goodConfigs);
-                    let user = userConfigs.getUser(userConfig.id);
+                    let user = userConfigs.tryGetUser(userConfig.id);
                     expect(user).toBeDefined();
 
                     let serverConfig = server.gymLookupOptions;
@@ -207,7 +207,7 @@ describe("UserConfigManager class", () => {
 
         it("should return a cached object", () => {
             let userConfigs = new UserConfigManager([{  id: "123", userName: "Fred" }]);
-            let user = userConfigs.getUser("123");
+            let user = userConfigs.tryGetUser("123");
             expect(user).toBeDefined();
 
             let r1 = user.getEffectiveOptions(server1);

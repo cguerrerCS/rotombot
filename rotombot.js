@@ -1,5 +1,6 @@
 "use strict";
 
+const path = require("path");
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
 const ServerConfigManager = require("./lib/serverConfigManager");
@@ -16,8 +17,9 @@ const client = new CommandoClient({
 });
 
 client.registry.registerGroup("raids", "Raids");
+client.registry.registerGroup("player", "Player");
 client.registry.registerDefaults();
-client.registry.registerCommandsIn(__dirname + "/commands");
+client.registry.registerCommandsIn(path.resolve("./commands"));
 
 const fs = require("fs");
 const CsvReader = require("csv-reader");
@@ -96,8 +98,10 @@ function addRaidChannels() {
 }
 
 function getConfigForMessage(message) {
-
-};
+    let user = this.user.tryGetUser(message.member.id);
+    let server = this.server.tryGetServer(message.guild.id);
+    return user ? user.getEffectiveOptions(server) : server;
+}
 
 // on client ready, load in any data and setup raid manager
 client.on("ready", () => {
@@ -108,7 +112,7 @@ client.on("ready", () => {
     client.config = {
         server: new ServerConfigManager("./data/Servers.json"),
         user: new UserConfigManager("./state/userConfigs.json"),
-        prototype.getConfigForMessage: getConfigForMessage,
+        getConfigForMessage: getConfigForMessage,
     };
 
     addRaidChannels();
