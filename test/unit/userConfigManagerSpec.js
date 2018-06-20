@@ -132,10 +132,11 @@ describe("UserConfigManager class", () => {
         });
     });
 
-    describe("getEffectiveUserOptionsForServer method", () => {
+    describe("getEffectiveOptions method", () => {
         const serverInit = [
-            { displayName: "Server 1", guildName: "Discord 1" },
+            { id: "123", displayName: "Server 1", guildName: "Discord 1" },
             {
+                id: "124",
                 displayName: "Server 2",
                 guildName: "Discord 2",
                 gymLookupOptions: {
@@ -157,7 +158,7 @@ describe("UserConfigManager class", () => {
                     let user = userConfigs.getUser(userConfig.id);
                     expect(user).toBeDefined();
 
-                    let resolved = user.getEffectiveUserOptionsForServer(server);
+                    let resolved = user.getEffectiveOptions(server);
                     for (let prop in baseline) {
                         if (baseline.hasOwnProperty(prop)) {
                             expect(resolved.hasOwnProperty(prop)).toBe(true);
@@ -175,9 +176,9 @@ describe("UserConfigManager class", () => {
                     let user = userConfigs.getUser(userConfig.id);
                     expect(user).toBeDefined();
 
-                    let resolved = user.getEffectiveUserOptionsForServer(server);
+                    let resolved = user.getEffectiveOptions(server);
                     for (let prop in baseline) {
-                        if (user.getUserOptionsAsConfigured().hasOwnProperty(prop)) {
+                        if (user.getOptionsAsConfigured().hasOwnProperty(prop)) {
                             expect(resolved[prop]).toEqual(Utils.normalize(user.gymLookupOptions[prop]));
                         }
                     }
@@ -194,7 +195,7 @@ describe("UserConfigManager class", () => {
                     expect(user).toBeDefined();
 
                     let serverConfig = server.gymLookupOptions;
-                    let resolved = user.getEffectiveUserOptionsForServer(server);
+                    let resolved = user.getEffectiveOptions(server);
                     for (let prop in baseline) {
                         if (serverConfig.hasOwnProperty(prop) && (!user.gymLookupOptions.hasOwnProperty(prop))) {
                             expect(resolved[prop]).toEqual(Utils.normalize(serverConfig[prop]));
@@ -209,8 +210,8 @@ describe("UserConfigManager class", () => {
             let user = userConfigs.getUser("123");
             expect(user).toBeDefined();
 
-            let r1 = user.getEffectiveUserOptionsForServer(server1);
-            let r2 = user.getEffectiveUserOptionsForServer(server1);
+            let r1 = user.getEffectiveOptions(server1);
+            let r2 = user.getEffectiveOptions(server1);
             expect(r1).toBe(r2);
         });
     });

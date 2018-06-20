@@ -95,16 +95,21 @@ function addRaidChannels() {
     }
 }
 
+function getConfigForMessage(message) {
+
+};
+
 // on client ready, load in any data and setup raid manager
 client.on("ready", () => {
     process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
-    client.configu = {
+    client.config = {
         server: new ServerConfigManager("./data/Servers.json"),
-        user: new UserConfigManager("./state/userConfigs.json");
-    }
+        user: new UserConfigManager("./state/userConfigs.json"),
+        prototype.getConfigForMessage: getConfigForMessage,
+    };
 
     addRaidChannels();
 
