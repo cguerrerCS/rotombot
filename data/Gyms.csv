@@ -111,7 +111,7 @@ Rain City,Lake Hills,The Ridgedale Apartment Homes,The Ridgedale Apartment Homes
 Rain City,Lake Hills,Watching Washington,Watching Washington,47.600058,-122.1476750,NonEx
 Rain City,Lake Hills,Sunset Hills Memorial Park North Entrance,Sunset Hills Memorial Park North Entrance,47.599717,-122.1528310,NonEx
 Rain City,Lake Hills,Church Of Christ Lake Hills,Church Of Christ Lake Hills,47.597962,-122.1506150,NonEx
-Rain City,Lake Hills,Starbucks (Lake Hills),Starbucks (Lake Hills),47.596722,-122.1487740,ExEligible
+Rain City,Lake Hills,Starbucks (Lake Hills),Lake Hills Starbucks,47.596722,-122.1487740,ExEligible
 Rain City,Lake Hills,Sunset Hills Memorial Park,Sunset Hills Memorial Park,47.596132,-122.1504920,NonEx
 Rain City,Lake Hills,Bellevue College Fountain,Bellevue College Fountain,47.584392,-122.1495150,NonEx
 Rain City,Lake Hills,The Other Woman,The Other Woman,47.583665,-122.1497270,NonEx
@@ -120,7 +120,7 @@ Rain City,Lake Hills,Balance of Order,Balance of Order,47.580375,-122.1522270,No
 Rain City,Lake Hills,Freeway Fish,Freeway Fish,47.579568,-122.1516140,NonEx
 Rain City,Overlake,Brown Bear Car Wash Bel-Red,Brown Bear Car Wash Bel-Red,47.628316,-122.1363500,NonEx
 Rain City,Overlake,Highland Covenant Church,Highland Covenant Church,47.627729,-122.1381680,NonEx
-Rain City,Overlake,Starbucks (Overlake),Starbucks (Overlake),47.628162,-122.1411100,ExEligible
+Rain City,Overlake,Starbucks (Overlake),Overlake Starbucks,47.628162,-122.1411100,ExEligible
 Rain City,Overlake,Overlake Black Bears,Overlake Black Bears,47.631661,-122.1433360,NonEx
 Rain City,Overlake,Bellevue Totem,Bellevue Totem,47.629342,-122.1473680,NonEx
 Rain City,Overlake,Salmon Woman and Raven,Salmon Woman and Raven,47.625192,-122.1505380,NonEx
@@ -273,11 +273,11 @@ Downtown Seattle,Denny Triangle,Servant Christ,Servant Christ,47.618122,-122.334
 Downtown Seattle,Denny Triangle,Cornish Spire of Light,Cornish,47.618122,-122.3344850,NonEx
 Downtown Seattle,Denny Triangle,The Spiral,Spiral,47.615502,-122.3356010,NonEx
 Downtown Seattle,Denny Triangle,Globe Sculpture,Globe,47.612769,-122.3334980,NonEx
-Downtown Seattle,Denny Triangle,Starbucks,Starbucks (7th and Stewart),47.614326,-122.3358700,ExEligible
+Downtown Seattle,Denny Triangle,Starbucks (7th and Stewart),7th and Stewart Starbucks,47.614326,-122.3358700,ExEligible
 Downtown Seattle,Westlake Park,Pacific Place Penguin,Pacific Place,47.613016,-122.3353940,NonEx
 Downtown Seattle,Westlake Park,John Harte McGraw,McGraw Plaza,47.613027,-122.3376690,NonEx
-Downtown Seattle,Westlake Park,Starbucks,Starbucks (Westlake),47.611505,-122.3376140,ExEligible
+Downtown Seattle,Westlake Park,Starbucks (Westlake Park),Westlake Park Starbucks,47.611505,-122.3376140,ExEligible
 Downtown Seattle,Westlake Park,Blue Trees,Blue Trees,47.610833,-122.3370000,NonEx
 Downtown Seattle,Westlake Park,The Deadly Sculptures,Deadly Sculptures,47.610363,-122.3366760,NonEx
 Downtown Seattle,Downtown,Find Shiny Deals at Sprint,Sprint (3rd avenue),47.610284,-122.3385740,ExEligible
-Downtown Seattle,Downtown,5th avenue theater,fifth avenue theater,47.609025,-122.3339120,NonEx
+Downtown Seattle,Downtown,5th Avenue Theater,Fifth Avenue Theater,47.609025,-122.3339120,NonEx

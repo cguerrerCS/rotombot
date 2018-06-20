@@ -15,8 +15,9 @@ class info extends commando.Command {
     }
 
     async run(message, args) {
-        var client = message.client;
-        var output = "Processing !info command submitted by user " + message.author +  "\n";
+        let client = message.client;
+        let output = "Processing !info command submitted by user " + message.author +  "\n";
+        
         process.stdout.write(output);
         message.channel.send(output);
 
@@ -26,8 +27,11 @@ class info extends commando.Command {
             return;
         }
 
+        let config = client.config.getConfigForMessage(message);
+        let lookupOptions = (config ? config.normalized.gymLookupOptions : {});
+
         var gymToGetInfoFor = args.match(/\S+/g).join(" ");
-        var gym = client.raidManager.tryGetGym(gymToGetInfoFor);
+        var gym = client.raidManager.tryGetGym(gymToGetInfoFor, lookupOptions);
         if (!gym) {
             client.reportError(message, "!info", "no gym found.", "!info <gym name>");
             return;
