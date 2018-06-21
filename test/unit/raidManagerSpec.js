@@ -1513,7 +1513,7 @@ describe("raidManager", () => {
 
         it("should log and ignore unknown gyms", () => {
             let logger = new TestLogger();
-            let baselineState = getBaselineState().replace("redmondpd", "redmondfd");
+            let baselineState = getBaselineState().replace("redmondpd", "xyzzy");
 
             spyOn(fs, "writeFileSync").and.returnValue(true);
             spyOn(fs, "existsSync").and.returnValue(true);
