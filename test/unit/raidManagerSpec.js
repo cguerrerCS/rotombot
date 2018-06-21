@@ -75,6 +75,9 @@ const gymSpecs = [
     ["Rain City", "Redmond", "Redmond Pool", "Redmond Pool", 47.692516,  -122.106308, "NonEx"],
     ["Rain City", "Redmond", "Bear Creek Water Tower", "Bear Creek Water Tower", 47.687974,  -122.103674, "NonEx"],
     ["Rain City", "Redmond", "Education Hill Pig", "Education Hill Pig", 47.674945,  -122.111546, "NonEx"],
+    ["Bellevue", "Bellevue", "Find shiny deals at sprint", "Bellevue Sprint (fake)", 47.622703, -122.1625050, "NonEx"],
+    ["Rain City", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
+    ["Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
 ];
 
 const gymDirectory = GymDirectory.fromCsvData(gymSpecs);
@@ -84,7 +87,7 @@ let badGyms = [
 ];
 
 function getTestRaidManager(options) {
-    options = options || { logger: undefined, strict: false, autosaveFile: undefined };
+    options = options || { logger: null, strict: false, autosaveFile: null, refresh: 30 };
     let rm = new RaidManager(options);
     rm.setBossData(bosses);
     rm.setGymData(gymDirectory);
@@ -103,7 +106,7 @@ TestLogger.prototype.log = function (msg) {
     this.output.push(msg);
 };
 
-TestLogger.prototype._reset = function () {
+TestLogger.prototype.reset = function () {
     this.output = [];
 };
 
@@ -588,7 +591,7 @@ describe("raidManager", () => {
 
         it("should log the added raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: undefined });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: null });
             rm.addRaid("ttar", "wells", 20);
             expect(logger.output.length).toBe(1);
             expect(logger.output[0]).toMatch(/.*Active Raid Added.*/i);
@@ -602,9 +605,18 @@ describe("raidManager", () => {
             expect(rm.reportRaidsUpdate).toHaveBeenCalled();
         });
 
+        it("should update any raid channels", () => {
+            let calls = 0;
+            let rm = getTestRaidManager();
+            rm.addRaidChannel({ update: function () { calls++; } });
+
+            rm.addRaid("ttar", "wells", 20);
+            expect(calls).toBe(1);
+        });
+
         describe("in strict mode", () => {
             it("should throw if a different raid is already reported for the location", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
+                let rm = getTestRaidManager({ logger: null, strict: true, autosaveFile: null });
                 rm.addRaid("hooh", "painted", 20);
                 expect(() => rm.addRaid("latias", "painted", 40)).toThrowError(/^.*Raid.*already has.*boss.*$/);
                 expect(() => rm.addRaid("hooh", "painted", 40)).toThrowError(/^New end time.*too far from existing.*$/);
@@ -612,7 +624,7 @@ describe("raidManager", () => {
             });
 
             it("should adjust the end time of an existing raid within tolerance if other details match", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
+                let rm = getTestRaidManager({ logger: null, strict: true, autosaveFile: null });
                 let originalExpiry = rm.addRaid("hooh", "painted", 20).expiryTime;
                 let newRaid = rm.addRaid("hooh", "painted", 22);
                 expect(newRaid.expiryTime).toBeGreaterThan(originalExpiry);
@@ -622,7 +634,7 @@ describe("raidManager", () => {
             });
 
             it("should add a boss to an undefined raid of the same tier, adjusting time within tolerance", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
+                let rm = getTestRaidManager({ logger: null, strict: true, autosaveFile: null });
                 let hatch = getOffsetDate(-25); // 20 left
                 let originalExpiry = rm._forceRaid("painted", 5, undefined, hatch).expiryTime;
                 let newRaid = rm.addRaid("hooh", "painted", 22);
@@ -631,7 +643,7 @@ describe("raidManager", () => {
             });
 
             it("should throw for an undefined raid if tier does not match or if time is out of tolerance", () => {
-                let rm = getTestRaidManager({ logger: undefined, strict: true, autosaveFile: undefined });
+                let rm = getTestRaidManager({ logger: null, strict: true, autosaveFile: null });
                 let hatch = getOffsetDate(-25); // 20 left
                 rm._forceRaid("painted", 5, undefined, hatch);
                 expect(() => rm.addRaid("ttar", "painted", 20)).toThrowError(/Cannot add.*existing tier 5.*$/);
@@ -685,7 +697,7 @@ describe("raidManager", () => {
 
         it("should log the updated raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: undefined });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: null });
             rm._forceRaid("painted", 5, undefined, getOffsetDate(-5));
             expect(logger.output.length).toBe(0);
             rm.setRaidBoss("hooh", "painted");
@@ -704,7 +716,7 @@ describe("raidManager", () => {
 
         describe("in strict mode", () => {
             it("should succeed if the egg is hatched, boss is unknown and new boss is of the right tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 let hatch = getOffsetDate(-10);
                 rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
                 let raid = rm.setRaidBoss("hooh", "wells");
@@ -713,19 +725,19 @@ describe("raidManager", () => {
             });
 
             it("should throw if the raid already has a different boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addRaid("hooh", "luke", 30);
                 expect(() => rm.setRaidBoss("latias", "luke")).toThrowError(/Raid.*already has.*boss.*/);
             });
 
             it("should succeed if the raid already has the same boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addRaid("hooh", "luke", 30);
                 expect(() => rm.setRaidBoss("hooh", "luke")).not.toThrowError();
             });
 
             it("should throw if boss is of the wrong tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 let hatch = getOffsetDate(-10);
                 rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
                 expect(() => rm.setRaidBoss("ttar", "wells")).toThrowError(/Cannot set.*as boss for a tier.*raid/);
@@ -784,7 +796,8 @@ describe("raidManager", () => {
 
         it("should log the added raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: null });
+            logger.reset();
             rm.addEggCountdown(5, "wells", 20);
             expect(logger.output.length).toBe(1);
             expect(logger.output[0]).toMatch(/.*Raid egg added with relative time.*/i);
@@ -799,7 +812,7 @@ describe("raidManager", () => {
 
         describe("in strict mode", () => {
             it("should succeed if existing raid has matching tier and expiry within tolerance", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 let originalExpiry = rm.addEggCountdown(5, "erratic", 20).expiryTime;
                 let newExpiry = rm.addEggCountdown(5, "erratic", 22).expiryTime;
 
@@ -810,19 +823,19 @@ describe("raidManager", () => {
             });
 
             it("should throw if the raid already has a boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addRaid("hooh", "luke", 30);
                 expect(() => rm.addEggCountdown(5, "luke", 20)).toThrowError(/Cannot replace existing Ho-oh.*/);
             });
 
             it("should throw if an existing egg has a different tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 expect(() => rm.addEggCountdown(5, "ironcycle", 20)).toThrowError(/Cannot replace existing tier 4.*/);
             });
 
             it("should throw if the new timer is too far from the existing one", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: undefined });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 expect(() => rm.addEggCountdown(4, "ironcycle", 40)).toThrowError(/New end time.*too far from existing end.*/);
             });
@@ -886,7 +899,7 @@ describe("raidManager", () => {
 
         it("should log the added raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: false });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: null });
             let validHatch = FlexTime.getFlexTime(Date.now(), 20).toString();
 
             rm.addEggAbsolute(5, "wells", validHatch);
@@ -903,7 +916,7 @@ describe("raidManager", () => {
 
         describe("in strict mode", () => {
             it("should succeed if existing raid has matching tier and expiry is within tolerance", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 let originalHatch = getOffsetDate(20);
                 let laterHatch = getOffsetDate(22);
                 let earlierHatch = getOffsetDate(18);
@@ -919,21 +932,21 @@ describe("raidManager", () => {
             });
 
             it("should throw if the raid already has a boss", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addRaid("hooh", "luke", 30);
                 let hatch = getOffsetDate(30);
                 expect(() => rm.addEggAbsolute(5, "luke", hatch)).toThrowError(/Cannot replace existing Ho-oh.*/);
             });
 
             it("should throw if an existing egg has a different tier", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 let hatch = getOffsetDate(20);
                 expect(() => rm.addEggAbsolute(5, "ironcycle", hatch)).toThrowError(/Cannot replace existing tier 4.*/);
             });
 
             it("should throw if the new timer is too far from the existing one", () => {
-                let rm = getTestRaidManager({ strict: true, logger: undefined, autosaveFile: false });
+                let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 rm.addEggCountdown(4, "ironcycle", 20);
                 let hatch = getOffsetDate(40);
                 expect(() => rm.addEggAbsolute(4, "ironcycle", hatch)).toThrowError(/New end time.*too far from existing end.*/);
@@ -958,7 +971,7 @@ describe("raidManager", () => {
 
         it("should log the added raid", () => {
             let logger = new TestLogger();
-            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: false });
+            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: null });
 
             expect(rm._forceRaid("painted", 5, undefined, getOffsetDate(20))).toBeDefined();
             expect(logger.output.length).toBe(0);
@@ -1301,7 +1314,7 @@ describe("raidManager", () => {
 
         it("should move hatched eggs to active raid with expected boss if only one boss is valid", () => {
             let myBosses = [{ name: "Latias", tier: "Tier 5", status: "active" }];
-            let rm = new RaidManager({ logger: undefined, strict: false, autosaveFile: undefined });
+            let rm = new RaidManager({ logger: null, strict: false, autosaveFile: null });
             rm.setGymData(gymSpecs);
             rm.setBossData(myBosses);
 
@@ -1323,26 +1336,45 @@ describe("raidManager", () => {
         });
 
 
-        it("should log when raids expire or hatch", () => {
-            let testLogger = new TestLogger();
-            let rm = getTestRaidManager({ strict: false, logger: testLogger, autosaveFile: undefined });
-            let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
-            rm._forceRaid("painted", 5, "latias", hatch);
+        describe("when raids expire or hatch", () => {
+            [
+                { description: "should not log to console by default" },
+                { description: "should log to a supplied logger", logger: new TestLogger() },
+            ].forEach((test) => {
+                it(test.description, () => {
+                    let options = { strict: false, autosaveFile: null };
+                    if (test.logger) {
+                        options.logger = test.logger;
+                    }
+                    else {
+                        spyOn(console, "log");
+                    }
 
-            hatch = getOffsetDate(-5);
-            rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+                    let rm = getTestRaidManager(options);
+                    let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+                    rm._forceRaid("painted", 5, "latias", hatch);
 
-            let raids = rm.list((r) => (r.tier >= 1) && (r.tier >= 5));
-            expect(raids.length).toBe(2);
+                    hatch = getOffsetDate(-5);
+                    rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
 
-            rm.raidListRefresh();
+                    let raids = rm.list((r) => (r.tier >= 1) && (r.tier >= 5));
+                    expect(raids.length).toBe(2);
 
-            raids = rm.list((r) => (r.tier >= 1) && (r.tier <= 5));
-            expect(raids.length).toBe(1);
+                    rm.raidListRefresh();
 
-            expect(testLogger.output.length).toBe(2);
-            expect(testLogger.output[0]).toMatch(/^.*Raid Expired.*$/);
-            expect(testLogger.output[1]).toMatch(/^.*Raid Egg Hatched.*$/);
+                    raids = rm.list((r) => (r.tier >= 1) && (r.tier <= 5));
+                    expect(raids.length).toBe(1);
+
+                    if (test.logger) {
+                        expect(test.logger.output.length).toBe(2);
+                        expect(test.logger.output[0]).toMatch(/^.*Raid Expired.*$/);
+                        expect(test.logger.output[1]).toMatch(/^.*Raid Egg Hatched.*$/);
+                    }
+                    else {
+                        expect(console.log).not.toHaveBeenCalled();
+                    }
+                });
+            });
         });
 
         it("should be called at least once per minute but not less than 10 seconds", () => {
@@ -1358,7 +1390,7 @@ describe("raidManager", () => {
 
         it("should respect the refresh option", () => {
             jasmine.clock().install();
-            let rm = getTestRaidManager({ logger: undefined, refresh: 5, strict: false, autosaveFile: undefined });
+            let rm = getTestRaidManager({ logger: null, refresh: 5, strict: false, autosaveFile: null });
             spyOn(rm, "raidListRefresh");
             jasmine.clock().tick(6000);
             expect(rm.raidListRefresh).toHaveBeenCalled();
@@ -1367,7 +1399,7 @@ describe("raidManager", () => {
 
         it("should disable refresh if refresh is 0", () => {
             jasmine.clock().install();
-            let rm = getTestRaidManager({ logger: undefined, refresh: 0, strict: false, autosaveFile: undefined });
+            let rm = getTestRaidManager({ logger: null, refresh: 0, strict: false, autosaveFile: null });
             spyOn(rm, "raidListRefresh");
             jasmine.clock().tick(60 * 60 * 1000);
             expect(rm.raidListRefresh).not.toHaveBeenCalled();
@@ -1511,32 +1543,101 @@ describe("raidManager", () => {
             expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);
         });
 
-        it("should log and ignore unknown gyms", () => {
-            let logger = new TestLogger();
-            let baselineState = getBaselineState().replace("redmondpd", "xyzzy");
+        describe("with bad data", () => {
+            [
+                {
+                    description: "should ignore unknown gyms and not log to console",
+                    replacement: "xyzzy",
+                    expectedOutput: /unknown gym/i, 
+                },
+                {
+                    description: "should ignore unknown gyms and log to supplied logger",
+                    logger: new TestLogger(),
+                    replacement: "xyzzy",
+                    expectedOutput: /unknown gym/i,
+                },
+                {
+                    description: "should ignore ambiguous gyms and not log to console",
+                    replacement: "findshinydealsatsprint",
+                    expectedOutput: /ambiguous gym/i,
+                },
+                {
+                    description: "should ignore ambiguous gyms and log to supplied logger",
+                    logger: new TestLogger(),
+                    replacement: "findshinydealsatsprint",
+                    expectedOutput: /ambiguous gym/i,
+                },
+            ].forEach((test) => {
+                it(test.description, () => {
+                    let baselineState = getBaselineState().replace("redmondpd", test.replacement);
 
-            spyOn(fs, "writeFileSync").and.returnValue(true);
-            spyOn(fs, "existsSync").and.returnValue(true);
-            spyOn(fs, "readFileSync").and.callFake(() => { return baselineState; });
+                    spyOn(fs, "writeFileSync").and.returnValue(true);
+                    spyOn(fs, "existsSync").and.returnValue(true);
+                    spyOn(fs, "readFileSync").and.callFake(() => { return baselineState; });
 
-            let rm = getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
-            expect(fs.existsSync).toHaveBeenCalled();
-            expect(fs.readFileSync).toHaveBeenCalled();
-            expect(fs.writeFileSync).toHaveBeenCalled();
+                    let options = { strict: false, autosaveFile: "state/test.json" };
+                    if (test.logger) {
+                        options.logger = test.logger;
+                    }
+                    else {
+                        spyOn(console, "log");
+                    }
 
-            expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);
+                    let rm = getTestRaidManager(options);
+
+                    expect(fs.existsSync).toHaveBeenCalled();
+                    expect(fs.readFileSync).toHaveBeenCalled();
+                    expect(fs.writeFileSync).toHaveBeenCalled();
+
+                    if (test.logger) {
+                        expect(test.logger.output).toMatch(test.expectedOutput);
+                    }
+                    else {
+                        expect(console.log).not.toHaveBeenCalled();
+                    }
+
+                    expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);        
+                });
+            });
         });
 
-        it("should log an error but catch any exception if restore fails", () => {
-            let logger = new TestLogger();
-            spyOn(fs, "writeFileSync").and.returnValue(true);
-            spyOn(fs, "existsSync").and.returnValue(true);
-            spyOn(fs, "readFileSync").and.throwError("fake error");
-            getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
-            expect(fs.existsSync).toHaveBeenCalled();
-            expect(fs.readFileSync).toHaveBeenCalled();
-            expect(fs.writeFileSync).not.toHaveBeenCalled();
-            expect(logger.output[logger.output.length - 1]).toMatch(/error restoring.*fake error/i);
+        describe("if restore fails", () => {
+            [
+                {
+                    description: "should handle the exception and not log to console by default",
+                },
+                {
+                    description: "should handle the exception and log to the supplied logger",
+                    logger: new TestLogger(),
+                },
+            ].forEach((test) => {
+                it(test.description, () => {
+                    spyOn(fs, "writeFileSync").and.returnValue(true);
+                    spyOn(fs, "existsSync").and.returnValue(true);
+                    spyOn(fs, "readFileSync").and.throwError("fake error");
+
+                    let options = { strict: false, autosaveFile: "state/test.json" };
+                    if (test.logger) {
+                        options.logger = test.logger;
+                    }
+                    else {
+                        spyOn(console, "log").and.returnValue(true);
+                    }
+
+                    getTestRaidManager(options);
+
+                    expect(fs.existsSync).toHaveBeenCalled();
+                    expect(fs.readFileSync).toHaveBeenCalled();
+                    expect(fs.writeFileSync).not.toHaveBeenCalled();
+
+                    if (test.logger) {
+                        expect(test.logger.output[test.logger.output.length - 1]).toMatch(/error restoring.*fake error/i);
+                    }
+                    else {
+                        expect(console.log).not.toHaveBeenCalled();
+                    }
+                });
+            });
         });
 
         it("should log an error but catch any exception if the file is corrupt", () => {
@@ -1571,7 +1672,7 @@ describe("raidManager", () => {
 
         it("should try to write state to the autosave file", () => {
             spyOn(fs, "writeFileSync").and.callFake(myVerifyWrite);
-            let rm = getTestRaidManager({ logger: undefined, strict: false, autosaveFile: "state/test.json" });
+            let rm = getTestRaidManager({ logger: null, strict: false, autosaveFile: "state/test.json" });
             rm.addEggCountdown(5, "erratic", 20);
             rm.addEggCountdown(4, "wells", 10);
             rm.addRaid("machamp", "elephants", 40);
@@ -1595,7 +1696,7 @@ describe("raidManager", () => {
             rm.addEggCountdown(4, "wells", 10);
             rm.addRaid("machamp", "elephants", 40);
 
-            logger._reset();
+            logger.reset();
             rm.trySaveState();
             expect(logger.output[0]).toMatch(/saved state to/i);
         });
@@ -1615,7 +1716,7 @@ describe("raidManager", () => {
             rm.addRaid("machamp", "elephants", 40);
 
             shouldFail = true;
-            logger._reset();
+            logger.reset();
             rm.trySaveState();
             expect(logger.output[0]).toMatch(/error saving raid state/i);
         });
