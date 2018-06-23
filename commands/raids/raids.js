@@ -45,11 +45,11 @@ class raids extends commando.Command {
         let city = undefined;
         let cityRegex = /.*/;
 
-        let config = client.config.getConfigForMessage(message);
+        let config = client.config.getEffectiveConfigForMessage(message);
         let effectiveConfig = (config && config.normalized ? config.normalized.gymLookupOptions : undefined);
 
         console.log(`In !raids, config as supplied: ${JSON.stringify(config.gymLookupOptions)}`);
-        console.log(`In !raids, effective config is: ${JSON.stringify(config.normalized.gymLookupOptions)}`);
+        console.log(`In !raids, effective config is: ${JSON.stringify(effectiveConfig)}`);
         let match = message.content.match(allRaidsRegex);
         if (match !== null) {
             minTier = 1;

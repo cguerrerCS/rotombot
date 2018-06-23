@@ -3,8 +3,7 @@
 const path = require("path");
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
-const ServerConfigManager = require("./lib/serverConfigManager");
-const UserConfigManager = require("./lib/userConfigManager.js");
+const ConfigManager = require("./lib/configManager");
 const RaidChannel = require("./lib/raidChannel");
 const Utils = require("./lib/utils");
 
@@ -97,23 +96,13 @@ function addRaidChannels() {
     }
 }
 
-function getConfigForMessage(message) {
-    let user = this.user.tryGetUser(message.member.id);
-    let server = this.server.tryGetServer(message.guild.id);
-    return user ? user.getEffectiveOptions(server) : server;
-}
-
 // on client ready, load in any data and setup raid manager
 client.on("ready", () => {
     process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
-    client.config = {
-        server: new ServerConfigManager("./data/Servers.json"),
-        user: new UserConfigManager("./state/userConfigs.json"),
-        getConfigForMessage: getConfigForMessage,
-    };
+    client.config = new ConfigManager();
 
     addRaidChannels();
 
