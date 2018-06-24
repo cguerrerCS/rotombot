@@ -1,6 +1,7 @@
 "use strict";
 const commando = require("discord.js-commando");
 const MyParser = require("../../lib/myParser");
+const Utils = require("../../lib/utils");
 
 //!info command
 class info extends commando.Command {
@@ -34,7 +35,7 @@ class info extends commando.Command {
         let needBreak = (output.length > 0);
         this.formatGymOptions(title, options).forEach((line) => {
             if (needBreak) {
-                line.push("");
+                output.push("");
                 needBreak = false;
             }
             output.push(line);
@@ -66,6 +67,11 @@ class info extends commando.Command {
         }
 
         config = client.config.getUserConfigForMessage(message);
+        if (want.update) {
+            let options = (config ? Utils.mergeOptions(config.gymLookupOptions, want.update) : want.update);
+            config = client.config.updateUserConfigForMessage(message, { gymLookupOptions: options });
+        }
+
         if (config && config.gymLookupOptions) {
             this.addFormattedGymOptions(infoOutput, "User lookup settings:", config.gymLookupOptions);
         }
