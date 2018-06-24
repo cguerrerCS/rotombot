@@ -27,8 +27,7 @@ class info extends commando.Command {
             return;
         }
 
-        let config = client.config.getEffectiveConfigForMessage(message);
-        let lookupOptions = (config ? config : {});
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message) || {};
 
         var gymToGetInfoFor = args.match(/\S+/g).join(" ");
         var gym = client.raidManager.tryGetGym(gymToGetInfoFor, lookupOptions);

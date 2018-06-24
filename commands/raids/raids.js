@@ -45,7 +45,7 @@ class raids extends commando.Command {
         let city = undefined;
         let cityRegex = /.*/;
 
-        let config = client.config.getEffectiveConfigForMessage(message);
+        let config = client.config.getEffectiveGymLookupOptionsForMessage(message);
         let effectiveConfig = (config && config.normalized ? config.normalized.gymLookupOptions : undefined);
 
         console.log(`In !raids, config as supplied: ${JSON.stringify(config.gymLookupOptions)}`);

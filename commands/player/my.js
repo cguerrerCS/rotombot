@@ -69,7 +69,7 @@ class info extends commando.Command {
         config = client.config.getUserConfigForMessage(message);
         if (want.update) {
             let options = (config ? Utils.mergeOptions(config.gymLookupOptions, want.update) : want.update);
-            config = client.config.updateUserConfigForMessage(message, { gymLookupOptions: options });
+            config = client.config.updateGymLookupOptionsForMessage(message, options);
         }
 
         if (config && config.gymLookupOptions) {

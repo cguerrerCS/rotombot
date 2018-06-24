@@ -52,7 +52,7 @@ describe("UserConfigManager class", () => {
         it("should initialize with an array of good configs", () => {
             const ucm = new UserConfigManager(goodConfigs);
             goodConfigs.forEach((config) => {
-                expect(ucm.tryGetUser(config.id).userName).toBe(config.userName);
+                expect(ucm.tryGetUserConfig(config.id).userName).toBe(config.userName);
             });
         });
 
@@ -64,7 +64,7 @@ describe("UserConfigManager class", () => {
 
             const ucm = new UserConfigManager(init);
             goodConfigs.forEach((config) => {
-                expect(ucm.tryGetUser(config.id).userName).toBe(config.userName);
+                expect(ucm.tryGetUserConfig(config.id).userName).toBe(config.userName);
             });
         });
 
@@ -95,44 +95,44 @@ describe("UserConfigManager class", () => {
         });
     });
 
-    describe("addUser method", () => {
+    describe("addUserConfig method", () => {
         it("should throw for an invalid initializer", () => {
             const users = new UserConfigManager();
-            expect(() => users.addUser({ userName: "bob" })).toThrowError(/user id .* must be a non-empty string/i);
+            expect(() => users.addUserConfig({ userName: "bob" })).toThrowError(/user id .* must be a non-empty string/i);
         });
 
         it("should succeed if no user with matching ID already exists", () => {
             const users = new UserConfigManager();
-            expect(users.addUser({ id: "123", userName: "Fred" })).toBeDefined();
+            expect(users.addUserConfig({ id: "123", userName: "Fred" })).toBeDefined();
         });
 
         it("should throw if a user with a matching ID already exists", () => {
             const users = new UserConfigManager();
-            expect(users.addUser({ id: "123", userName: "Fred" })).toBeDefined();
-            expect(() => users.addUser({ id: "123", userName: "Schleprock" })).toThrowError(/multiply defined/i);
+            expect(users.addUserConfig({ id: "123", userName: "Fred" })).toBeDefined();
+            expect(() => users.addUserConfig({ id: "123", userName: "Schleprock" })).toThrowError(/multiply defined/i);
         });
     });
 
     describe("addOrUpdateUser method", () => {
         it("should throw for an invalid initializer", () => {
             const users = new UserConfigManager();
-            expect(() => users.addOrUpdateUser({ userName: "bob" })).toThrowError(/user id .* must be a non-empty string/i);
+            expect(() => users.addOrUpdateUserConfig({ userName: "bob" })).toThrowError(/user id .* must be a non-empty string/i);
         });
 
         it("should succeed if no user with matching ID already exists", () => {
             const users = new UserConfigManager();
-            expect(users.addOrUpdateUser({ id: "123", userName: "Fred" })).toBeDefined();
+            expect(users.addOrUpdateUserConfig({ id: "123", userName: "Fred" })).toBeDefined();
         });
 
         it("should succeed if a user with a matching ID already exists", () => {
             const users = new UserConfigManager();
-            expect(users.addOrUpdateUser({ id: "123", userName: "Fred" })).toBeDefined();
-            expect(users.addOrUpdateUser({ id: "123", userName: "Schlepprock" })).toBeDefined();
-            expect(users.tryGetUser("123").userName).toBe("Schlepprock");
+            expect(users.addOrUpdateUserConfig({ id: "123", userName: "Fred" })).toBeDefined();
+            expect(users.addOrUpdateUserConfig({ id: "123", userName: "Schlepprock" })).toBeDefined();
+            expect(users.tryGetUserConfig("123").userName).toBe("Schlepprock");
         });
     });
 
-    describe("getEffectiveOptions method", () => {
+    describe("getEffectiveGymLookupOptions method", () => {
         const serverInit = [
             { id: "123", displayName: "Server 1", guildName: "Discord 1" },
             {
@@ -147,18 +147,18 @@ describe("UserConfigManager class", () => {
         ];
 
         const servers = new ServerConfigManager(serverInit);
-        const server1 = servers.tryGetServer("Server 1");
-        const server2 = servers.tryGetServer("Server 2");
+        const server1 = servers.tryGetServerConfig("Server 1");
+        const server2 = servers.tryGetServerConfig("Server 2");
 
         it("should get a fully specified set of options", () => {
             let baseline = GymDirectory.getOptions({});
             [server1, server2].forEach((server) => {
                 goodConfigs.forEach((userConfig) => {
                     let userConfigs = new UserConfigManager(goodConfigs);
-                    let user = userConfigs.tryGetUser(userConfig.id);
+                    let user = userConfigs.tryGetUserConfig(userConfig.id);
                     expect(user).toBeDefined();
 
-                    let resolved = user.getEffectiveOptions(server);
+                    let resolved = user.getEffectiveGymLookupOptions(server);
                     for (let prop in baseline) {
                         if (baseline.hasOwnProperty(prop)) {
                             expect(resolved.hasOwnProperty(prop)).toBe(true);
@@ -173,12 +173,12 @@ describe("UserConfigManager class", () => {
             [server1, server2].forEach((server) => {
                 goodConfigs.forEach((userConfig) => {
                     let userConfigs = new UserConfigManager(goodConfigs);
-                    let user = userConfigs.tryGetUser(userConfig.id);
+                    let user = userConfigs.tryGetUserConfig(userConfig.id);
                     expect(user).toBeDefined();
 
-                    let resolved = user.getEffectiveOptions(server);
+                    let resolved = user.getEffectiveGymLookupOptions(server);
                     for (let prop in baseline) {
-                        if (user.getOptionsAsConfigured().hasOwnProperty(prop)) {
+                        if (user.getGymLookupOptionsAsConfigured().hasOwnProperty(prop)) {
                             expect(resolved[prop]).toEqual(Utils.normalize(user.gymLookupOptions[prop]));
                         }
                     }
@@ -191,11 +191,11 @@ describe("UserConfigManager class", () => {
             [server1, server2].forEach((server) => {
                 goodConfigs.forEach((userConfig) => {
                     let userConfigs = new UserConfigManager(goodConfigs);
-                    let user = userConfigs.tryGetUser(userConfig.id);
+                    let user = userConfigs.tryGetUserConfig(userConfig.id);
                     expect(user).toBeDefined();
 
                     let serverConfig = server.gymLookupOptions;
-                    let resolved = user.getEffectiveOptions(server);
+                    let resolved = user.getEffectiveGymLookupOptions(server);
                     for (let prop in baseline) {
                         if (serverConfig.hasOwnProperty(prop) && (!user.gymLookupOptions.hasOwnProperty(prop))) {
                             expect(resolved[prop]).toEqual(Utils.normalize(serverConfig[prop]));
@@ -207,11 +207,11 @@ describe("UserConfigManager class", () => {
 
         it("should return a cached object", () => {
             let userConfigs = new UserConfigManager([{  id: "123", userName: "Fred" }]);
-            let user = userConfigs.tryGetUser("123");
+            let user = userConfigs.tryGetUserConfig("123");
             expect(user).toBeDefined();
 
-            let r1 = user.getEffectiveOptions(server1);
-            let r2 = user.getEffectiveOptions(server1);
+            let r1 = user.getEffectiveGymLookupOptions(server1);
+            let r2 = user.getEffectiveGymLookupOptions(server1);
             expect(r1).toBe(r2);
         });
     });

@@ -72,15 +72,15 @@ describe("ServerConfigManager class", () => {
                     init.displayName.toUpperCase(),
                     init.guildName.toLowerCase() + "!!!",
                 ].forEach((name) => {
-                    let server = servers.tryGetServer(name);
+                    let server = servers.tryGetServerConfig(name);
                     expect(server.id).toBe(init.id);
                     expect(server.displayName).toBe(init.displayName);
                     expect(server.guildName).toBe(init.guildName);
-                    expect(server.getOptionsAsConfigured()).toBeDefined();
-                    expect(server.getEffectiveOptions()).toBeDefined();
+                    expect(server.getGymLookupOptionsAsConfigured()).toBeDefined();
+                    expect(server.getEffectiveGymLookupOptions()).toBeDefined();
                     if (init.gymLookupOptions !== undefined) {
-                        expect(server.getOptionsAsConfigured()).toEqual(init.gymLookupOptions);
-                        expect(server.getEffectiveOptions()).not.toEqual(init.gymLookupOptions);
+                        expect(server.getGymLookupOptionsAsConfigured()).toEqual(init.gymLookupOptions);
+                        expect(server.getEffectiveGymLookupOptions()).not.toEqual(init.gymLookupOptions);
                     }
                 });
             });
