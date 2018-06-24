@@ -17,15 +17,15 @@ class info extends commando.Command {
     formatGymOptions(title, options) {
         let messages = [title];
         [
-            { field: "requiredZones", label: "Required Zones: "},
-            { field: "requiredCities", label: "Required Cities: "},
-            { field: "preferredZones", label: "Preferred Zones: "},
-            { field: "preferredCities", label: "Preferred Cities: "}
+            { field: "requiredZones", label: "Required Zones: " },
+            { field: "requiredCities", label: "Required Cities: " },
+            { field: "preferredZones", label: "Preferred Zones: " },
+            { field: "preferredCities", label: "Preferred Cities: " },
         ].forEach((field) => {
             if (options[field.field] && (options[field.field].length > 0)) {
                 let setting = options[field.field].join(", ");
                 messages.push(`${field.label}${setting}\n`);
-            } 
+            }
         });
         return (messages.length > 1) ? messages : [];
     }

@@ -1347,7 +1347,9 @@ describe("raidManager", () => {
                         options.logger = test.logger;
                     }
                     else {
-                        spyOn(console, "log");
+                        spyOn(console, "log").and.callFake((m) => {
+                            expect(m).toBeUndefined();
+                        });
                     }
 
                     let rm = getTestRaidManager(options);
@@ -1548,7 +1550,7 @@ describe("raidManager", () => {
                 {
                     description: "should ignore unknown gyms and not log to console",
                     replacement: "xyzzy",
-                    expectedOutput: /unknown gym/i, 
+                    expectedOutput: /unknown gym/i,
                 },
                 {
                     description: "should ignore unknown gyms and log to supplied logger",
@@ -1596,7 +1598,7 @@ describe("raidManager", () => {
                         expect(console.log).not.toHaveBeenCalled();
                     }
 
-                    expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);        
+                    expect(JSON.stringify(rm.getSaveState())).not.toBe(baselineState);
                 });
             });
         });

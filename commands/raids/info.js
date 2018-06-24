@@ -17,7 +17,7 @@ class info extends commando.Command {
     async run(message, args) {
         let client = message.client;
         let output = "Processing !info command submitted by user " + message.author +  "\n";
-        
+
         process.stdout.write(output);
         message.channel.send(output);
 
