@@ -102,7 +102,7 @@ client.on("ready", () => {
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
-    client.config = new ConfigManager();
+    client.config = new ConfigManager({ logger: console });
 
     addRaidChannels();
 

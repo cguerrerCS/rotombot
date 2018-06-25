@@ -25,7 +25,7 @@ class info extends commando.Command {
         ].forEach((field) => {
             if (options[field.field] && (options[field.field].length > 0)) {
                 let setting = options[field.field].join(", ");
-                messages.push(`${field.label}${setting}\n`);
+                messages.push(`${field.label}${setting}`);
             }
         });
         return (messages.length > 1) ? messages : [];
@@ -48,13 +48,19 @@ class info extends commando.Command {
         process.stdout.write(output);
         message.channel.send(output);
 
-        let want = MyParser.tryParse(message.content);
+        let want = undefined;
+        try {
+            want = MyParser.tryParse(message.content, client.raidManager.gyms);
+        }
+        catch (err) {
+            client.reportError(message, "!my", err);
+        }
 
-        // if no arguments provided (null or empty string)
+        // if no arguments provided (null or empty string) or error
         if (!want) {
             client.reportError(
                 message,
-                "!add",
+                "!my",
                 "My circuitzzz are tingling! I didn't understand that command..."
             );
             return;

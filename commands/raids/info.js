@@ -30,35 +30,39 @@ class info extends commando.Command {
         let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message) || {};
 
         var gymToGetInfoFor = args.match(/\S+/g).join(" ");
-        var gym = client.raidManager.tryGetGym(gymToGetInfoFor, lookupOptions);
-        if (!gym) {
+        var gyms = client.raidManager.tryGetGyms(gymToGetInfoFor, lookupOptions);
+        if ((!gyms) || (gyms.length < 1)) {
             client.reportError(message, "!info", "no gym found.", "!info <gym name>");
             return;
         }
 
-        var infoContent =
+        gyms.forEach((result) => {
+            let gym = result.gym;
+            var infoContent =
             `Name: *${gym.officialName}*\n` +
             `Friendly Name: *${gym.friendlyName}*\n` +
             `Ex-Eligible: ${gym.isExEligible ? "**YES**" : "_No_"}\n` +
             `City: *${gym.city}*\n` +
             `Zones: *${gym.zones.join(",")}*\n`;
-        let raid = client.raidManager.tryGetRaid(gym.key);
-        if (raid) {
-            let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
-            infoContent += raidInfo.description;
-            for (let key in raid.raiders) {
-                if (raid.raiders.hasOwnProperty(key)) {
-                    let raider = raid.raiders[key];
-                    if (!raider.endTime) {
-                        infoContent += `        ${raider.toString()}\n`;
+
+            let raid = client.raidManager.tryGetRaid(gym.key);
+            if (raid) {
+                let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
+                infoContent += raidInfo.description;
+                for (let key in raid.raiders) {
+                    if (raid.raiders.hasOwnProperty(key)) {
+                        let raider = raid.raiders[key];
+                        if (!raider.endTime) {
+                            infoContent += `        ${raider.toString()}\n`;
+                        }
                     }
                 }
             }
-        }
 
-        infoContent += `Directions: *<${gym.mapLink}>*\n`;
+            infoContent += `Directions: *<${gym.mapLink}>*\n`;
 
-        message.channel.send(infoContent);
+            message.channel.send(infoContent);
+        });
     }
 }
 
