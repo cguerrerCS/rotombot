@@ -42,6 +42,7 @@ class raids extends commando.Command {
         let client = message.client;
         let minTier = 4;
         let maxTier = 5;
+        let all = false;
         let city = undefined;
         let cityRegex = /.*/;
 
@@ -52,6 +53,7 @@ class raids extends commando.Command {
             minTier = 1;
             maxTier = 5;
             city = match[1];
+            all = true;
         }
         else {
             match = message.content.match(minRaidsRegex);
@@ -92,6 +94,10 @@ class raids extends commando.Command {
         let raids = client.raidManager.list((r) => {
             return (r.tier >= minTier) && (r.tier <= maxTier) && cityRegex.test(r.gym.city);
         });
+
+        if ((!city) && (!all)) {
+            raids = client.raidManager.chooseBestRaidsForLookupOptions(raids, lookupOptions);
+        }
 
         message.channel.send(client.raidManager.formatRaidList(raids, description));
     }
