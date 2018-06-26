@@ -63,6 +63,8 @@ class raids extends commando.Command {
         };
         let helpExamples = 0;
 
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
+
         let match = message.content.match(omwEtaRegex);
 
         if (match !== null) {
@@ -129,11 +131,11 @@ class raids extends commando.Command {
 
         try {
             if (raiderInfo) {
-                let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo);
+                let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo, lookupOptions);
                 message.channel.send(`${raid.gym.name}: ${raid.raiders[raiderInfo.raiderName].toString()}`);
             }
             else {
-                let raid = client.raidManager.removeRaider(wantGym, message.member.user.username);
+                let raid = client.raidManager.removeRaider(wantGym, message.member.user.username, lookupOptions);
                 message.channel.send(`${raid.gym.name}: Cancelled rsvp for ${message.member.user.username}`);
             }
         }

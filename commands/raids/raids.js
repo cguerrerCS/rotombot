@@ -45,11 +45,8 @@ class raids extends commando.Command {
         let city = undefined;
         let cityRegex = /.*/;
 
-        let config = client.config.getEffectiveGymLookupOptionsForMessage(message);
-        let effectiveConfig = (config && config.normalized ? config.normalized.gymLookupOptions : undefined);
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
 
-        console.log(`In !raids, config as supplied: ${JSON.stringify(config.gymLookupOptions)}`);
-        console.log(`In !raids, effective config is: ${JSON.stringify(effectiveConfig)}`);
         let match = message.content.match(allRaidsRegex);
         if (match !== null) {
             minTier = 1;
@@ -92,9 +89,11 @@ class raids extends commando.Command {
         }
 
         let description = (((minTier === maxTier) ? `T${minTier}` : `T${minTier}-T${maxTier}`) + (city ? ` in ${city}` : ""));
-        message.channel.send(client.raidManager.listFormatted((r) => {
+        let raids = client.raidManager.list((r) => {
             return (r.tier >= minTier) && (r.tier <= maxTier) && cityRegex.test(r.gym.city);
-        }, description));
+        });
+
+        message.channel.send(client.raidManager.formatRaidList(raids, description));
     }
 }
 

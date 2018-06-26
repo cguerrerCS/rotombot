@@ -482,7 +482,7 @@ describe("raidManager", () => {
 
         it("should throw if an object is supplied", () => {
             let rm = getTestRaidManager();
-            expect(() => rm.tryGetRaid(gymSpecs[3])).toThrowError("Must use gym name for tryGetGym.");
+            expect(() => rm.tryGetRaid(gymSpecs[3])).toThrowError("Must use gym name for tryGetRaid.");
         });
     });
 

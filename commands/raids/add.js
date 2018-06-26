@@ -66,11 +66,13 @@ class raid extends commando.Command {
             return;
         }
 
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message) || {};
+
         let match = message.content.match(addEggByStartTimeRegex);
         if (match !== null) {
             const [, tier, gym, startTime] = match;
             try {
-                let added = client.raidManager.addEggAbsolute(tier, gym, startTime);
+                let added = client.raidManager.addEggAbsolute(tier, gym, startTime, lookupOptions);
                 message.channel.send(`Added ${RaidManager.getFormattedRaidDescription(added).description}.\n`);
             }
             catch (e) {
@@ -83,7 +85,7 @@ class raid extends commando.Command {
         if (match !== null) {
             const [, tier, gym, timer] = match;
             try {
-                let added = client.raidManager.addEggCountdown(tier, gym, timer);
+                let added = client.raidManager.addEggCountdown(tier, gym, timer, lookupOptions);
                 message.channel.send(`Added ${RaidManager.getFormattedRaidDescription(added).description}.\n`);
             }
             catch (err) {
@@ -98,7 +100,7 @@ class raid extends commando.Command {
             const [, boss, gym, timer] = match;
 
             try {
-                let added = client.raidManager.addRaid(boss, gym, timer);
+                let added = client.raidManager.addRaid(boss, gym, timer, lookupOptions);
                 message.channel.send(`Added ${RaidManager.getFormattedRaidDescription(added).description}.\n`);
             }
             catch (err) {
@@ -113,7 +115,7 @@ class raid extends commando.Command {
         if (match !== null) {
             const [, boss, gym] = match;
             try {
-                let updated = client.raidManager.setRaidBoss(boss, gym);
+                let updated = client.raidManager.setRaidBoss(boss, gym, lookupOptions);
                 message.channel.send(`Updated ${RaidManager.getFormattedRaidDescription(updated).description}.\n`);
             }
             catch (err) {
