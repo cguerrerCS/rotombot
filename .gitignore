@@ -4,3 +4,5 @@ state/
 BotToken.csv
 .nyc_output/
 coverage/
+images/
+

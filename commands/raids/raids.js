@@ -1,5 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
+const Raid = require("../../lib/raid");
 
 const defaultRaidsRegex = /^!raids\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
 const allRaidsRegex = /^!raids\s+all\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
@@ -99,7 +100,15 @@ class raids extends commando.Command {
             raids = client.raidManager.chooseBestRaidsForLookupOptions(raids, lookupOptions);
         }
 
-        message.channel.send(client.raidManager.formatRaidList(raids, description));
+        //message.channel.send(client.raidManager.formatRaidList(raids, description));
+        if (raids && (raids.length > 0)) {
+            raids.forEach((raid) => {
+                message.channel.send(Raid.toDiscordMessage(raid));
+            });
+        }
+        else {
+            message.channel.send(`No raids to report (${description})`);
+        }
     }
 }
 
