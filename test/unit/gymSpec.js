@@ -184,18 +184,6 @@ describe("Gym object", () => {
         });
     });
 
-    describe("normalizeNames", () => {
-        it("should normalize all names in an array", () => {
-            expect(Gym.normalizeNames(["BLAH", "Some name with spaces and punctuation!", "this-is-a-test"])).toEqual([
-                "blah", "somenamewithspacesandpunctuation", "thisisatest",
-            ]);
-        });
-
-        it("should throw if any names are empty", () => {
-            expect(() => Gym.normalizeNames(["BLAH", "    "])).toThrowError("Cannot normalize an empty name.");
-        });
-    });
-
     describe("belongsToZone", () => {
         let gymSpec = [["Redmond", "Kirkland", "Greater Seattle"], "Rose Hill", "Tech City Bowl", "Tech City Bowl", 47.666658, -122.165583, false];
         let gym = Gym.fromCsvRow(gymSpec);

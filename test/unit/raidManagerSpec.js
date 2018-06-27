@@ -1642,22 +1642,24 @@ describe("raidManager", () => {
             });
         });
 
-        it("should log an error but catch any exception if the file is corrupt", () => {
-            let logger = new TestLogger();
-            let fakeFileContents = undefined;
-            spyOn(fs, "writeFileSync").and.returnValue(true);
-            spyOn(fs, "existsSync").and.returnValue(true);
-            spyOn(fs, "readFileSync").and.callFake(() => fakeFileContents);
+        describe("with a corrupt file", () => {
             [
                 { contents: "{\n", expectedError: /error restoring.*json/i },
                 { contents: "{}", expectedError: /error restoring.*not a function/i },
             ].forEach((badValue) => {
-                fakeFileContents = badValue;
-                getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
-                expect(fs.existsSync).toHaveBeenCalled();
-                expect(fs.readFileSync).toHaveBeenCalled();
-                expect(fs.writeFileSync).not.toHaveBeenCalled();
-                expect(logger.output[logger.output.length - 1]).toMatch(/error restoring.*JSON/i);
+                it("should log an error but catch any exception if the file is corrupt", () => {
+                    let logger = new TestLogger();
+                    let fakeFileContents = undefined;
+                    spyOn(fs, "writeFileSync").and.returnValue(true);
+                    spyOn(fs, "existsSync").and.returnValue(true);
+                    spyOn(fs, "readFileSync").and.callFake(() => fakeFileContents);
+                    fakeFileContents = badValue;
+                    getTestRaidManager({ logger: logger, strict: false, autosaveFile: "state/test.json" });
+                    expect(fs.existsSync).toHaveBeenCalled();
+                    expect(fs.readFileSync).toHaveBeenCalled();
+                    expect(fs.writeFileSync).not.toHaveBeenCalled();
+                    expect(logger.output[logger.output.length - 1]).toMatch(/error restoring.*JSON/i);
+                });
             });
         });
     });
