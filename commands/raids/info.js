@@ -37,26 +37,22 @@ class info extends commando.Command {
         }
         gyms.forEach((result) => {
             let gym = result.gym;
+            let info = gym.toDiscordMessage();
 
-            /*
-            let infoContent = gym.toString();
             let raid = client.raidManager.tryGetRaid(gym.key);
             if (raid) {
-                let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
-                infoContent += raidInfo.description;
-                for (let key in raid.raiders) {
-                    if (raid.raiders.hasOwnProperty(key)) {
-                        let raider = raid.raiders[key];
-                        if (!raider.endTime) {
-                            infoContent += `        ${raider.toString()}\n`;
-                        }
-                    }
-                }
+                let upcomingFormat = "TIER hatches @ HATCH_TIME";
+                let activeFormat = "TIER BOSS_NAME ends @ EXPIRY_TIME\n[Raid Guide](GUIDE_LINK)";
+                let raidInfo = RaidManager.getFormattedRaidDescription(raid, upcomingFormat, activeFormat);
+                let field = {
+                    name: (raidInfo.active ? "Current Raid" : "Upcoming Raid"),
+                    value: raidInfo.description,
+                };
+                info.embed.fields.push(field);
+                info.embed.thumbnail.url = `http://www.didjaredo.com/pogo/images/48x48/${raidInfo.active ? "regice" : "t5"}.png`;
             }
 
-            message.channel.send(infoContent);
-            */
-            message.channel.send(gym.toDiscordMessage());
+            message.channel.send(info);
         });
     }
 }
