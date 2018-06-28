@@ -1,0 +1,26 @@
+[
+    {
+        "id": "288714963235635200",
+        "displayName": "Rain City PoGo",
+        "guildName": "Rain City Pogo",
+        "gymLookupOptions" : {
+            "preferredZones": [ "Rain City" ]
+        }
+    },
+    {
+        "id": "420429550804140034",
+        "displayName": "Technica",
+        "guildName": "Technica",
+        "gymLookupOptions": {
+            "preferredZones": [ "Rain City" ]
+        }
+    },
+    {
+        "id": "446888538705887234",
+        "displayName": "West World",
+        "guildName": "West World",
+        "gymLookupOptions": {
+            "preferredZones": [ "Downtown Seattle" ]
+        }
+    }
+]

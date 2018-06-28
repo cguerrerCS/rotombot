@@ -1,8 +1,11 @@
 "use strict";
 
+const path = require("path");
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
+const ConfigManager = require("./lib/configManager");
 const RaidChannel = require("./lib/raidChannel");
+const Utils = require("./lib/utils");
 
 const { CommandoClient } = require("discord.js-commando");
 const isDevelopment = false;
@@ -13,22 +16,25 @@ const client = new CommandoClient({
 });
 
 client.registry.registerGroup("raids", "Raids");
+client.registry.registerGroup("player", "Player");
 client.registry.registerDefaults();
-client.registry.registerCommandsIn(__dirname + "/commands");
+client.registry.registerCommandsIn(path.resolve("./commands"));
 
 const fs = require("fs");
 const CsvReader = require("csv-reader");
-let inputRaidDataStream = fs.createReadStream("RaidLocations.csv", "utf8");
+let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
 let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
 let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
 let raidManager = new RaidManager();
+
 let raidData = [];
 let raidBossData = [];
 let moderatorData = [];
 
 let moderatorId = undefined;
+
 let tokens = {};
 
 // Login logic for the bot:
@@ -83,9 +89,8 @@ function addRaidChannels() {
             let canReadHistory = permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY);
             if (canRead && canSend) {
                 if (canManage && canReadHistory && channel.topic && channel.topic.startsWith("!raids ")) {
-                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic);
+                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic, client.config);
                     client.raidManager.addRaidChannel(raidChannel);
-                    raidChannel.update();
                     output.push(`    Reporting on ${channel.guild.name}/${channel.name} [${channel.topic}]\n`);
                 }
                 else {
@@ -109,39 +114,22 @@ client.on("ready", () => {
     client.isDevelopment = isDevelopment;
     client.raidManager = raidManager;
     client.getModeratorId = getModeratorId;
+    client.config = new ConfigManager({ logger: console });
 
     addRaidChannels();
 
-    // read in all raid data
-    inputRaidDataStream
-        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-        .on("data", function (row) {
-            let data = {
-                city: row[0],
-                name: row[1],
-                friendlyName: row[2],
-                lng: row[3],
-                lat: row[4],
-                mapLink: `https://www.google.com/maps/dir/?api=1&destination=${row[3]},${row[4]}`,
-            };
-            raidData.push(data);
-        })
-        .on("end", function () {
-            client.raidManager.setGymData(raidData);
-        });
+    client.raidManager.initGymDataAsync(inputRaidDataStream);
 
-    inputRaidBossDataStream
-        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-        .on("data", function (row) {
-            let data = {
+    Utils.processCsvAsync(inputRaidBossDataStream,
+        (row) => {
+            return {
                 name: row[0],
                 tier: row[1],
                 status: row[2],
             };
-            raidBossData.push(data);
-        })
-        .on("end", function () {
-            client.raidManager.setBossData(raidBossData);
+        },
+        (collection) => {
+            client.raidManager.setBossData(collection);
         });
 
     inputModeratorIdStream

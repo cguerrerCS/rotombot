@@ -1,5 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
+const Raid = require("../../lib/raid");
 
 const defaultRaidsRegex = /^!raids\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
 const allRaidsRegex = /^!raids\s+all\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
@@ -42,14 +43,18 @@ class raids extends commando.Command {
         let client = message.client;
         let minTier = 4;
         let maxTier = 5;
+        let all = false;
         let city = undefined;
         let cityRegex = /.*/;
+
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
 
         let match = message.content.match(allRaidsRegex);
         if (match !== null) {
             minTier = 1;
             maxTier = 5;
             city = match[1];
+            all = true;
         }
         else {
             match = message.content.match(minRaidsRegex);
@@ -87,9 +92,23 @@ class raids extends commando.Command {
         }
 
         let description = (((minTier === maxTier) ? `T${minTier}` : `T${minTier}-T${maxTier}`) + (city ? ` in ${city}` : ""));
-        message.channel.send(client.raidManager.listFormatted((r) => {
+        let raids = client.raidManager.list((r) => {
             return (r.tier >= minTier) && (r.tier <= maxTier) && cityRegex.test(r.gym.city);
-        }, description));
+        });
+
+        if ((!city) && (!all)) {
+            raids = client.raidManager.chooseBestRaidsForLookupOptions(raids, lookupOptions);
+        }
+
+        //message.channel.send(client.raidManager.formatRaidList(raids, description));
+        if (raids && (raids.length > 0)) {
+            raids.forEach((raid) => {
+                message.channel.send(Raid.toDiscordMessage(raid));
+            });
+        }
+        else {
+            message.channel.send(`No raids to report (${description})`);
+        }
     }
 }
 

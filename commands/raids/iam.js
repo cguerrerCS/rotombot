@@ -63,6 +63,8 @@ class raids extends commando.Command {
         };
         let helpExamples = 0;
 
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
+
         let match = message.content.match(omwEtaRegex);
 
         if (match !== null) {
@@ -105,7 +107,7 @@ class raids extends commando.Command {
                             helpExamples = omwCanceExampleIndex;
                             break;
                         default:
-                            client.reportError(message, "!omw", `My circuitzzz are tingling! I didn't recognize the verb "${verb}"`);
+                            client.reportError(message, "!iam", `My circuitzzz are tingling! I didn't recognize the verb "${verb}"`);
                             return;
                     }
                 }
@@ -114,7 +116,7 @@ class raids extends commando.Command {
                     if (match === null) {
                         client.reportError(
                             message,
-                            "!add",
+                            "!iam",
                             "My circuitzzz are tingling! I didn't understand that command..."
                         );
                         return;
@@ -129,11 +131,11 @@ class raids extends commando.Command {
 
         try {
             if (raiderInfo) {
-                let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo);
+                let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo, lookupOptions);
                 message.channel.send(`${raid.gym.name}: ${raid.raiders[raiderInfo.raiderName].toString()}`);
             }
             else {
-                let raid = client.raidManager.removeRaider(wantGym, message.member.user.username);
+                let raid = client.raidManager.removeRaider(wantGym, message.member.user.username, lookupOptions);
                 message.channel.send(`${raid.gym.name}: Cancelled rsvp for ${message.member.user.username}`);
             }
         }
@@ -142,7 +144,7 @@ class raids extends commando.Command {
             helpExamples.forEach((i) => {
                 help += this.examples[i] + "\n";
             });
-            client.reportError(message, "!omw", err, help);
+            client.reportError(message, "!iam", err, help);
         }
     }
 }

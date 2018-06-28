@@ -15,8 +15,9 @@ class info extends commando.Command {
     }
 
     async run(message, args) {
-        var client = message.client;
-        var output = "Processing !info command submitted by user " + message.author +  "\n";
+        let client = message.client;
+        let output = "Processing !info command submitted by user " + message.author +  "\n";
+
         process.stdout.write(output);
         message.channel.send(output);
 
@@ -26,35 +27,37 @@ class info extends commando.Command {
             return;
         }
 
+        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message) || {};
+
         var gymToGetInfoFor = args.match(/\S+/g).join(" ");
-        var gym = client.raidManager.tryGetGym(gymToGetInfoFor);
-        if (!gym) {
+        var gyms = client.raidManager.tryGetGyms(gymToGetInfoFor, lookupOptions);
+        if ((!gyms) || (gyms.length < 1)) {
             client.reportError(message, "!info", "no gym found.", "!info <gym name>");
             return;
         }
+        gyms.forEach((result) => {
+            let gym = result.gym;
 
-        var infoContent =
-            `Name: *${gym.name}*\n` +
-            `Friendly Name: *${gym.friendlyName}*\n` +
-            `City: *${gym.city}*\n`;
-
-        let raid = client.raidManager.tryGetRaid(gym.name);
-        if (raid) {
-            let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
-            infoContent += raidInfo.description;
-            for (let key in raid.raiders) {
-                if (raid.raiders.hasOwnProperty(key)) {
-                    let raider = raid.raiders[key];
-                    if (!raider.endTime) {
-                        infoContent += `        ${raider.toString()}\n`;
+            /*
+            let infoContent = gym.toString();
+            let raid = client.raidManager.tryGetRaid(gym.key);
+            if (raid) {
+                let raidInfo = RaidManager.getFormattedRaidDescription(raid, "Upcoming: TIER hatches @ HATCH_TIME\n", "Current: TIER BOSS_NAME ends @ EXPIRY_TIME\n");
+                infoContent += raidInfo.description;
+                for (let key in raid.raiders) {
+                    if (raid.raiders.hasOwnProperty(key)) {
+                        let raider = raid.raiders[key];
+                        if (!raider.endTime) {
+                            infoContent += `        ${raider.toString()}\n`;
+                        }
                     }
                 }
             }
-        }
 
-        infoContent += `Directions: *${gym.mapLink}*\n`;
-
-        message.channel.send(infoContent);
+            message.channel.send(infoContent);
+            */
+            message.channel.send(gym.toDiscordMessage());
+        });
     }
 }
 
