@@ -1,7 +1,6 @@
 "use strict";
 
 const commando = require("discord.js-commando");
-const RaidManager = require("../../lib/raidManager");
 const Raid = require("../../lib/raid");
 
 const addEggByStartTimeRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/;
