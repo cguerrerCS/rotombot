@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const GymDirectory = require("../../lib/gymDirectory");
+const Raid = require("../../lib/raid");
 const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
@@ -218,84 +219,6 @@ describe("raidManager", () => {
             });
             expect(numActive).toBeGreaterThan(0);
             expect(numInactive).toBeGreaterThan(0);
-        });
-    });
-
-    describe("validateTier static method", () => {
-        it("should accept numbers in range and well-formatted strings", () => {
-            [
-                [1, 1], [2, 2], [3, 3], [4, 4], [5, 5], ["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["Tier 1", 1], ["Tier 2", 2], ["Tier 3", 3], ["Tier 4", 4], ["Tier 5", 5],
-            ].forEach((test) => {
-                expect(RaidManager.validateTier(test[0])).toBe(test[1]);
-            });
-        });
-
-        it("should default to tier 5 for undefined tier request", () => {
-            expect(RaidManager.validateTier()).toBe(5);
-        });
-
-        it("should reject numbers out of range, poorly formatted strings, and objects", () => {
-            [
-                -1, 0, 6, "-100", "600", "Tier 7", "tier 1", "L1", "blah-di-blah", {}, /Tier 1/,
-            ].forEach((v) => {
-                expect(() => RaidManager.validateTier(v)).toThrow();
-            });
-        });
-    });
-
-    describe("validateHatchTime static method", () => {
-        it("should accept valid times", () => {
-            [1, 10, 59].forEach((minutes) => {
-                let date = getOffsetDate(minutes);
-                let time = new FlexTime(date);
-                let validTime = RaidManager.validateHatchTime(time.toString());
-                expect(validTime.getHours()).toBe(time.getHours());
-                expect(validTime.getMinutes()).toBe(time.getMinutes());
-            });
-        });
-
-        it("should reject invalid times", () => {
-            [-2, 65].forEach((minutes) => {
-                let date = getOffsetDate(minutes);
-                let time = new FlexTime(date);
-                expect(() => RaidManager.validateHatchTime(time.toString())).toThrow();
-            });
-        });
-    });
-
-    describe("validateEggTimer static method", () => {
-        it("should accept valid numbers and strings in range", () => {
-            [
-                1, 10, 30, 45, 60, "15", "30", "50",
-            ].forEach((v) => {
-                expect(RaidManager.validateEggTimer(v)).toBe(Number(v));
-            });
-        });
-
-        it("should reject out of range numbers/strings or anything other type", () => {
-            [
-                -15, 0, 61, 1000, "-5", "65", {}, /\d\d/,
-            ].forEach((v) => {
-                expect(() => RaidManager.validateEggTimer(v)).toThrow();
-            });
-        });
-    });
-
-    describe("validateRaidTimer static method", () => {
-        it("should accept valid numbers and strings in range", () => {
-            [
-                1, 10, 30, 45, "15", "30", "40",
-            ].forEach((v) => {
-                expect(RaidManager.validateRaidTimer(v)).toBe(Number(v));
-            });
-        });
-
-        it("should reject out of range numbers/strings or anything other type", () => {
-            [
-                -15, 0, 46, 1000, "-1", "60", {}, /\d\d/,
-            ].forEach((v) => {
-                expect(() => RaidManager.validateRaidTimer(v)).toThrow();
-            });
         });
     });
 
@@ -557,8 +480,8 @@ describe("raidManager", () => {
 
                 let now = new FlexTime();
                 let expiry = FlexTime.getFlexTime(now, test[2]);
-                let hatch = FlexTime.getFlexTime(expiry, -RaidManager.maxRaidActiveTime);
-                let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
+                let hatch = FlexTime.getFlexTime(expiry, -Raid.maxRaidActiveTime);
+                let spawn = FlexTime.getFlexTime(hatch, -Raid.maxEggHatchTime);
 
                 expect(raid.spawnTime.getHours()).toEqual(spawn.getHours());
                 expect(raid.spawnTime.getMinutes()).toEqual(spawn.getMinutes());
@@ -567,7 +490,7 @@ describe("raidManager", () => {
                 expect(raid.expiryTime.getHours()).toEqual(expiry.getHours());
                 expect(raid.expiryTime.getMinutes()).toEqual(expiry.getMinutes());
 
-                expect(raid.state).toBe(RaidManager.RaidStateEnum.hatched);
+                expect(raid.state).toBe(Raid.State.hatched);
                 expect(raid.gym.officialName).toBe(test[3]);
                 expect(raid.pokemon.name).toBe(test[4]);
                 expect(raid.tier).toBe(test[5]);
@@ -718,7 +641,7 @@ describe("raidManager", () => {
             it("should succeed if the egg is hatched, boss is unknown and new boss is of the right tier", () => {
                 let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 let hatch = getOffsetDate(-10);
-                rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
+                rm._forceRaid("wells", 5, undefined, hatch, Raid.State.hatched);
                 let raid = rm.setRaidBoss("hooh", "wells");
                 expect(raid.pokemon.name).toBe("Ho-oh");
                 expect(raid.hatchTime).toBe(hatch);
@@ -739,7 +662,7 @@ describe("raidManager", () => {
             it("should throw if boss is of the wrong tier", () => {
                 let rm = getTestRaidManager({ strict: true, logger: null, autosaveFile: null });
                 let hatch = getOffsetDate(-10);
-                rm._forceRaid("wells", 5, undefined, hatch, RaidManager.RaidStateEnum.hatched);
+                rm._forceRaid("wells", 5, undefined, hatch, Raid.State.hatched);
                 expect(() => rm.setRaidBoss("ttar", "wells")).toThrowError(/Cannot set.*as boss for a tier.*raid/);
             });
         });
@@ -750,12 +673,12 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             let raid = rm.addEggCountdown(5, "painted", 10);
             let hatch = FlexTime.getFlexTime(Date.now(), 10);
-            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
-            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
+            let spawn = FlexTime.getFlexTime(hatch, -Raid.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, Raid.maxRaidActiveTime);
 
             expect(raid.tier).toBe(5);
             expect(raid.pokemon).toBeUndefined();
-            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.state).toBe(Raid.State.egg);
             expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
             expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
             expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
@@ -770,11 +693,11 @@ describe("raidManager", () => {
 
             let raid = rm.addEggCountdown(4, "market", 20);
             let hatch = FlexTime.getFlexTime(Date.now(), 20);
-            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
-            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
+            let spawn = FlexTime.getFlexTime(hatch, -Raid.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, Raid.maxRaidActiveTime);
             expect(raid.tier).toBe(4);
             expect(raid.pokemon).toBeUndefined();
-            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.state).toBe(Raid.State.egg);
             expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
             expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
             expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
@@ -846,13 +769,13 @@ describe("raidManager", () => {
         it("should add a valid egg when no raid exists at the location", () => {
             let rm = getTestRaidManager();
             let hatch = FlexTime.getFlexTime(Date.now(), 10);
-            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
-            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
+            let spawn = FlexTime.getFlexTime(hatch, -Raid.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, Raid.maxRaidActiveTime);
 
             let raid = rm.addEggAbsolute(5, "painted", hatch.toString());
             expect(raid.tier).toBe(5);
             expect(raid.pokemon).toBeUndefined();
-            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.state).toBe(Raid.State.egg);
             expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
             expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
             expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
@@ -866,13 +789,13 @@ describe("raidManager", () => {
             expect(rm.addRaid("latias", "market", 30)).toBeDefined();
 
             let hatch = FlexTime.getFlexTime(Date.now(), 20);
-            let spawn = FlexTime.getFlexTime(hatch, -RaidManager.maxEggHatchTime);
-            let expiry = FlexTime.getFlexTime(hatch, RaidManager.maxRaidActiveTime);
+            let spawn = FlexTime.getFlexTime(hatch, -Raid.maxEggHatchTime);
+            let expiry = FlexTime.getFlexTime(hatch, Raid.maxRaidActiveTime);
 
             let raid = rm.addEggAbsolute(4, "market", hatch.toString());
             expect(raid.tier).toBe(4);
             expect(raid.pokemon).toBeUndefined();
-            expect(raid.state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raid.state).toBe(Raid.State.egg);
             expect(raid.spawnTime.getHours()).toBe(spawn.getHours());
             expect(raid.spawnTime.getMinutes()).toBe(spawn.getMinutes());
             expect(raid.hatchTime.getHours()).toBe(hatch.getHours());
@@ -1254,10 +1177,10 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             let morning = new Date(2018, 1, 1, 0, 0);
             let afternoon = new Date(2018, 1, 1, 14, 0);
-            rm._forceRaid("painted", 5, undefined, morning, RaidManager.RaidStateEnum.egg);
-            rm._forceRaid("market", 5, undefined, afternoon, RaidManager.RaidStateEnum.egg);
-            rm._forceRaid("erratic", 5, "hooh", morning, RaidManager.RaidStateEnum.hatched);
-            rm._forceRaid("victors", 5, "latias", afternoon, RaidManager.RaidStateEnum.hatched);
+            rm._forceRaid("painted", 5, undefined, morning, Raid.State.egg);
+            rm._forceRaid("market", 5, undefined, afternoon, Raid.State.egg);
+            rm._forceRaid("erratic", 5, "hooh", morning, Raid.State.hatched);
+            rm._forceRaid("victors", 5, "latias", afternoon, Raid.State.hatched);
 
             let output = rm.listFormatted((r) => r.tier === 5);
             let lines = output.split("\n");
@@ -1278,8 +1201,8 @@ describe("raidManager", () => {
 
         it("should show raid levels when reporting that no raids are available", () => {
             let rm = getTestRaidManager();
-            expect(rm.listFormatted((r) => (r.tier >= 4) && (r.tier <= 5), "T4-T5")).toMatch(/^.*No raids.*\(T4-T5\).*$/);
-            expect(rm.listFormatted((r) => (r.tier === 3), "T3")).toMatch(/^.*No raids.*\(T3\).*$/);
+            expect(rm.listFormatted((r) => (r.tier >= 4) && (r.tier <= 5), { description: "T4-T5" })).toMatch(/^.*No raids.*\(T4-T5\).*$/);
+            expect(rm.listFormatted((r) => (r.tier === 3), { description: "T3" })).toMatch(/^.*No raids.*\(T3\).*$/);
             expect(rm.listFormatted(() => false)).toMatch("No raids to report.");
         });
     });
@@ -1287,7 +1210,7 @@ describe("raidManager", () => {
     describe("raidListRefresh method", () => {
         it("should remove expired raids", () => {
             let rm = getTestRaidManager();
-            let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+            let hatch = getOffsetDate(-(Raid.maxRaidActiveTime + 2));
             rm._forceRaid("painted", 5, "latias", hatch);
             expect(rm.list((r) => r.tier === 5).length).toBe(1);
             rm.raidListRefresh();
@@ -1297,18 +1220,18 @@ describe("raidManager", () => {
         it("should move hatched eggs to active raid with unknown boss if more than one boss is valid", () => {
             let rm = getTestRaidManager();
             let hatch = getOffsetDate(-5);
-            rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+            rm._forceRaid("painted", 5, undefined, hatch, Raid.State.egg);
 
             let raids = rm.list((r) => r.tier === 5);
             expect(raids.length).toBe(1);
-            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raids[0].state).toBe(Raid.State.egg);
             expect(raids[0].pokemon).toBe(undefined);
 
             rm.raidListRefresh();
 
             raids = rm.list((r) => r.tier === 5);
             expect(raids.length).toBe(1);
-            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
+            expect(raids[0].state).toBe(Raid.State.hatched);
             expect(raids[0].pokemon).toBe(undefined);
         });
 
@@ -1319,18 +1242,18 @@ describe("raidManager", () => {
             rm.setBossData(myBosses);
 
             let hatch = getOffsetDate(-5);
-            rm._forceRaid("painted", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+            rm._forceRaid("painted", 5, undefined, hatch, Raid.State.egg);
 
             let raids = rm.list((r) => r.tier === 5);
             expect(raids.length).toBe(1);
-            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.egg);
+            expect(raids[0].state).toBe(Raid.State.egg);
             expect(raids[0].pokemon).toBeUndefined();
 
             rm.raidListRefresh();
 
             raids = rm.list((r) => r.tier === 5);
             expect(raids.length).toBe(1);
-            expect(raids[0].state).toBe(RaidManager.RaidStateEnum.hatched);
+            expect(raids[0].state).toBe(Raid.State.hatched);
             expect(raids[0].pokemon).toBeDefined();
             expect(raids[0].pokemon.name).toBe("Latias");
         });
@@ -1353,11 +1276,11 @@ describe("raidManager", () => {
                     }
 
                     let rm = getTestRaidManager(options);
-                    let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+                    let hatch = getOffsetDate(-(Raid.maxRaidActiveTime + 2));
                     rm._forceRaid("painted", 5, "latias", hatch);
 
                     hatch = getOffsetDate(-5);
-                    rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+                    rm._forceRaid("market", 5, undefined, hatch, Raid.State.egg);
 
                     let raids = rm.list((r) => (r.tier >= 1) && (r.tier >= 5));
                     expect(raids.length).toBe(2);
@@ -1426,7 +1349,7 @@ describe("raidManager", () => {
             let rm = getTestRaidManager();
             spyOn(rm, "reportRaidsUpdate");
 
-            let hatch = getOffsetDate(-(RaidManager.maxRaidActiveTime + 2));
+            let hatch = getOffsetDate(-(Raid.maxRaidActiveTime + 2));
             rm._forceRaid("painted", 5, "latias", hatch);
             expect(rm.list().length).toBe(1);
             rm.raidListRefresh();
@@ -1439,7 +1362,7 @@ describe("raidManager", () => {
             spyOn(rm, "reportRaidsUpdate");
 
             let hatch = getOffsetDate(-5);
-            rm._forceRaid("market", 5, undefined, hatch, RaidManager.RaidStateEnum.egg);
+            rm._forceRaid("market", 5, undefined, hatch, Raid.State.egg);
             expect(rm.list().length).toBe(1);
             rm.raidListRefresh();
             expect(rm.list().length).toBe(1);

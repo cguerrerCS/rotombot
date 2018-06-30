@@ -25,7 +25,7 @@ class directions extends commando.Command {
             return;
         }
 
-        var lookupOptions = client.config.gettEffectiveGymLookupOptionsForMessage(message);
+        var lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
 
         var raidToGetDirectionsFor = args.match(/\S+/g).join(" ");
         let gym = client.raidManager.tryGetGym(raidToGetDirectionsFor, lookupOptions);

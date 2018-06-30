@@ -100,15 +100,25 @@ class raids extends commando.Command {
             raids = client.raidManager.chooseBestRaidsForLookupOptions(raids, lookupOptions);
         }
 
-        //message.channel.send(client.raidManager.formatRaidList(raids, description));
+        let rl = Raid.getFormattedRaidOutputAsString(raids, { description: description });
+        message.channel.send({
+            content: rl,
+            embed: {
+                description: rl,
+            },
+        });
+
+        /*
         if (raids && (raids.length > 0)) {
             raids.forEach((raid) => {
-                message.channel.send(Raid.toDiscordMessage(raid));
+                let rm = Raid.toDiscordMessage(raid);
+                message.channel.send(rm).catch(console.error);
             });
         }
         else {
-            message.channel.send(`No raids to report (${description})`);
+            message.channel.send(`No raids to report (${description})`).catch(console.error);
         }
+        */
     }
 }
 

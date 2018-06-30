@@ -27,7 +27,7 @@ let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
 let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
 let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
-let raidManager = new RaidManager();
+let raidManager = new RaidManager({ logger: console });
 
 let moderatorData = [];
 let moderatorId = undefined;

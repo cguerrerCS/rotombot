@@ -1,6 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
-const RaidManager = require("../../lib/raidManager");
+const Raid = require("../../lib/raid");
 
 //!info command
 class info extends commando.Command {
@@ -43,7 +43,7 @@ class info extends commando.Command {
             if (raid) {
                 let upcomingFormat = "TIER hatches @ HATCH_TIME";
                 let activeFormat = "TIER BOSS_NAME ends @ EXPIRY_TIME\n[Raid Guide](GUIDE_LINK)";
-                let raidInfo = RaidManager.getFormattedRaidDescription(raid, upcomingFormat, activeFormat);
+                let raidInfo = Raid.raidToString(raid, { active: activeFormat, upcoming: upcomingFormat });
                 let field = {
                     name: (raidInfo.active ? "Current Raid" : "Upcoming Raid"),
                     value: raidInfo.description,
