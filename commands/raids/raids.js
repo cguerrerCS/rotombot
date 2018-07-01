@@ -1,6 +1,7 @@
 "use strict";
 const commando = require("discord.js-commando");
 const Raid = require("../../lib/raid");
+const Utils = require("../../lib/utils");
 
 const defaultRaidsRegex = /^!raids\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
 const allRaidsRegex = /^!raids\s+all\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
@@ -49,7 +50,21 @@ class raids extends commando.Command {
 
         let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
 
-        let match = message.content.match(allRaidsRegex);
+        let content = message.content;
+
+        let showListCard = false;
+        Utils.extract(content, "+listcard", (c) => {
+            showListCard = true;
+            content = c;
+        });
+
+        let showRaidCards = false;
+        Utils.extract(content, "+raidcards", (c) => {
+            showRaidCards = true;
+            content = c;
+        });
+
+        let match = content.match(allRaidsRegex);
         if (match !== null) {
             minTier = 1;
             maxTier = 5;
@@ -57,21 +72,21 @@ class raids extends commando.Command {
             all = true;
         }
         else {
-            match = message.content.match(minRaidsRegex);
+            match = content.match(minRaidsRegex);
             if (match !== null) {
                 minTier = match[1];
                 maxTier = (match[2] === "+" ? 5 : minTier);
                 city = match[3];
             }
             else {
-                match = message.content.match(rangeRaidsRegex);
+                match = content.match(rangeRaidsRegex);
                 if (match !== null) {
                     minTier = match[1];
                     maxTier = match[2];
                     city = match[3];
                 }
                 else {
-                    match = message.content.match(defaultRaidsRegex);
+                    match = content.match(defaultRaidsRegex);
                     if (match === null) {
                         client.reportError(
                             message,
@@ -100,25 +115,25 @@ class raids extends commando.Command {
             raids = client.raidManager.chooseBestRaidsForLookupOptions(raids, lookupOptions);
         }
 
-        let rl = Raid.getFormattedRaidOutputAsString(raids, { description: description });
-        message.channel.send({
-            content: rl,
-            embed: {
-                description: rl,
-            },
-        });
-
-        /*
-        if (raids && (raids.length > 0)) {
-            raids.forEach((raid) => {
-                let rm = Raid.toDiscordMessage(raid);
-                message.channel.send(rm).catch(console.error);
-            });
+        if (showListCard) {
+            let msg = Raid.raidListToDiscordMessage(raids, { description: description });
+            message.channel.send(msg);
+        }
+        else if (showRaidCards) {
+            if (raids && (raids.length > 0)) {
+                raids.forEach((raid) => {
+                    let rm = Raid.raidToDiscordMessage(raid);
+                    message.channel.send(rm).catch(console.error);
+                });
+            }
+            else {
+                message.channel.send(`No raids to report (${description})`).catch(console.error);
+            }
         }
         else {
-            message.channel.send(`No raids to report (${description})`).catch(console.error);
+            let rl = Raid.getFormattedRaidListOutputAsString(raids, { description: description });
+            message.channel.send(rl);
         }
-        */
     }
 }
 
