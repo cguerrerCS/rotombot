@@ -41,19 +41,24 @@ class info extends commando.Command {
 
             let raid = client.raidManager.tryGetRaid(gym.key);
             if (raid) {
-                let isActive = (raid.state == Raid.State.hatched);
+                let isActive = (raid.state === Raid.State.hatched);
                 let upcomingFormat = "TIER hatches @ HATCH_TIME";
                 let activeFormat = "TIER BOSS_NAME ends @ EXPIRY_TIME\n[Raid Guide](GUIDE_LINK)";
                 let raidInfo = Raid.raidToString(raid, { active: activeFormat, upcoming: upcomingFormat });
+
+                Raid.forEachRaiderInRaid(raid, (raider) => {
+                    raidInfo += `\n${raider.toString()}`;
+                });
+
                 let field = {
                     name: (isActive ? "Current Raid" : "Upcoming Raid"),
                     value: raidInfo,
                 };
                 info.embed.fields.push(field);
-                info.embed.thumbnail.url = `http://www.didjaredo.com/pogo/images/48x48/${raidInfo.active ? "regice" : "t5"}.png`;
+                info.embed.thumbnail.url = Raid.getRaidThumbnail(raid);
             }
 
-            message.channel.send(info);
+            message.channel.send(info).catch(console.log);
         });
     }
 }

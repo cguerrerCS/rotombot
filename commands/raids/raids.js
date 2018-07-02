@@ -93,6 +93,7 @@ class raids extends commando.Command {
                             "!add",
                             "My circuitzzz are tingling! I didn't understand that command..."
                         );
+                        return;
                     }
 
                     if (match[1]) {

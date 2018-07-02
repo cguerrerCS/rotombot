@@ -24,7 +24,7 @@ const fs = require("fs");
 const CsvReader = require("csv-reader");
 let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
-let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
+let inputRaidBossDataStream = fs.createReadStream("data/Bosses.csv", "utf8");
 let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
 let raidManager = new RaidManager({ logger: console });
@@ -122,7 +122,8 @@ client.on("ready", () => {
             return {
                 name: row[0],
                 tier: row[1],
-                status: row[2],
+                image: row[2],
+                status: row[3],
             };
         },
         (collection) => {

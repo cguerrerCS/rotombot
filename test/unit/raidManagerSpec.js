@@ -8,32 +8,32 @@ const RaidManager = require("../../lib/raidManager");
 const { FlexTime } = require("botsbits");
 
 const bosses = [
-    { name: "Latias", tier: "Tier 5", status: "active" },
-    { name: "Kyogre", tier: "Tier 5", status: "active" },
-    { name: "Ho-oh", tier: "Tier 5", status: "active" },
-    { name: "Zapdos", tier: "Tier 5", status: "inactive" },
-    { name: "Houndoom", tier: "Tier 4", status: "active" },
-    { name: "Tyranitar", tier: "Tier 4", status: "active" },
-    { name: "Aggron", tier: "Tier 4", status: "active" },
-    { name: "Absol", tier: "Tier 4", status: "active" },
-    { name: "Walrein", tier: "Tier 4", status: "active" },
-    { name: "Machamp", tier: "Tier 3", status: "active" },
-    { name: "Gengar", tier: "Tier 3", status: "active" },
-    { name: "Jynx", tier: "Tier 3", status: "active" },
-    { name: "Pinsir", tier: "Tier 3", status: "active" },
-    { name: "Granbull", tier: "Tier 3", status: "active" },
-    { name: "Piloswine", tier: "Tier 3", status: "active" },
-    { name: "Exeggutor", tier: "Tier 2", status: "active" },
-    { name: "Misdreavus", tier: "Tier 2", status: "active" },
-    { name: "Sneasel", tier: "Tier 2", status: "active" },
-    { name: "Sableye", tier: "Tier 2", status: "active" },
-    { name: "Mawile", tier: "Tier 2", status: "active" },
-    { name: "Magikarp", tier: "Tier 1", status: "active" },
-    { name: "Wailmer", tier: "Tier 1", status: "active" },
-    { name: "Swablu", tier: "Tier 1", status: "active" },
-    { name: "Shuppet", tier: "Tier 1", status: "active" },
-    { name: "Duskull", tier: "Tier 1", status: "active" },
-    { name: "Snorunt", tier: "Tier 1", status: "active" },
+    { name: "Latias", tier: "Tier 5", image: "t5.png", status: "active" },
+    { name: "Kyogre", tier: "Tier 5", image: "t5.png", status: "active" },
+    { name: "Ho-oh", tier: "Tier 5", image: "t5.png", status: "active" },
+    { name: "Zapdos", tier: "Tier 5", image: "t5.png", status: "inactive" },
+    { name: "Houndoom", tier: "Tier 4", image: "t4.png", status: "active" },
+    { name: "Tyranitar", tier: "Tier 4", image: "t4.png", status: "active" },
+    { name: "Aggron", tier: "Tier 4", image: "t4.png", status: "active" },
+    { name: "Absol", tier: "Tier 4", image: "t4.png", status: "active" },
+    { name: "Walrein", tier: "Tier 4", image: "t4.png", status: "active" },
+    { name: "Machamp", tier: "Tier 3", image: "t3.png", status: "active" },
+    { name: "Gengar", tier: "Tier 3", image: "t3.png", status: "active" },
+    { name: "Jynx", tier: "Tier 3", image: "t3.png", status: "active" },
+    { name: "Pinsir", tier: "Tier 3", image: "t3.png", status: "active" },
+    { name: "Granbull", tier: "Tier 3", image: "t3.png", status: "active" },
+    { name: "Piloswine", tier: "Tier 3", image: "t3.png", status: "active" },
+    { name: "Exeggutor", tier: "Tier 2", image: "t2.png", status: "active" },
+    { name: "Misdreavus", tier: "Tier 2", image: "t2.png", status: "active" },
+    { name: "Sneasel", tier: "Tier 2", image: "t2.png", status: "active" },
+    { name: "Sableye", tier: "Tier 2", image: "t2.png", status: "active" },
+    { name: "Mawile", tier: "Tier 2", image: "t2.png", status: "active" },
+    { name: "Magikarp", tier: "Tier 1", image: "t1.png", status: "active" },
+    { name: "Wailmer", tier: "Tier 1", image: "t1.png", status: "active" },
+    { name: "Swablu", tier: "Tier 1", image: "t1.png", status: "active" },
+    { name: "Shuppet", tier: "Tier 1", image: "t1.png", status: "active" },
+    { name: "Duskull", tier: "Tier 1", image: "t1.png", status: "active" },
+    { name: "Snorunt", tier: "Tier 1", image: "t1.png", status: "active" },
 ];
 
 const badBosses = [
@@ -1015,11 +1015,11 @@ describe("raidManager", () => {
                 /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
                 /^.*$/,
                 /^.*UPCOMING RAIDS.*$/,
-                /^.*T.*4.+Beavers @.*$/,
-                /^.*T.*2.+Roasters @.*$/,
-                /^.*T.*3.+Soulfood.*Cafe @.*$/,
-                /^.*T.*1.+Clock Tower @.*$/,
-                /^.*T.*5.+Parking Lot @.*$/,
+                /^.*T.*4.+Beavers.*@.*$/,
+                /^.*T.*2.+Roasters.*@.*$/,
+                /^.*T.*3.+Soulfood.*Cafe.*@.*$/,
+                /^.*T.*1.+Clock Tower.*@.*$/,
+                /^.*T.*5.+Parking Lot.*@.*$/,
             ];
 
             [
@@ -1065,11 +1065,11 @@ describe("raidManager", () => {
 
             let expected = [
                 /^.*UPCOMING RAIDS.*$/,
-                /^.*T.*4.+Beavers @.*$/,
-                /^.*T.*2.+Roasters @.*$/,
-                /^.*T.*3.+Soulfood.*Cafe @.*$/,
-                /^.*T.*1.+Clock Tower @.*$/,
-                /^.*T.*5.+Parking Lot @.*$/,
+                /^.*T.*4.+Beavers.*@.*$/,
+                /^.*T.*2.+Roasters.*@.*$/,
+                /^.*T.*3.+Soulfood.*Cafe.*@.*$/,
+                /^.*T.*1.+Clock Tower.*@.*$/,
+                /^.*T.*5.+Parking Lot.*@.*$/,
             ];
 
             [
@@ -1115,11 +1115,11 @@ describe("raidManager", () => {
 
             let expected = [
                 /^.*ACTIVE RAIDS.*$/,
-                /^.*Ho-oh.*Wells Fargo.*ends @.*$/,
-                /^.*Magikarp.*Leaf Inlay.*ends @.*$/,
-                /^.*Sableye.*Erratic.*ends @.*$/,
-                /^.*Machamp.*Wisdom Seekers.*ends @.*$/,
-                /^.*Tyranitar.*Hunting Fox.*ends @.*$/,
+                /^.*Ho-oh.*Wells Fargo.*ends.*@.*$/,
+                /^.*Magikarp.*Leaf Inlay.*ends.*@.*$/,
+                /^.*Sableye.*Erratic.*ends.*@.*$/,
+                /^.*Machamp.*Wisdom Seekers.*ends.*@.*$/,
+                /^.*Tyranitar.*Hunting Fox.*ends.*@.*$/,
             ];
 
             [
@@ -1186,12 +1186,12 @@ describe("raidManager", () => {
             let lines = output.split("\n");
             [
                 /^.*ACTIVE RAIDS.*$/,
-                /^.*Redmond's Erratic ends @ 12:45 AM/,
-                /^.*Victors Coffee Co. and Roasters ends @ 2:45 PM/,
+                /^.*Redmond's Erratic.+ends @ 12:45 AM/,
+                /^.*Victors Coffee Co. and Roasters.+ends @ 2:45 PM/,
                 /^.*$/,
                 /^.*UPCOMING RAIDS.*$/,
-                /^.*Painted Parking Lot @ 12:00 AM/,
-                /^.*Fish Statue @ 2:00 PM/,
+                /^.*Painted Parking Lot.*@ 12:00 AM/,
+                /^.*Fish Statue.*@ 2:00 PM/,
             ].forEach((regex) => {
                 let line = lines.shift();
                 // console.log(`${line}.match(${regex}) = ${regex.test(line)}`);
@@ -1236,7 +1236,7 @@ describe("raidManager", () => {
         });
 
         it("should move hatched eggs to active raid with expected boss if only one boss is valid", () => {
-            let myBosses = [{ name: "Latias", tier: "Tier 5", status: "active" }];
+            let myBosses = [{ name: "Latias", tier: "Tier 5", image: "t5.png", status: "active" }];
             let rm = new RaidManager({ logger: null, strict: false, autosaveFile: null });
             rm.setGymData(gymSpecs);
             rm.setBossData(myBosses);
