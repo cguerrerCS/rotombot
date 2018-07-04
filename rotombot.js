@@ -24,6 +24,7 @@ const fs = require("fs");
 const CsvReader = require("csv-reader");
 let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
+
 let inputRaidBossDataStream = fs.createReadStream("data/Bosses.csv", "utf8");
 let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
