@@ -29,7 +29,7 @@ class directions extends commando.Command {
 
         var raidToGetDirectionsFor = args.match(/\S+/g).join(" ");
         let gym = client.raidManager.tryGetGym(raidToGetDirectionsFor, lookupOptions);
-        var directionsContent = `${gym.name} [Directions]\n${gym.mapLink}\n`;
+        var directionsContent = `${gym.officialName} [Directions]\n<${gym.mapLink}>\n`;
         message.channel.send(directionsContent);
     }
 }

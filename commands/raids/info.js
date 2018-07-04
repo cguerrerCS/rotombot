@@ -7,6 +7,9 @@ class info extends commando.Command {
     constructor(client) {
         super(client, {
             name: "info",
+            aliases: [
+                "i", "d", "direction", "directions",
+            ],
             group: "raids",
             memberName: "info",
             description: "show gym location info",
@@ -17,13 +20,14 @@ class info extends commando.Command {
     async run(message, args) {
         let client = message.client;
         let output = "Processing !info command submitted by user " + message.author +  "\n";
+        let commandName = "!info";
 
         process.stdout.write(output);
         message.channel.send(output);
 
         // if no arguments provided (null or empty string)
         if (!(args)) {
-            client.reportError(message, "!info", "no gym name provided.", "!info <gym name>");
+            client.reportError(message, commandName, "no gym name provided.", "!info <gym name>");
             return;
         }
 
@@ -32,7 +36,7 @@ class info extends commando.Command {
         var gymToGetInfoFor = args.match(/\S+/g).join(" ");
         var gyms = client.raidManager.tryGetGyms(gymToGetInfoFor, lookupOptions);
         if ((!gyms) || (gyms.length < 1)) {
-            client.reportError(message, "!info", "no gym found.", "!info <gym name>");
+            client.reportError(message, commandName, "no gym found.", "!info <gym name>");
             return;
         }
         gyms.forEach((result) => {

@@ -2,6 +2,7 @@
 node_modules/
 state/
 BotToken.csv
+ModeratorId.csv
 .nyc_output/
 coverage/
 images/
