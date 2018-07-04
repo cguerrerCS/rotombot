@@ -8,7 +8,7 @@ const RaidChannel = require("./lib/raidChannel");
 const Utils = require("./lib/utils");
 
 const { CommandoClient } = require("discord.js-commando");
-const isDevelopment = true;
+const isDevelopment = false;
 
 //Discord related commands
 const client = new CommandoClient({
