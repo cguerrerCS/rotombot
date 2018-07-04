@@ -102,7 +102,7 @@ class raids extends commando.Command {
                             raiderInfo.endTime = new Date();
                             helpExamples = omwDoneExampleIndex;
                             break;
-                        case "never":
+                        case "skipping":
                             raiderInfo = undefined;
                             helpExamples = omwCanceExampleIndex;
                             break;
@@ -132,11 +132,11 @@ class raids extends commando.Command {
         try {
             if (raiderInfo) {
                 let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo, lookupOptions);
-                message.channel.send(`${raid.gym.name}: ${raid.raiders[raiderInfo.raiderName].toString()}`);
+                message.channel.send(`${raid.gym.officialName}: ${raid.raiders[raiderInfo.raiderName].toString()}`);
             }
             else {
                 let raid = client.raidManager.removeRaider(wantGym, message.member.user.username, lookupOptions);
-                message.channel.send(`${raid.gym.name}: Cancelled rsvp for ${message.member.user.username}`);
+                message.channel.send(`${raid.gym.officialName}: Cancelled rsvp for ${message.member.user.username}`);
             }
         }
         catch (err) {

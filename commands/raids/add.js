@@ -1,7 +1,7 @@
 "use strict";
 
 const commando = require("discord.js-commando");
-const RaidManager = require("../../lib/raidManager");
+const Raid = require("../../lib/raid");
 
 const addEggByStartTimeRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/;
 const addEggByTimerRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/;
@@ -73,7 +73,7 @@ class raid extends commando.Command {
             const [, tier, gym, startTime] = match;
             try {
                 let added = client.raidManager.addEggAbsolute(tier, gym, startTime, lookupOptions);
-                message.channel.send(`Added ${RaidManager.getFormattedRaidDescription(added).description}.\n`);
+                message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
             }
             catch (e) {
                 client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
@@ -86,7 +86,7 @@ class raid extends commando.Command {
             const [, tier, gym, timer] = match;
             try {
                 let added = client.raidManager.addEggCountdown(tier, gym, timer, lookupOptions);
-                message.channel.send(`Added ${RaidManager.getFormattedRaidDescription(added).description}.\n`);
+                message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
             }
             catch (err) {
                 client.reportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
@@ -101,7 +101,7 @@ class raid extends commando.Command {
 
             try {
                 let added = client.raidManager.addRaid(boss, gym, timer, lookupOptions);
-                message.channel.send(`Added ${RaidManager.getFormattedRaidDescription(added).description}.\n`);
+                message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
             }
             catch (err) {
                 let commandSyntax = this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
@@ -116,7 +116,7 @@ class raid extends commando.Command {
             const [, boss, gym] = match;
             try {
                 let updated = client.raidManager.setRaidBoss(boss, gym, lookupOptions);
-                message.channel.send(`Updated ${RaidManager.getFormattedRaidDescription(updated).description}.\n`);
+                message.channel.send(`Updated ${Raid.raidToString(updated)}.\n`);
             }
             catch (err) {
                 // If we get this error, the raid is likely not in the active list, so give the

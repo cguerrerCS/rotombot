@@ -1,11 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
-const Raid = require("../../lib/raid");
-
-const defaultRaidsRegex = /^!raids\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
-const allRaidsRegex = /^!raids\s+all\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
-const minRaidsRegex = /^!raids\s+(?:T)?(\d)([+]?)\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
-const rangeRaidsRegex = /^!raids\s+(?:T)?(\d)\s*-\s*(?:T)?(\d)\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
+const RaidsParser = require("../../lib/raidsParser");
 
 //!raids command
 class raids extends commando.Command {
@@ -41,73 +36,26 @@ class raids extends commando.Command {
 
     async run(message) {
         let client = message.client;
-        let minTier = 4;
-        let maxTier = 5;
-        let all = false;
-        let city = undefined;
-        let cityRegex = /.*/;
-
         let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
+        let content = message.content;
 
-        let match = message.content.match(allRaidsRegex);
-        if (match !== null) {
-            minTier = 1;
-            maxTier = 5;
-            city = match[1];
-            all = true;
-        }
-        else {
-            match = message.content.match(minRaidsRegex);
-            if (match !== null) {
-                minTier = match[1];
-                maxTier = (match[2] === "+" ? 5 : minTier);
-                city = match[3];
-            }
-            else {
-                match = message.content.match(rangeRaidsRegex);
-                if (match !== null) {
-                    minTier = match[1];
-                    maxTier = match[2];
-                    city = match[3];
-                }
-                else {
-                    match = message.content.match(defaultRaidsRegex);
-                    if (match === null) {
-                        client.reportError(
-                            message,
-                            "!add",
-                            "My circuitzzz are tingling! I didn't understand that command..."
-                        );
-                    }
-
-                    if (match[1]) {
-                        city = match[1];
-                    }
-                }
-            }
-        }
-
-        if (city) {
-            cityRegex = new RegExp(`.*${city}.*`, "i");
-        }
-
-        let description = (((minTier === maxTier) ? `T${minTier}` : `T${minTier}-T${maxTier}`) + (city ? ` in ${city}` : ""));
-        let raids = client.raidManager.list((r) => {
-            return (r.tier >= minTier) && (r.tier <= maxTier) && cityRegex.test(r.gym.city);
-        });
-
-        if ((!city) && (!all)) {
-            raids = client.raidManager.chooseBestRaidsForLookupOptions(raids, lookupOptions);
-        }
-
-        //message.channel.send(client.raidManager.formatRaidList(raids, description));
-        if (raids && (raids.length > 0)) {
-            raids.forEach((raid) => {
-                message.channel.send(Raid.toDiscordMessage(raid));
+        try {
+            let command = RaidsParser.tryParse(content);
+            let messages = RaidsParser.getMessagesForCommand(command, client.raidManager, lookupOptions);
+            messages.forEach((m) => {
+                message.channel.send(m.embed ? m : m.content).catch(console.log);
             });
         }
-        else {
-            message.channel.send(`No raids to report (${description})`);
+        catch (err) {
+            if (err) {
+                client.reportError(
+                    message,
+                    "!raids",
+                    "My circuitzzz are tingling! I didn't understand that command...",
+                    this.examples.join("\n"),
+                );
+            }
+            return;
         }
     }
 }

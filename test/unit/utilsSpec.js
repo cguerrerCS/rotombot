@@ -30,5 +30,4 @@ describe("Utils module", () => {
             expect(() => Utils.normalize(["BLAH", "    "])).toThrowError("Cannot normalize an empty string.");
         });
     });
-
 });

@@ -3,7 +3,7 @@
 const MAX_EGG_HATCH_TIME = 60;
 const MAX_RAID_ACTIVE_TIME = 45;
 
-Raid.RaidStateEnum = Object.freeze({ "egg": 1, "hatched": 2 });
+Raid.State = Object.freeze({ "egg": 1, "hatched": 2 });
 Raid.maxEggHatchTime = MAX_EGG_HATCH_TIME;
 Raid.maxRaidActiveTime = MAX_RAID_ACTIVE_TIME;
 
@@ -64,7 +64,7 @@ var Raid = function (init) {
     }
 
     let delta = Date.now() - this.hatchTime.getTime();
-    this.state = init.state || (delta > 0 ? Raid.RaidStateEnum.hatched : Raid.RaidStateEnum.egg);
+    this.state = init.state || (delta > 0 ? Raid.State.hatched : Raid.State.egg);
     this.raiders = init.raiders || {};
     return this;
 };
@@ -103,6 +103,6 @@ Raid.prototype.merge = function (other, strict) {
     let spawn = getDeltaDate(hatch, -MAX_EGG_HATCH_TIME);
     let expiry = getDeltaDate(hatch, MAX_RAID_ACTIVE_TIME);
     let delta = Date.now() - hatch.getTime();
-    let state = wantState || (delta > 0 ? RaidManager.RaidStateEnum.hatched : RaidManager.RaidStateEnum.egg);
+    let state = wantState || (delta > 0 ? Raid.State.hatched : Raid.State.egg);
 
 };
