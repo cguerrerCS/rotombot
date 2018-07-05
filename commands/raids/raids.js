@@ -41,7 +41,7 @@ class raids extends commando.Command {
         try {
             // block embeds for dms
             let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
-            let command = RaidsParser.tryParse(content, (message.channel.type !== 0));
+            let command = RaidsParser.tryParse(content, (message.channel.type !== "text"));
             let messages = RaidsParser.getMessagesForCommand(command, client.raidManager, lookupOptions);
             messages.forEach((m) => {
                 message.channel.send(m.embed ? m : m.content).catch(console.log);
