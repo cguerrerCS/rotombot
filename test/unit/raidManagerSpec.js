@@ -1201,9 +1201,9 @@ describe("raidManager", () => {
 
         it("should show raid levels when reporting that no raids are available", () => {
             let rm = getTestRaidManager();
-            expect(rm.listFormatted((r) => (r.tier >= 4) && (r.tier <= 5), { description: "T4-T5" })).toMatch(/^.*No raids.*\(T4-T5\).*$/);
-            expect(rm.listFormatted((r) => (r.tier === 3), { description: "T3" })).toMatch(/^.*No raids.*\(T3\).*$/);
-            expect(rm.listFormatted(() => false)).toMatch("No raids to report.");
+            expect(rm.listFormatted((r) => (r.tier >= 4) && (r.tier <= 5), { description: "T4-T5" })).toMatch(/^.*RAIDS.*\(T4-T5\).*\nNo raids reported.*$/gi);
+            expect(rm.listFormatted((r) => (r.tier === 3), { description: "T3" })).toMatch(/^.*RAIDS.*\(T3\).*\nNo raids reported.*$/gi);
+            expect(rm.listFormatted(() => false)).toMatch("No raids reported.");
         });
     });
 
