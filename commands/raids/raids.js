@@ -36,10 +36,10 @@ class raids extends commando.Command {
 
     async run(message) {
         let client = message.client;
-        let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
         let content = message.content;
 
         try {
+            let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
             let command = RaidsParser.tryParse(content);
             let messages = RaidsParser.getMessagesForCommand(command, client.raidManager, lookupOptions);
             messages.forEach((m) => {
