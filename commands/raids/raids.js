@@ -1,6 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
-const RaidsParser = require("../../lib/raidsParser");
+const RaidsCommand = require("../../lib/raidsCommand");
 
 //!raids command
 class raids extends commando.Command {
@@ -40,8 +40,8 @@ class raids extends commando.Command {
 
         try {
             let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
-            let command = RaidsParser.tryParse(content);
-            let messages = RaidsParser.getMessagesForCommand(command, client.raidManager, lookupOptions);
+            let command = new RaidsCommand(content, client.raidManager);
+            let messages = command.getMessages(lookupOptions);
             messages.forEach((m) => {
                 message.channel.send(m.embed ? m : m.content).catch(console.log);
             });
