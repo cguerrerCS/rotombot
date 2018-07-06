@@ -572,7 +572,6 @@ describe("GymDirectory object", () => {
         xdescribe("forEachZone", () => {
 
         });
-
     });
 
     xdescribe("categorizeGyms method", () => {
