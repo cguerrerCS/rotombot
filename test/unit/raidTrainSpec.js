@@ -82,21 +82,22 @@ function getTestRaidManager(options) {
 }
 
 describe("RaidTrain object", () => {
+    let rm = getTestRaidManager();
+    let raids = [
+        { boss: "hooh", gym: "painted", time: 20, officialName: "Painted Parking Lot" },
+        { boss: "latias", gym: "city hall", time: 1, officialName: "Hunting Fox" },
+        { boss: "ttar", gym: "wells", time: 44, officialName: "Mural (Wells Fargo)" },
+        { boss: "hooh", gym: "erratic", time: 43, officialName: "Redmond's Erratic" },
+    ];
+    let extraRaids = [
+        { boss: "latias", gym: "evergreen", time: 40, officialName: "Redmond Twist" },
+        { boss: "hooh", gym: "farmers", time: 35, officialName: "Redmond Town Center Fish Statue" },
+    ];
+
+    raids.forEach((test) => rm.addRaid(test.boss, test.gym, test.time));
+    extraRaids.forEach((test) => rm.addRaid(test.boss, test.gym, test.time));
+
     describe("addStop method", () => {
-        let rm = getTestRaidManager();
-        let raids = [
-            { boss: "hooh", gym: "painted", time: 20, officialName: "Painted Parking Lot" },
-            { boss: "latias", gym: "city hall", time: 1, officialName: "Hunting Fox" },
-            { boss: "ttar", gym: "wells", time: 44, officialName: "Mural (Wells Fargo)" },
-            { boss: "hooh", gym: "erratic", time: 43, officialName: "Redmond's Erratic" },
-        ];
-        let extraRaids = [
-            { boss: "latias", gym: "evergreen", time: 40, officialName: "Redmond Twist" },
-        ];
-
-        raids.forEach((test) => rm.addRaid(test.boss, test.gym, test.time));
-        extraRaids.forEach((test) => rm.addRaid(test.boss, test.gym, test.time));
-
         it("should add raids that exist to the end of the train by default", () => {
             let train = new RaidTrain(rm);
             raids.forEach((test) => {
@@ -110,7 +111,7 @@ describe("RaidTrain object", () => {
             }
         });
 
-        it("should insert raids that exist before a specified other raid", () => {
+        it("should insert valid raids before the first raid in the list if specified", () => {
             let train = new RaidTrain(rm);
             raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
 
@@ -118,6 +119,94 @@ describe("RaidTrain object", () => {
             let stops = train.getStops();
             expect(stops.length).toBe(raids.length + 1);
             expect(stops[0].gym.officialName).toBe(extraRaids[0].officialName);
+        });
+
+        it("should insert valid raids before a raid in the middle of the list in the list if specified", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            expect(train.addStop(extraRaids[0].gym, { before: raids[2].gym })).toBeDefined();
+            let stops = train.getStops();
+            expect(stops.length).toBe(raids.length + 1);
+            expect(stops[2].gym.officialName).toBe(extraRaids[0].officialName);
+        });
+
+        it("should insert valid raids after the last raid in the list if specified", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let last = raids[raids.length - 1].gym;
+            expect(train.addStop(extraRaids[0].gym, { after: last })).toBeDefined();
+            let stops = train.getStops();
+            expect(stops.length).toBe(raids.length + 1);
+            expect(stops[stops.length - 1].gym.officialName).toBe(extraRaids[0].officialName);
+        });
+
+        it("should insert valid raids after a raid in the middle of the list in the list if specified", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            expect(train.addStop(extraRaids[0].gym, { after: raids[2].gym })).toBeDefined();
+            let stops = train.getStops();
+            expect(stops.length).toBe(raids.length + 1);
+            expect(stops[3].gym.officialName).toBe(extraRaids[0].officialName);
+        });
+
+        it("should throw if there is no raid at the requested gym", () => {
+            let train = new RaidTrain(rm);
+            expect(() => train.addStop("prescott")).toThrowError(/no raid at/i);
+        });
+
+        it("should throw if the raid to be added is already on the list", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+            expect(() => train.addStop(raids[1].gym)).toThrowError(/is already scheduled/i);
+        });
+
+        it("should throw if the position supplied is invalid", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            expect(() => train.addStop(extraRaids[0].gym, {})).toThrowError(/exactly one of/i);
+            let badPosition = { before: raids[1].gym, after: raids[0].gym };
+            expect(() => train.addStop(extraRaids[0].gym, badPosition)).toThrowError(/exactly one of/i);
+        });
+
+        it("should throw if there is no raid at the position gym", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let expected = /no raid at/i;
+            let badGym = "prescott";
+            expect(() => train.addStop(extraRaids[0].gym, { after: badGym })).toThrowError(expected);
+            expect(() => train.addStop(extraRaids[0].gym, { before: badGym })).toThrowError(expected);
+        });
+
+        it("should throw if the position raid is not in the list", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let expected = /is not on the train itinerary/i;
+            let badGym = extraRaids[1].gym;
+            expect(() => train.addStop(extraRaids[0].gym, { after: badGym })).toThrowError(expected);
+            expect(() => train.addStop(extraRaids[0].gym, { before: badGym })).toThrowError(expected);
+        });
+    });
+
+    describe("removeRaid method", () => {
+        it("should remove and return a raid that is on the list", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let removed = train.removeStop(raids[0].gym);
+            expect(removed.gym.officialName).toBe(raids[0].officialName);
+
+            let stops = train.getStops();
+            expect(stops.length).toBe(raids.length - 1);
+
+            for (let i = 1; i < raids.length; i++) {
+                expect(stops[i - 1].gym.officialName).toBe(raids[i].officialName);
+            }
         });
     });
 });
