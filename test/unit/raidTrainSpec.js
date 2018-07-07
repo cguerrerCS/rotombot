@@ -86,7 +86,8 @@ describe("RaidTrain object", () => {
     let raids = [
         { boss: "hooh", gym: "painted", time: 20, officialName: "Painted Parking Lot" },
         { boss: "latias", gym: "city hall", time: 1, officialName: "Hunting Fox" },
-        { boss: "ttar", gym: "wells", time: 44, officialName: "Mural (Wells Fargo)" },
+        { boss: "ttar", gym: "redmond pd", time: 44, officialName: "Weiner Elephants" },
+        { boss: undefined, tier: 5, gym: "reservoir", time: 25, officialName: "Mysterious Hatch" },
         { boss: "hooh", gym: "erratic", time: 43, officialName: "Redmond's Erratic" },
     ];
     let extraRaids = [
@@ -94,8 +95,13 @@ describe("RaidTrain object", () => {
         { boss: "hooh", gym: "farmers", time: 35, officialName: "Redmond Town Center Fish Statue" },
     ];
 
-    raids.forEach((test) => rm.addRaid(test.boss, test.gym, test.time));
-    extraRaids.forEach((test) => rm.addRaid(test.boss, test.gym, test.time));
+    raids.forEach((test) => {
+        return test.boss ? rm.addRaid(test.boss, test.gym, test.time) : rm.addEggCountdown(test.tier, test.gym, test.time);
+    });
+
+    extraRaids.forEach((test) => {
+        return test.boss ? rm.addRaid(test.boss, test.gym, test.time) : rm.addEggCountdown(test.tier, test.gym, test.time);
+    });
 
     describe("addStop method", () => {
         it("should add raids that exist to the end of the train by default", () => {
@@ -191,6 +197,23 @@ describe("RaidTrain object", () => {
             expect(() => train.addStop(extraRaids[0].gym, { after: badGym })).toThrowError(expected);
             expect(() => train.addStop(extraRaids[0].gym, { before: badGym })).toThrowError(expected);
         });
+
+        it("should estimate times for all raids in list order", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let stops = train.getStops();
+            for (let i = 1; i < stops.length; i++) {
+                expect(stops[i].estimatedStart.getTime()).toBeGreaterThan(stops[i - 1].estimatedStart.getTime());
+            }
+
+            expect(train.addStop(extraRaids[0].gym, { before: raids[2].gym })).toBeDefined();
+
+            stops = train.getStops();
+            for (let i = 1; i < stops.length; i++) {
+                expect(stops[i].estimatedStart.getTime()).toBeGreaterThan(stops[i - 1].estimatedStart.getTime());
+            }
+        });
     });
 
     describe("removeRaid method", () => {
@@ -207,6 +230,62 @@ describe("RaidTrain object", () => {
             for (let i = 1; i < raids.length; i++) {
                 expect(stops[i - 1].gym.officialName).toBe(raids[i].officialName);
             }
+        });
+
+        it("should throw for a gym that does not have a raid or is not on the list", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            expect(() => train.removeStop("prescott")).toThrowError(/no raid at/i);
+            expect(() => train.removeStop(extraRaids[0].gym)).toThrowError(/is not scheduled/i);
+        });
+    });
+
+    describe("toStrings method", () => {
+        it("should return an array of strings", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let lines = train.toStrings();
+            expect(lines.length).toBe(raids.length);
+            for (let i = 0; i < lines.length; i++) {
+                expect(typeof lines[i]).toBe("string");
+            }
+        });
+
+        it("should list gyms in train order", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let lines = train.toStrings();
+            expect(lines.length).toBe(raids.length);
+            for (let i = 0; i < lines.length; i++) {
+                expect(lines[i]).toMatch(new RegExp(`.*${raids[i].officialName}.*`));
+            }
+        });
+
+        it("should return an empty array for a train with no stops", () => {
+            let train = new RaidTrain(rm);
+            let lines = train.toStrings();
+            expect(lines.length).toBe(0);
+        });
+    });
+
+    describe("toString method", () => {
+        it("should return a string", () => {
+            let train = new RaidTrain(rm);
+            raids.forEach((test) => expect(train.addStop(test.gym)).toBeDefined());
+
+            let trainString = train.toString();
+            expect(typeof trainString).toBe("string");
+
+            let lines = trainString.split("\n");
+            expect(lines.length).toBe(raids.length);
+        });
+
+        it("should return an informative message for a train with no stops", () => {
+            let train = new RaidTrain(rm);
+            expect(train.toString()).toMatch(/no stops/i);
         });
     });
 });
