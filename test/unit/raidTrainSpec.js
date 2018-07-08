@@ -84,11 +84,11 @@ function getTestRaidManager(options) {
 describe("RaidTrain object", () => {
     let rm = getTestRaidManager();
     let raids = [
-        { boss: "hooh", gym: "painted", time: 20, officialName: "Painted Parking Lot" },
-        { boss: "latias", gym: "city hall", time: 1, officialName: "Hunting Fox" },
+        { boss: "hooh", gym: "painted", time: 10, officialName: "Painted Parking Lot" },
+        { boss: "latias", gym: "city hall", time: 25, officialName: "Hunting Fox" },
         { boss: "ttar", gym: "redmond pd", time: 44, officialName: "Weiner Elephants" },
-        { boss: undefined, tier: 5, gym: "reservoir", time: 25, officialName: "Mysterious Hatch" },
-        { boss: "hooh", gym: "erratic", time: 43, officialName: "Redmond's Erratic" },
+        { boss: undefined, tier: 5, gym: "reservoir", time: 50, officialName: "Mysterious Hatch" },
+        { boss: undefined, gym: "erratic", time: 35, officialName: "Redmond's Erratic" },
     ];
     let extraRaids = [
         { boss: "latias", gym: "evergreen", time: 40, officialName: "Redmond Twist" },
