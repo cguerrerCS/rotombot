@@ -45,26 +45,6 @@ class info extends commando.Command {
 
             let raid = client.raidManager.tryGetRaid(gym.key);
             if (raid) {
-                // we're about to step on the thumbnail, which shows ex-eligibility
-                // so add it in the footer.
-                if (gym.isExEligible) {
-                    if (!info.embed.footer) {
-                        info.embed.footer = {};
-                    }
-                    if (!info.embed.footer.text) {
-                        info.embed.footer.text = "Ex-Eligible";
-                    }
-                    else {
-                        // something else in the footer already. Add it as a field.
-                        info.embed.fields.push({
-                            name: "Ex-Eligible",
-                            value: (gym.isExEligible ? "Yes" : "No"),
-                            inline: true,
-                        });
-                    }
-                }
-                info.embed.footer = { text: (gym.isExEligible ? "Ex-Eligible" : "Not Ex-Eligible") };
-
                 let isActive = (raid.state === Raid.State.hatched);
                 let upcomingFormat = "TIER hatches @ HATCH_TIME";
                 let activeFormat = "TIER BOSS_NAME ends @ EXPIRY_TIME\n[Raid Guide](GUIDE_LINK)";
