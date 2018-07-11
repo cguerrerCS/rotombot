@@ -3,7 +3,7 @@
 const Utils = require("../../lib/utils");
 
 describe("Utils module", () => {
-    describe("normalizeNames", () => {
+    describe("normalize", () => {
         it("should normalize a string", () => {
             expect(Utils.normalize("Some String")).toBe("somestring");
         });
@@ -29,5 +29,25 @@ describe("Utils module", () => {
         it("should throw if any strings are empty", () => {
             expect(() => Utils.normalize(["BLAH", "    "])).toThrowError("Cannot normalize an empty string.");
         });
+    });
+
+    xdescribe("extract static method", () => {
+
+    });
+
+    xdescribe("forOwn static method", () => {
+
+    });
+
+    xdescribe("validateDiscordEmbed static method", () => {
+
+    });
+
+    xdescribe("mergeOptions static method", () => {
+
+    });
+
+    xdescribe("NormalizedMap class", () => {
+
     });
 });

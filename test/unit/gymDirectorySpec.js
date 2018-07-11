@@ -178,6 +178,22 @@ describe("GymDirectory object", () => {
                     expect(gyms.all.length).toBe(test.expectedLength);
                 });
             });
+
+            it("should throw if multiple different zone names have the same normalized form", () => {
+                let gymSpecs = [
+                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                    ["redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+                ];
+                expect(() => GymDirectory.fromCsvData(gymSpecs)).toThrowError(/conflicting zone names/i);
+            });
+
+            it("should throw if multiple different city names have the same normalized form", () => {
+                let gymSpecs = [
+                    ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+                    ["Redmond", "redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
+                ];
+                expect(() => GymDirectory.fromCsvData(gymSpecs)).toThrowError(/conflicting city names/i);
+            });
         });
 
         describe("with allowed zones and cities not specified", () => {
@@ -523,6 +539,47 @@ describe("GymDirectory object", () => {
         it("should return an empty array if no matching gym is found", () => {
             expect(gyms.tryGetGyms("xyzzy").length).toBe(0);
         });
+    });
+
+    xdescribe("city and zone methods", () => {
+        xdescribe("tryGetCity", () => {
+        });
+
+        xdescribe("getCities", () => {
+
+        });
+
+        xdescribe("getCityDisplayNames", () => {
+        });
+
+        xdescribe("tryGetZone", () => {
+
+        });
+
+        xdescribe("getZones", () => {
+
+        });
+
+        xdescribe("getZoneDisplayNames", () => {
+        });
+
+        xdescribe("cityIsInZone", () => {
+        });
+
+        xdescribe("forEachCity", () => {
+        });
+
+        xdescribe("forEachZone", () => {
+
+        });
+    });
+
+    xdescribe("categorizeGyms method", () => {
+
+    });
+
+    xdescribe("chooseBestGymsForLookupOptions", () => {
+
     });
 
     describe("getOption method", function () {

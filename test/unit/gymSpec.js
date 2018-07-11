@@ -205,4 +205,12 @@ describe("Gym object", () => {
             expect(gym.belongsToZone(["Redmond", "Kirkland", "Greater Seattle"])).toBe(true);
         });
     });
+
+    xdescribe("toString method", () => {
+
+    });
+
+    xdescribe("toDiscordMessage method", () => {
+
+    });
 });
