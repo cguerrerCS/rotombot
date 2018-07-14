@@ -1,11 +1,12 @@
 "use strict";
 const commando = require("discord.js-commando");
 
-const omwNoEtaRegex = /^!iam\s+omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s*$/i;
-const omwEtaRegex = /^!iam\s+omw\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+eta\s+((?:\d\d?)|((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)|hatch)\s*$/i;
-const omwStartWithCodeRegex = /^!iam\s+(?:start|starting)\s+(?:(?:at|@)\s+)?(\w+(?:\s|\w)*)\s*(?:\s+code\s+(\w(?:\w|\s)*))/i;
-const omwStartNoCodeRegex = /^!iam\s+(?:start|starting)\s+(?:(?:at|@)\s+)?(\w+(?:\s|\w)*)\s*/i;
-const omwOtherRegex = /^!iam\s+(here|done|skipping)(?:\s+(?:at|@))?\s+(\w+(?:\s|\w)*)$/i;
+const omwNoEtaRegex = /^!(?:iam|rsvp)\s+(?:omw|otw)\s+(?:to\s+)?(\w+(?:\s|\w)*)\s*$/i;
+const omwEtaRegex = /^!(?:iam|rsvp)\s+(?:omw|otw)\s+(?:to\s+)?(\w+(?:\s|\w)*)\s+eta\s+((?:\d\d?)|((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)|hatch)\s*$/i;
+const omwStartWithCodeRegex = /^!(?:iam|rsvp)\s+(?:start|starting)(\s+(?:(?:at|@)\s+)?(\w+(?:\s|\w)*)\s*(?:\s+code\s+(\w(?:\w|\s)*))|\s*)/i;
+const omwStartNoCodeRegex = /^!(?:iam|rsvp)\s+(?:start|starting)(\s+(?:(?:at|@)\s+)?(\w+(?:\s|\w)*)|\s*)/i;
+const omwOtherRegex = /^!(?:iam|rsvp)\s+(here|done|skipping)((?:\s+(?:at|@))?\s+(\w+(?:\s|\w)*)|\s*)$/i;
+const omwClearRegex = /^!rsvp\s+clear\s+(\w+(?:\s|\w)*)\s*$/i;
 
 const omwNoEtaExampleIndex = [2];
 const omwEtaExampleIndexes = [5, 6, 7];
@@ -21,6 +22,7 @@ class raids extends commando.Command {
             name: "iam",
             group: "raids",
             memberName: "iam",
+            aliases: ["rsvp"],
             description: "RSVP for a raid, report location and status",
             examples: [
                 "On my way (no eta):",
@@ -51,9 +53,10 @@ class raids extends commando.Command {
     async run(message) {
         let client = message.client;
 
+        let clearAllRaiders = false;
         let wantGym = undefined;
         let raiderInfo = {
-            raiderName: message.member.user.username,
+            raiderName: message.author.username,
             gym: undefined,
             etaTime: undefined,
             arrivalTime: undefined,
@@ -62,11 +65,9 @@ class raids extends commando.Command {
             code: undefined,
         };
         let helpExamples = 0;
-
         let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
 
         let match = message.content.match(omwEtaRegex);
-
         if (match !== null) {
             console.log(`on my way with eta: ${match}\n`);
             let [, gymName, wantTime] = match;
@@ -113,18 +114,28 @@ class raids extends commando.Command {
                 }
                 else {
                     match = message.content.match(omwNoEtaRegex);
-                    if (match === null) {
-                        client.reportError(
-                            message,
-                            "!iam",
-                            "My circuitzzz are tingling! I didn't understand that command..."
-                        );
-                        return;
+                    if (match !== null) {
+                        let [, gymName] = match;
+                        wantGym = gymName;
+                        helpExamples = omwNoEtaExampleIndex;
                     }
-                    console.log(`omw no eta: ${match}`);
-                    let [, gymName] = match;
-                    wantGym = gymName;
-                    helpExamples = omwNoEtaExampleIndex;
+                    else {
+                        match = message.content.match(omwClearRegex);
+                        if ((match === null) || (message.channel.type.toString() !== "dm")) {
+                            client.reportError(
+                                message,
+                                "!iam",
+                                "My circuitzzz are tingling! I didn't understand that command..."
+                            );
+                            return;
+                        }
+
+                        let [, gymName] = match;
+                        wantGym = gymName;
+                        helpExamples = ["!rsvp clear <gymName>"];
+                        raiderInfo = undefined;
+                        clearAllRaiders = true;
+                    }
                 }
             }
         }
@@ -134,9 +145,13 @@ class raids extends commando.Command {
                 let raid = client.raidManager.addOrUpdateRaider(wantGym, raiderInfo, lookupOptions);
                 message.channel.send(`${raid.gym.officialName}: ${raid.raiders[raiderInfo.raiderName].toString()}`);
             }
+            else if (clearAllRaiders) {
+                let raid = client.raidManager.clearAllRaiders(wantGym, lookupOptions);
+                message.channel.send(`${raid.gym.officialName}: Cleared all raiders.`);
+            }
             else {
-                let raid = client.raidManager.removeRaider(wantGym, message.member.user.username, lookupOptions);
-                message.channel.send(`${raid.gym.officialName}: Cancelled rsvp for ${message.member.user.username}`);
+                let raid = client.raidManager.removeRaider(wantGym, message.author.username, lookupOptions);
+                message.channel.send(`${raid.gym.officialName}: Cancelled rsvp for ${message.author.username}`);
             }
         }
         catch (err) {
