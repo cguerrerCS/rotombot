@@ -48,14 +48,14 @@ inputBotTokenStream
         tokens[tokenObj.botName] = tokenObj;
     })
     .on("end", function () {
-        if (isDevelopment) {
-            let token = tokens["Rotom Jr."].token;
-            client.login(token);
-        }
-        else {
-            let token = tokens.Rotom.token;
-            client.login(token);
-        }
+        const botName = isDevelopment ? "Rotom Jr." : "Rotom";
+        const token = tokens[botName].token;
+        client.login(token).catch((err) => {
+            console.log(`Login failed with ${err} - retrying.`);
+            client.login(token).catch((err) => {
+                throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+            });
+        });
     });
 
 function reportError(message, cmd, error, syntax) {
