@@ -1,5 +1,6 @@
 "use strict";
 
+const fs = require("fs");
 const path = require("path");
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
@@ -9,8 +10,9 @@ const RaidChannel = require("./lib/raidChannel");
 const Utils = require("./lib/utils");
 
 const { CommandoClient } = require("discord.js-commando");
-const botName = "Rotom";
-const isDevelopment = (botName !== "Rotom");
+const botConfig = getBot();
+const botName = botConfig.name;
+const isDevelopment = botConfig.isDevelopment;
 
 //Discord related commands
 const client = new CommandoClient({
@@ -22,10 +24,8 @@ client.registry.registerGroup("player", "Player");
 client.registry.registerDefaults();
 client.registry.registerCommandsIn(path.resolve("./commands"));
 
-const fs = require("fs");
 const CsvReader = require("csv-reader");
 let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
-let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
 
 let inputRaidBossDataStream = fs.createReadStream("data/Bosses.csv", "utf8");
 let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
@@ -35,29 +35,42 @@ let raidManager = new RaidManager({ logger: console });
 let moderatorData = [];
 let moderatorId = undefined;
 
-let tokens = {};
+if (!botConfig.discordToken) {
+    let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
+    let tokens = {};
 
-// Login logic for the bot:
-// read in bot tokens
-inputBotTokenStream
-    .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-    .on("data", function (row) {
-        let tokenObj = {
-            botName: row[0],
-            token: row[1],
-            clientID: row[2],
-        };
-        tokens[tokenObj.botName] = tokenObj;
-    })
-    .on("end", function () {
-        const token = tokens[botName].token;
-        client.login(token).catch((err) => {
-            console.log(`Login failed with ${err} - retrying.`);
+    // Login logic for the bot:
+    // read in bot tokens
+    inputBotTokenStream
+        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
+        .on("data", function (row) {
+            let tokenObj = {
+                botName: row[0],
+                token: row[1],
+                clientID: row[2],
+            };
+            tokens[tokenObj.botName] = tokenObj;
+        })
+        .on("end", function () {
+            const token = tokens[botName].token;
             client.login(token).catch((err) => {
-                throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+                console.log(`Login failed with ${err} - retrying.`);
+                client.login(token).catch((err) => {
+                    throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+                });
             });
         });
+}
+else {
+    const token = botConfig.discordToken;
+    client.login(token).catch((err) => {
+        console.log(`Login failed with ${err} - retrying.`);
+        client.login(token).catch((err) => {
+            throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+        });
     });
+}
+
 
 function reportError(message, cmd, error, syntax) {
     let output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n*error: " + error + "*\n";
@@ -70,6 +83,14 @@ function reportError(message, cmd, error, syntax) {
 
     process.stdout.write(output);
     message.channel.send(output);
+}
+
+function getBot() {
+    let config = path.resolve("data/BotConfig.json");
+    if (fs.existsSync(config)) {
+        return require(config).default;
+    }
+    return { name: "Rotom", isDevelopment: false };
 }
 
 function getModeratorId() {
@@ -115,7 +136,7 @@ client.on("ready", () => {
     client.raidManager = raidManager;
     client.getModeratorId = getModeratorId;
     client.config = new ConfigManager({ logger: console });
-    client.hooks = new HookManager(client, "data");
+    client.hooks = new HookManager(client, botConfig.hooks);
     client.raidManager.hooks = client.hooks;
 
     addRaidChannels();
