@@ -4,11 +4,13 @@ const path = require("path");
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
 const ConfigManager = require("./lib/configManager");
+const HookManager = require("./lib/hookManager");
 const RaidChannel = require("./lib/raidChannel");
 const Utils = require("./lib/utils");
 
 const { CommandoClient } = require("discord.js-commando");
-const isDevelopment = false;
+const botName = "Rotom";
+const isDevelopment = (botName !== "Rotom");
 
 //Discord related commands
 const client = new CommandoClient({
@@ -48,7 +50,6 @@ inputBotTokenStream
         tokens[tokenObj.botName] = tokenObj;
     })
     .on("end", function () {
-        const botName = isDevelopment ? "Rotom Jr." : "Rotom";
         const token = tokens[botName].token;
         client.login(token).catch((err) => {
             console.log(`Login failed with ${err} - retrying.`);
@@ -110,9 +111,11 @@ client.on("ready", () => {
     process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
+    client.botName = botName;
     client.raidManager = raidManager;
     client.getModeratorId = getModeratorId;
     client.config = new ConfigManager({ logger: console });
+    client.hooks = new HookManager(client, "data");
 
     addRaidChannels();
 
