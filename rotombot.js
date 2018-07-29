@@ -116,6 +116,7 @@ client.on("ready", () => {
     client.getModeratorId = getModeratorId;
     client.config = new ConfigManager({ logger: console });
     client.hooks = new HookManager(client, "data");
+    client.raidManager.hooks = client.hooks;
 
     addRaidChannels();
 
