@@ -56,7 +56,7 @@ class raid extends commando.Command {
 
     async run(message) {
         const client = message.client;
-        const userId = message.author ? message.author.id : (message.member ? message.member.id : undefined);
+        const onBehalfOf = message.author || message.member;
         const output = `Processing !add command submitted by user ${message.author}\n`;
         console.log("[Raid Manager] command: " + message.content);
         // process.stdout.write(output);
@@ -75,7 +75,7 @@ class raid extends commando.Command {
             try {
                 let added = client.raidManager.addEggAbsolute(tier, gym, startTime, lookupOptions);
                 message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
-                client.hooks.raidUpdated(added, userId);
+                client.hooks.raidUpdated(added, onBehalfOf);
             }
             catch (e) {
                 client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
@@ -89,7 +89,7 @@ class raid extends commando.Command {
             try {
                 let added = client.raidManager.addEggCountdown(tier, gym, timer, lookupOptions);
                 message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
-                client.hooks.raidUpdated(added, userId);
+                client.hooks.raidUpdated(added, onBehalfOf);
             }
             catch (err) {
                 client.reportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
@@ -105,7 +105,7 @@ class raid extends commando.Command {
             try {
                 let added = client.raidManager.addRaid(boss, gym, timer, lookupOptions);
                 message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
-                client.hooks.raidUpdated(added, userId);
+                client.hooks.raidUpdated(added, onBehalfOf);
             }
             catch (err) {
                 let commandSyntax = this.examples[bosswithTimerForSampleIndex] + "\nOR\n" + this.examples[bossWithTimerLeftSampleIndex];
@@ -121,7 +121,7 @@ class raid extends commando.Command {
             try {
                 let updated = client.raidManager.setRaidBoss(boss, gym, lookupOptions);
                 message.channel.send(`Updated ${Raid.raidToString(updated)}.\n`);
-                client.hooks.raidUpdated(updated, userId);
+                client.hooks.raidUpdated(updated, onBehalfOf);
             }
             catch (err) {
                 // If we get this error, the raid is likely not in the active list, so give the
