@@ -147,9 +147,10 @@ client.on("ready", () => {
         (row) => {
             return {
                 name: row[0],
-                tier: row[1],
-                image: row[2],
-                status: row[3],
+                id: row[1],
+                tier: row[2],
+                image: row[3],
+                status: row[4],
             };
         },
         (collection) => {

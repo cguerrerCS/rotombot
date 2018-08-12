@@ -12,6 +12,7 @@ describe("GymZone object", () => {
 
         it("should throw if gyms initializer contains non-Gym objects", () => {
             let gyms = [{
+                id: "0123456789",
                 zones: ["Redmond", "Kirkland", "Bellevue"],
                 city: "Houghton",
                 officialName: "'Bogus-Gym', in Houghton.",
@@ -28,14 +29,14 @@ describe("GymZone object", () => {
         describe("with a named zone", () => {
             it("should initialize with gyms from the zone", () => {
                 let gyms = [
-                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
-                    ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
-                    ["Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
-                    ["Redmond", "Redmond", "St. Jude Walking Trail", "St Judes", 47.693495, -122.116883, "NonEx"],
-                    ["Redmond", "Redmond", "Redmond Meadow Park", "Meadow Park", 47.695703, -122.12655, "NonEx"],
-                    ["Redmond", "Redmond", "Leaf Inlay in Sidewalk", "Leaf Inlay", 47.689362, -122.114435, "NonEx"],
-                    ["Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
-                    ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
+                    ["0123456789", "Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+                    ["0123456789", "Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "St. Jude Walking Trail", "St Judes", 47.693495, -122.116883, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Redmond Meadow Park", "Meadow Park", 47.695703, -122.12655, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Leaf Inlay in Sidewalk", "Leaf Inlay", 47.689362, -122.114435, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
                 ];
                 let zone = GymZone.fromCsvData(gyms, "Redmond");
                 expect(zone).toBeDefined();
@@ -44,7 +45,7 @@ describe("GymZone object", () => {
 
             it("should allow fuzzy matching threshold to be set", () => {
                 let gyms = [
-                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                    ["0123456789", "Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
                 ];
                 [0.4, 0.8].forEach((threshold) => {
                     let zone = GymZone.fromCsvData(gyms, "Redmond", { fuzzyThreshold: threshold });
@@ -56,18 +57,18 @@ describe("GymZone object", () => {
 
             it("should throw if any gyms are not from the zone", () => {
                 let gyms = [
-                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
-                    ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
-                    ["Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
+                    ["0123456789", "Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+                    ["0123456789", "Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
                 ];
                 expect(() => GymZone.fromCsvData(gyms, "Redmond")).toThrowError(/does not belong to zone/);
             });
 
             it("should ignore gyms from other zones if ignoreOtherZones option is specified", () => {
                 let gyms = [
-                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
-                    ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
-                    ["Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
+                    ["0123456789", "Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+                    ["0123456789", "Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
                 ];
                 let zone = GymZone.fromCsvData(gyms, "Redmond", { ignoreOtherZones: true });
                 expect(zone).toBeDefined();
@@ -76,8 +77,8 @@ describe("GymZone object", () => {
 
             it("should throw if there are duplicate friendly names", () => {
                 let gyms = [
-                    ["Bellevue|Redmond", "Bellevue", "Find shiny deals at sprint", "Sprint", 47.622703, -122.1625050, "NonEx"],
-                    ["Redmond", "Redmond", "Find shiny deals at Sprint", "Sprint", 47.670882, -122.114047, "ExEligible"],
+                    ["0123456789", "Bellevue|Redmond", "Bellevue", "Find shiny deals at sprint", "Sprint", 47.622703, -122.1625050, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Find shiny deals at Sprint", "Sprint", 47.670882, -122.114047, "ExEligible"],
                 ];
                 expect(() => GymZone.fromCsvData(gyms, "Redmond")).toThrowError(/duplicate normalized friendly name/i);
             });
@@ -86,14 +87,14 @@ describe("GymZone object", () => {
         describe("with an unnamed zone", () => {
             it("should initialize with gyms from any zone", () => {
                 let gyms = [
-                    ["Bellevue", "Bellevue", "MOX Boarding House", "MOX Boarding House", 47.622703, -122.1625050, "NonEx"],
-                    ["Bellevue", "Bellevue", "Magic Chandelier", "Magic Chandelier", 47.622632, -122.1628060, "NonEx"],
-                    ["Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
-                    ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
-                    ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
-                    ["Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
-                    ["Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
-                    ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
+                    ["0123456789", "Bellevue", "Bellevue", "MOX Boarding House", "MOX Boarding House", 47.622703, -122.1625050, "NonEx"],
+                    ["0123456789", "Bellevue", "Bellevue", "Magic Chandelier", "Magic Chandelier", 47.622632, -122.1628060, "NonEx"],
+                    ["0123456789", "Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
+                    ["0123456789", "Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+                    ["0123456789", "Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
+                    ["0123456789", "Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
                 ];
                 let zone = GymZone.fromCsvData(gyms);
                 expect(zone).toBeDefined();
@@ -104,9 +105,9 @@ describe("GymZone object", () => {
 
         it("should initialize with gyms that have duplicate official names", () => {
             let gyms = [
-                ["Bellevue", "Bellevue", "Find shiny deals at sprint", "Bellevue Sprint (fake)", 47.622703, -122.1625050, "NonEx"],
-                ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
-                ["Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
+                ["0123456789", "Bellevue", "Bellevue", "Find shiny deals at sprint", "Bellevue Sprint (fake)", 47.622703, -122.1625050, "NonEx"],
+                ["0123456789", "Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
+                ["0123456789", "Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
             ];
             let zone = GymZone.fromCsvData(gyms);
             expect(zone).toBeDefined();
@@ -118,32 +119,32 @@ describe("GymZone object", () => {
     describe("addGym method", () => {
         it("should throw if the GymZone is already initialized", () => {
             let gyms = [
-                ["Bellevue", "Bellevue", "Find shiny deals at sprint", "Bellevue Sprint (fake)", 47.622703, -122.1625050, "NonEx"],
-                ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
-                ["Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
+                ["0123456789", "Bellevue", "Bellevue", "Find shiny deals at sprint", "Bellevue Sprint (fake)", 47.622703, -122.1625050, "NonEx"],
+                ["0123456789", "Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint", 47.670882, -122.114047, "ExEligible"],
+                ["0123456789", "Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
             ];
             let zone = GymZone.fromCsvData(gyms);
-            let gym = Gym.fromCsvRow(["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"]);
+            let gym = Gym.fromCsvRow(["0123456789", "Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"]);
             expect(() => zone.addGym(gym)).toThrowError(/^.*has already been initialized.*$/);
         });
     });
 
     describe("tryGetGyms method", () => {
         let gyms = [
-            ["Bellevue", "Bellevue", "MOX Boarding House", "MOX Boarding House", 47.622703, -122.1625050, "NonEx"],
-            ["Bellevue", "Bellevue", "Magic Chandelier", "Magic Chandelier", 47.622632, -122.1628060, "NonEx"],
-            ["Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
-            ["Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
-            ["Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
-            ["Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
-            ["Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
-            ["Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint (defunct)", 47.670882, -122.114047, "ExEligible"],
-            ["Bellevue|Redmond", "Bellevue", "Find shiny deals at Sprint", "Bellevue Sprint (imaginary)", 47.622703, -122.1625050, "NonEx"],
-            ["Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
-            ["Bellevue", "Lake Hills", "Starbucks", "Starbucks (Lake Hills)", 47.596722, -122.1487740, "ExEligible"],
-            ["Bellevue", "Overlake", "Starbucks", "Ezell's Starbucks", 47.625049, 122.155033, "ExEligible"],
-            ["Bellevue", "Overlake", "Starbucks (Overlake)", "Starbucks", 47.628162, -122.1411100, "ExEligible"],
-            ["Bellevue", "Bridle Trails", "Westminster \"W\"", "Westminster \"W\"", 47.632738, -122.1573250, "NonEx"],
+            ["0123456789", "Bellevue", "Bellevue", "MOX Boarding House", "MOX Boarding House", 47.622703, -122.1625050, "NonEx"],
+            ["0123456789", "Bellevue", "Bellevue", "Magic Chandelier", "Magic Chandelier", 47.622632, -122.1628060, "NonEx"],
+            ["0123456789", "Bellevue", "Lake Hills", "The Church Of Jesus Christ Of Latter-Day Saints (Lake Hills)", "LDS (Lake Hills)", 47.584283, -122.141151, "NonEx"],
+            ["0123456789", "Redmond|Kirkland", "Rose Hill", "Tech City Bowl", "Tech City Bowl", "47.666658", "-122.165583", "NonEx"],
+            ["0123456789", "Redmond", "Redmond", "Mysterious Hatch", "Reservoir Park", 47.685378, -122.122394, "ExEligible"],
+            ["0123456789", "Redmond", "Redmond", "Nike Park", "Nike Park", 47.683823, -122.110841, "NonEx"],
+            ["0123456789", "Redmond", "Redmond", "The Church Of Jesus Christ Of Latter-Day Saints (Hartman Park)", "LDS (Hartman Park)", 47.690909, -122.110964, "NonEx"],
+            ["0123456789", "Redmond", "Redmond", "Find shiny deals at Sprint", "Redmond Sprint (defunct)", 47.670882, -122.114047, "ExEligible"],
+            ["0123456789", "Bellevue|Redmond", "Bellevue", "Find shiny deals at Sprint", "Bellevue Sprint (imaginary)", 47.622703, -122.1625050, "NonEx"],
+            ["0123456789", "Woodinville", "Woodinville", "Find shiny deals at Sprint", "Woodinville Sprint", 47.758248, 122.1537780, "ExEligible"],
+            ["0123456789", "Bellevue", "Lake Hills", "Starbucks", "Starbucks (Lake Hills)", 47.596722, -122.1487740, "ExEligible"],
+            ["0123456789", "Bellevue", "Overlake", "Starbucks", "Ezell's Starbucks", 47.625049, 122.155033, "ExEligible"],
+            ["0123456789", "Bellevue", "Overlake", "Starbucks (Overlake)", "Starbucks", 47.628162, -122.1411100, "ExEligible"],
+            ["0123456789", "Bellevue", "Bridle Trails", "Westminster \"W\"", "Westminster \"W\"", 47.632738, -122.1573250, "NonEx"],
         ];
         let zone = GymZone.fromCsvData(gyms);
 
@@ -273,7 +274,6 @@ describe("GymZone object", () => {
                 expect(cities.filter((c) => c.toLowerCase() === match.gym.city.toLowerCase()).length).toBe(0);
             }
         });
-
         it("should return no fuzzy matches if no city matches and the onlyMatchingCities option is supplied", () => {
             let cities = ["kirkland", "seattle"];
             let found = zone.tryGetGyms("sprint", { cities: cities, onlyMatchingCities: true });
