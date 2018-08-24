@@ -8,6 +8,22 @@
         }
     },
     {
+        "id": "421722886991118376",
+        "displayName": "DowntownBellevueDiscord",
+        "guildName": "DowntownBellevueDiscord",
+        "gymLookupOptions" : {
+            "preferredZones": [ "DowntownBellevueDiscord" ]
+        }
+    },
+    {
+        "id": "480935359803424778",
+        "displayName": "ShaperCarin",
+        "guildName": "ShaperCarin",
+        "gymLookupOptions" : {
+            "preferredZones": [ "ShaperCarin" ]
+        }
+    },
+    {
         "id": "420429550804140034",
         "displayName": "Technica",
         "guildName": "Technica",

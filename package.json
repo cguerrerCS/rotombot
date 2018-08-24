@@ -29,6 +29,7 @@
     "discord.js": "^11.3.2",
     "discord.js-commando": "^0.10.0",
     "fuse.js": "^3.2.1",
+    "npm": "^6.4.0",
     "request": "^2.87.0",
     "string-format": "^2.0.0"
   },
