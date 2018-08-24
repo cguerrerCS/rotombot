@@ -69,7 +69,7 @@ ec01d16d3407432183e5eb90847c1ff5.16,Rain City,Bellevue,Splashing Stones,Splashin
 29962141344641c79da69d0bffcfd208.16,Rain City,Bellevue,St. Thomas Church,St. Thomas Church,-122.228739,47.621304,NonEx
 f7794ef9b6fe44c5b99165b39081d51c.16,Rain City|DowntownBellevueDiscord,Bellevue,Stainless Stele No.1,Stainless Stele No.1,-122.194246,47.613153,NonEx
 9f24fec413adf6506081296abb12cc13,Rain City|DowntownBellevueDiscord,Bellevue,Starbucks (Bellevue),Bellevue Starbucks,-122.19653,47.615948,ExEligible
-27820d7b93b8615db9b0412c2fa84a4f,Rain City,Bellevue,Starbucks (Evergreen Village),friendly|Ezell's Starbucks,-122.15459,47.624992,ExEligible
+27820d7b93b8615db9b0412c2fa84a4f,Rain City,Bellevue,Starbucks (Evergreen Village),Evergreen Village Starbucks|Ezell's Starbucks,-122.15459,47.624992,ExEligible
 ec70a7bfabc848e9b174a9965f195474.16,Rain City,Bellevue,Stories of Autism,Stories of Autism,-122.166247,47.629091,NonEx
 ffab3139a97748488f4755690f4eee9d.16,Rain City|DowntownBellevueDiscord|ShaperCarin,Bellevue,Surrey Downs,Surrey Downs,-122.193985,47.60989,NonEx
 8d3a1ebd170d493488a939886c691976.16,Rain City|DowntownBellevueDiscord|ShaperCarin,Bellevue,Surrey Downs Park,Surrey Downs Park,-122.190937,47.603445,NonEx
@@ -79,7 +79,7 @@ da157577aee04f22afcd1b90e7ed2b0f.16,Rain City,Bellevue,The Lake's Receding Shore
 fb5d6e89eda641ca8fa2529f04d0d21b.16,Rain City|DowntownBellevueDiscord,Bellevue,The Pumphouse,The Pumphouse,-122.183215,47.61773,NonEx
 971b63dc6b4e450a93fbe1dfbbe987fa.16,Rain City,Bellevue,The Ravine Bridge,The Ravine Bridge,-122.177582,47.606359,NonEx
 4240136cb010480f9b305d2708803529.16,Rain City|ShaperCarin,Bellevue,Water is Life,Water is Life,-122.183693,47.595985,NonEx
-f9174f1acad84c0eb0db797fbced539c.16,Rain City|DowntownBellevueDiscord,Bellevue,Water, Precious Water,WPW,-122.202586,47.612224,ExEligible
+f9174f1acad84c0eb0db797fbced539c.16,Rain City|DowntownBellevueDiscord,Bellevue,"Water, Precious Water",WPW,-122.202586,47.612224,ExEligible
 59143fdc3aba4bcdad4086a8796dd481.16,Rain City,Bellevue,Wilburton Hill Park Entrance,Wilburton Hill Park Entrance,-122.174781,47.60998,NonEx
 270c65c259094a83baac1becdced6c2d.16,Rain City|ShaperCarin,Bellevue,Wilburton Trestle,Wilburton Trestle,-122.180643,47.601974,NonEx
 1f71035d9a7b4595974d020ae9760442.16,Rain City,Bellevue,Windsong,Windsong,-122.231494,47.620546,NonEx
@@ -100,7 +100,7 @@ c054e2c292534001ac1ac5b78dc07cd3.16,Rain City,Bridle Trails,Good and Bad Stand,G
 9cc37a4ad86c4d14bca736e3d3cec67e.16,Rain City,Bridle Trails,Horse Show Arena,Horse Show Arena,-122.184697,47.655977,NonEx
 8277025711744a4fa07d5e58e4d40a84.16,Rain City,Bridle Trails,Lake East Christian Church,Lake East Christian Church,-122.185738,47.654849,NonEx
 22a4de162f2247ff823b23c8c773863e.16,Rain City,Bridle Trails,Pike's Peak,Pike's Peak,-122.179197,47.633299,NonEx
-a33086ea8bc94f58990a1bfd40b007e7.16,Rain City,Bridle Trails,Second Church of Christ, Scientist, Bellevue, WA,Second Church of Christ, Scientist, Bellevue, WA,-122.155477,47.629974,NonEx
+a33086ea8bc94f58990a1bfd40b007e7.16,Rain City,Bridle Trails,"Second Church of Christ, Scientist, Bellevue, WA","Second Church of Christ, Scientist, Bellevue, WA",-122.155477,47.629974,NonEx
 94e8b40179344aed805d30c1c5b535f6.16,Rain City,Bridle Trails,Trillium Trail Dedication Plaque,Trillium Trail Dedication Plaque,-122.182763,47.654776,ExEligible
 84dcf06bea38a360f2f79b63bdfb6163,Rain City,Bridle Trails,Westminster "W",Westminster "W",-122.157325,47.632738,NonEx
 68dd6173e351a42aeefdcd19f98c89a8,Rain City,Crossroads,Bellevue Masonic Center's Plaque,Bellevue Masonic Center,-122.122578,47.624449,NonEx
@@ -173,7 +173,7 @@ bc7b2281c18c4f9ca78d6fb221c13273.11,Rain City,Kirkland,Reasons to Believe,Reason
 f175e96bfa354691bc3067144c2404dd.16,Rain City,Kirkland,Verne & Wells,Verne & Wells,-122.194092,47.679951,NonEx
 d095f1e888d147fd86b737e4b4ff1a9b.16,Rain City,Kirkland,Mother Bear and Cubs,Mother Bear and Cubs,-122.196591,47.68047,NonEx
 4a2b2ed6e39e4ecfb13fad339aed1e30.16,Rain City,Kirkland,Park Place Clock,Park Place Clock,-122.198235,47.67795,NonEx
-1313daa2093ef521a971f7b619c425eb,Rain City,Kirkland,Jessica, Jake and Annie,Jessica, Jake and Annie,-122.198784,47.677976,NonEx
+1313daa2093ef521a971f7b619c425eb,Rain City,Kirkland,"Jessica, Jake and Annie","Jessica, Jake and Annie",-122.198784,47.677976,NonEx
 e2eecdb8768f4b0ebb37eee3275ac0f5.16,Rain City,Kirkland,Bradley David Cabreros Memorial,Bradley David Cabreros Memorial,-122.200584,47.677623,ExEligible
 6c9368c972254568b5721f6868fc292e.16,Rain City,Kirkland,Elmer T. White Memorial Mural,Elmer T. White Memorial Mural,-122.204375,47.677425,NonEx
 8c93546a3ef4447eb00faa7443dd0aa5.12,Rain City,Kirkland,Cow and the Coyote,Cow and the Coyote,-122.207228,47.676641,NonEx
@@ -224,7 +224,7 @@ ef08855bd96743e2a97a1a96406a3f64.16,Rain City,Lake Hills,Catalina Fountain,Catal
 5b422658ed50455ab7124db3fabbe79a.16,Rain City,Lake Hills,Church Of Christ Lake Hills,Church Of Christ Lake Hills,-122.150615,47.597962,NonEx
 5f4384d51c0d4746a7fb9163e3c280c7.16,Rain City,Lake Hills,City of Bellevue Trail System Marker (156th),Bellevue Trail System Marker (156th),-122.132417,47.585358,NonEx
 0a704e4a83ad47e597278ced51e8b3ff.16,Rain City,Lake Hills,City of Bellevue Trail System Marker (24th),Bellevue Trail System Marker (24th),-122.122642,47.588855,NonEx
-090d977040744408a63a78cef0e92cc9.16,Rain City,Lake Hills,Ducks And Dogs, The Rules Of Lake Hills Park,Lake Hills Park Rules,-122.123532,47.5976,NonEx
+090d977040744408a63a78cef0e92cc9.16,Rain City,Lake Hills,"Ducks And Dogs, The Rules Of Lake Hills Park",Lake Hills Park Rules,-122.123532,47.5976,NonEx
 099cd007c8b04e6b8b52c4a667c94fdb.16,Rain City,Lake Hills,Enhancing the Wetland Home for Wildlife,Enhancing the Wetland Home for Wildlife,-122.144203,47.606089,NonEx
 6ca8c2b3fc1b4eb093451b3e69010a4f.16,Rain City,Lake Hills,Evergreen Park Dog Stop,Evergreen Park Dog Stop,-122.128443,47.603728,NonEx
 203bbd9f84ba4797a6996bc05b16b912.16,Rain City,Lake Hills,Forty One Point Five Park,Forty One Point Five Park,-122.111206,47.573847,NonEx
@@ -240,7 +240,7 @@ c83761e3ba6f45fc9e7f7330b7da2596.16,Rain City,Lake Hills,Lake To Lake Trail,Lake
 a5539e8f58994170bbd9d4fe5ac1c4d0.16,Rain City,Lake Hills,Lake to Lake Trail Marker (Kelsey Creek),Lake to Lake Trail Marker (Kelsey Creek),-122.162162,47.605854,NonEx
 f39309a0218a46dea56c333b52cc98b8.16,Rain City,Lake Hills,Lake to Lake Trail Marker North,Lake to Lake Trail Marker North,-122.138162,47.608007,NonEx
 bb281eb2111e46b99b502c37ae09c5ef.16,Rain City,Lake Hills,Lake To Lake Trail Sign,Lake To Lake Trail Sign,-122.1154,47.595704,NonEx
-0857c26488b34985b9695f08460aec54.16,Rain City,Lake Hills,Lake to Lake Trailhead, 151st Ave Entrance,Lake to Lake Trailhead (151st),-122.137003,47.59881,NonEx
+0857c26488b34985b9695f08460aec54.16,Rain City,Lake Hills,"Lake to Lake Trailhead, 151st Ave Entrance",Lake to Lake Trailhead (151st),-122.137003,47.59881,NonEx
 bb6afe140d9a4c509b8d0a60494a7937.16,Rain City,Lake Hills,Lakt to Lake Trail Marker,Lakt to Lake Trail Marker,-122.153603,47.606764,NonEx
 ce0a43839ca74a6eaf388c0edc18ff4e.16,Rain City,Lake Hills,Lil Jon Restaurant,Sunset Village (Lil Jon Restaurant),-122.138912,47.581852,NonEx
 14c5392b6b274cd2ae7aa687baaa46ae.11,Rain City,Lake Hills,Little League Federal Field,Little League Federal Field,-122.137917,47.601973,ExEligible
@@ -314,7 +314,7 @@ a5086da937cd49538e41094fad1049eb.16,Rain City,Overlake,Overlake Park Presbyteria
 8ad819ddb0c844ab6b7cda7b49c45efc,Rain City,Overlake,Running Man Trail Marker,Microsoft B84,-122.134852,47.649877,NonEx
 e8d137c714614d128ed1ad4bccb7382b.16,Rain City,Overlake,Salmon Woman and Raven,Salmon Woman and Raven,-122.150538,47.625192,NonEx
 2fbf3564ed32434fa424d9746947da0d.16,Rain City,Overlake,Small Waterfall,Microsoft B24,-122.131385,47.64113,NonEx
-ded9216e2f642ad1a8401b78929e6128,Rain City,Overlake,Starbucks (Overlake),friendly|Sears Starbucks,-122.14111,47.628162,ExEligible
+ded9216e2f642ad1a8401b78929e6128,Rain City,Overlake,Starbucks (Overlake),Overlake Starbucks|Sears Starbucks,-122.14111,47.628162,ExEligible
 9872c9a89b6546d8bafeda5f7c2f55c7.16,Rain City,Overlake,Step Waterfall,RedWest (Waterfall),-122.140784,47.65896,NonEx
 7c20a606cbf7433998e319a30194bf8a.16,Rain City,Overlake,Stormwater Pond (Bel-Red),Stormwater Pond (Bel-Red),-122.114528,47.64598,NonEx
 d6e01f5353c8467189a0778a2885fbe0.16,Rain City,Overlake,The Halo Vignette,Microsoft Studio D,-122.135625,47.643057,NonEx
@@ -400,7 +400,7 @@ a169f4d109054d07936844148457333f.16,Rain City,Redmond,Vern Wagner Fields Dedicat
 f3d6b06d15e74e9e88262ead6c5f20da.16,Rain City,Redmond,Victors Coffee Co. and Roasters,Victors Coffeeshop,-122.1219,47.674577,NonEx
 7a65b4ad11344ebdb3421c045bcd56f6.16,Rain City,Redmond,Washington Cathedral,Washington Cathedral,-122.13135,47.709688,NonEx
 72c4e8cb052344cd84a626a99aaecd36.16,Rain City,Redmond,Water Tower,Redmond Way Water Tower,-122.09184,47.663903,NonEx
-03100cac5b2746a7a3e70480de9bcc58.16,Rain City,Redmond,Weiner Elephants,friendly|Redmond Police|Redmond Police Department,-122.128889,47.680386,NonEx
+03100cac5b2746a7a3e70480de9bcc58.16,Rain City,Redmond,Weiner Elephants,Redmond PD|Redmond Police|Redmond Police Department,-122.128889,47.680386,NonEx
 e40bc2423fcc4b49beee7f53c36f1a13.16,Rain City,Redmond,West Ironcycle,Ben Franklin,-122.130123,47.675691,NonEx
 b46bc45db4884b83ab7181d35c99f07a.16,Rain City,Redmond,Wild Silhouettes,Avondale Bus Stop,-122.104461,47.678821,NonEx
 e9039c33a9e340e2863b8ff4bdb3e9ae.16,Rain City,Redmond,Willows Run Golf,Willows Golf Course,-122.150992,47.694295,NonEx
