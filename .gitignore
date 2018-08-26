@@ -6,4 +6,6 @@ ModeratorId.csv
 .nyc_output/
 coverage/
 images/
+data/BotConfig.json
+
 
