@@ -88,7 +88,8 @@ function reportError(message, cmd, error, syntax) {
 function getBot() {
     let config = path.resolve("data/BotConfig.json");
     if (fs.existsSync(config)) {
-        return require(config).default;
+        let cfg = require(config);
+        return (typeof cfg.default === "string") ? cfg[cfg.default] : cfg.default;
     }
     return { name: "Rotom", isDevelopment: false };
 }
