@@ -41,7 +41,7 @@ describe("cmdRegexHelper", () => {
         let cmd = regex.create(["!add", "[boss]", "(?:@|at)", "[gym]", "[timer]", "left"]);
         [
             { str: "!add Boss at Hoity-toity 10 left", boss: "Boss", gym: "Hoity-toity", timer: "10" },
-            { str: "!add Who at Blah Blah 5 left", boss: "Who", gym: "Blah Blah", timer: "5" },
+            { str: "!add Who @ Blah Blah 5 left", boss: "Who", gym: "Blah Blah", timer: "5" },
             { str: "!add Ho-oh at St. Jude's 55 left", boss: "Ho-oh", gym: "St. Jude's", timer: "55" },
         ].forEach((test) => {
             let match = test.str.match(cmd);
@@ -56,7 +56,7 @@ describe("cmdRegexHelper", () => {
         // const addBossWithTimerAltRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s|`|-)*)(?:for)(?:\s+(\d?\d)\s*)\s*?$/i;
         let cmd = regex.create(["!add", "[boss]", "(?:@|at)", "[gym]", "for", "[timer]"]);
         [
-            { str: "!add Ho-oh at Hoity-toity for 10", boss: "Ho-oh", gym: "Hoity-toity", timer: "10" },
+            { str: "!add Ho-oh @ Hoity-toity for 10", boss: "Ho-oh", gym: "Hoity-toity", timer: "10" },
             { str: "!add Who at Blah Blah for 5", boss: "Who", gym: "Blah Blah", timer: "5" },
             { str: "!add Ho-oh at St. Jude's for 55", boss: "Ho-oh", gym: "St. Jude's", timer: "55" },
         ].forEach((test) => {
@@ -75,7 +75,7 @@ describe("cmdRegexHelper", () => {
         [
             { str: "!add Ho-oh at Hoity-toity", boss: "Ho-oh", gym: "Hoity-toity" },
             { str: "!add Who at Blah Blah", boss: "Who", gym: "Blah Blah" },
-            { str: "!add Ho-oh at St. Jude's", boss: "Ho-oh", gym: "St. Jude's" },
+            { str: "!add Ho-oh @ St. Jude's", boss: "Ho-oh", gym: "St. Jude's" },
         ].forEach((test) => {
             let match = test.str.match(cmd);
             expect(match).not.toBeNull();
