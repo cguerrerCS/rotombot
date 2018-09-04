@@ -115,7 +115,7 @@ ae2058b11dad4ea18b0a96a3ca94debc.16,Rain City,Crossroads,Hilaire Park,Hilaire Pa
 65b4098fd9334d208deafad0f92a8794.16,Rain City,Crossroads,P. George Brown Memorial Bench,Hilaire Park (Bench),-122.128187,47.614595,ExEligible
 0f3d21aca50b4560b58128d3af7b1cf8.16,Rain City,Crossroads,The Salvation Army,Xroads (Salvation Army),-122.122246,47.618808,NonEx
 726674aa8ec5455898990462014d286c.16,Rain City,Crossroads,Woodland Mural,Xroads (Woodland Mural),-122.129903,47.619303,NonEx
-deadbeef,Downtown Seattle,Denny Triangle,Cornish Spire of Light,Cornish,-122.334516,47.617861,NonEx
+4130766f9c224c3baedad9166aa0452d.16,Downtown Seattle,Denny Triangle,Cornish Spire of Light,Cornish,-122.334516,47.617861,NonEx
 9fa55472d0f749e0937ffa7befb27fab.11,Downtown Seattle,Denny Triangle,Globe Sculpture,Globe,-122.333498,47.612769,NonEx
 beffd34f60f34ce7bae49731a1d0607a.16,Downtown Seattle,Denny Triangle,Not All Who Wander Are Lost - To Do Is To Be,Not All Who Wander,-122.331099,47.618431,NonEx
 2ab9ffb0132d4d24bdf9420299f6b432.16,Downtown Seattle,Denny Triangle,Seattle Times,Seattle Times,-122.334506,47.619793,NonEx
@@ -124,6 +124,9 @@ d65a638577cfd7cc8ba61d0507955fd6,Downtown Seattle,Denny Triangle,Starbucks (7th 
 ff8a13a80228495c8e849f626a592155.16,Downtown Seattle,Denny Triangle,The Spiral,Spiral,-122.335601,47.615502,NonEx
 d1fe358c1ead4238969604dee2fec89a.11,Downtown Seattle,Downtown,5th Avenue Theater,Fifth Avenue Theater,-122.333912,47.609025,NonEx
 d9853dbd99f1cfe5d358370b5454579e,Downtown Seattle,Downtown,Find Shiny Deals at Sprint,Sprint (3rd avenue),-122.338574,47.610284,ExEligible
+1c4d4162ae73473f8c8c0c55c2651809.16,Downtown Seattle,Capitol Hill,Charbern,Charbern,-122.3245720,47.616570,NonEx
+bbf0613cfa1f430a95eeea6b688c1147.11,Downtown Seattle,Capitol Hill,Bauhaus Coffee Mural,Bauhaus Coffee Mural,-122.3261350,47.615328,NonEx
+6e134d603644488281c44d4be2d802e9.16,Downtown Seattle,Capitol Hill,Sun Liquor Distillery,Sun Liquor,-122.3250290,47.614198,NonEx
 9d16290511cd4b27a76e203ea51aad7b.16,Rain City,Kenmore,Church of the Redeemer Episcopal,Church of the Redeemer Episcopal,-122.259747,47.760154,NonEx
 23dd4ba7f6364b48b8b84f46a54bdcc0.16,Rain City,Kenmore,Crocodile Rocks Statue,Crocodile Rocks Statue,-122.247674,47.757794,NonEx
 91bc3dd5fc914f0288905c3210d655f6.16,Rain City,Kenmore,Glow Tubes on Bothell Way,Glow Tubes on Bothell Way,-122.249959,47.75856,NonEx
@@ -435,3 +438,11 @@ f2e31ee693974dd1a04305aa2452571b.16,Rain City,Rose Hill,William Finkbeiner Field
 86273a3ee363433095eae05a1c78839f.16,Downtown Seattle,Westlake Park,Pacific Place Penguin,Pacific Place,-122.335394,47.613016,NonEx
 03c0e46a0d378e757f2843c8d18a882a,Downtown Seattle,Westlake Park,Starbucks (Westlake Park),Westlake Park Starbucks,-122.337614,47.611505,ExEligible
 7a6a58575b3414245a0935843c6327c8,Downtown Seattle,Westlake Park,The Deadly Sculptures,Deadly Sculptures,-122.336676,47.610363,NonEx
+ad7fa55ed080418794e80e16d4e3713e.11,Downtown Seattle,Capitol Hill,Boren Columns,Boren Columns,-122.3294140,47.613639,NonEx
+0b26dd527a254fb69dca49eb25b2a585.12,Rain City,Redmond Ridge,Library Express Redmond Ridge,Redmond Ridge Library Express,-122.045556,47.693320,NonEx
+4c24503eb57d4a6997a2f89d97444802.16,Rain City,Redmond Ridge,Gutter Water,Gutter Water,-122.043211,47.693772,NonEx
+9dd1d4d651a741699d5e14a8d3c4da9c.16,Rain City,Redmond Ridge,Wetland Information Board,Wetland Information Board,-122.038500,47.694278,NonEx
+aaa82d9cc90a4db69c17dd0186ebf85b.16,Rain City,Redmond Ridge,"There's No Free Lunch",Theres No Free Lunch,-122.0373930,47.691701,NonEx
+be96dde87ef54150843583ddb916d58b.16,Rain City,Redmond Ridge,Cedar Park and Fire Pit,Cedar Park and Fire Pit,-122.044342,47.690121,NonEx
+6d5c034de175448190523af73ee4501a.16,Rain City,Redmond Ridge,Redmond North Little League,Redmond North Little League,-122.0343270,47.690802,NonEx
+3d5255d5ba294eb5b085f7c92921f00f.16,Rain City,Redmond Ridge,Cascara Park,Cascara Park,-122.038436,47.688609,NonEx
