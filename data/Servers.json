@@ -23,6 +23,14 @@
             "preferredZones": [ "ShaperCarin" ]
         }
     },
+	{
+        "id": "490651827566805003",
+        "displayName": "RedmondRidgePoGo",
+        "guildName": "RedmondRidgePoGo",
+        "gymLookupOptions" : {
+            "preferredZones": [ "RedmondRidgePoGo" ]
+        }
+    },
     {
         "id": "420429550804140034",
         "displayName": "Technica",
