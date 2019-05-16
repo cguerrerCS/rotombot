@@ -172,3 +172,8 @@ client.on("ready", () => {
             moderatorId = moderatorData.DeusTechnica.id;
         });
 });
+
+client.on('error', (err) => {
+    console.log(err.message)
+});
+
