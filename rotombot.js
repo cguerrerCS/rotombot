@@ -25,17 +25,25 @@ client.registry.registerDefaults();
 client.registry.registerCommandsIn(path.resolve("./commands"));
 
 const CsvReader = require("csv-reader");
-let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 
+let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 let inputRaidBossDataStream = fs.createReadStream("data/Bosses.csv", "utf8");
-let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
 let raidManager = new RaidManager({ logger: console });
 
 let moderatorData = [];
 let moderatorId = undefined;
 
-if (!botConfig.discordToken) {
+if (botConfig.discordToken || process.env.TOKEN) {
+    const token = botConfig.discordToken || process.env.TOKEN;
+    client.login(token).catch((err) => {
+        console.log(`Login failed with ${err} - retrying.`);
+        client.login(token).catch((err) => {
+            throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+        });
+    });
+}
+else {
     let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
     let tokens = {};
 
@@ -61,16 +69,6 @@ if (!botConfig.discordToken) {
             });
         });
 }
-else {
-    const token = botConfig.discordToken;
-    client.login(token).catch((err) => {
-        console.log(`Login failed with ${err} - retrying.`);
-        client.login(token).catch((err) => {
-            throw new Error(`Login failed after retry with ${err}. Terminating.`); 
-        });
-    });
-}
-
 
 function reportError(message, cmd, error, syntax) {
     let output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n*error: " + error + "*\n";
@@ -158,19 +156,25 @@ client.on("ready", () => {
             client.raidManager.setBossData(collection);
         });
 
-    inputModeratorIdStream
-        .pipe(CsvReader({ parseNumbers: false, parseBooleans: true, trim: true, skipHeader: true }))
-        .on("data", function (row) {
-            let modObj = {
-                name: row[0],
-                id: row[1],
-            };
-            moderatorData[modObj.name] = modObj;
-            moderatorData.push(modObj);
-        })
-        .on("end", function () {
-            moderatorId = moderatorData.DeusTechnica.id;
-        });
+    if (process && process.env && process.env.MODERATOR_ID) {
+        moderatorId = process.env.MODERATOR_ID;
+    }
+    else {
+        let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
+        inputModeratorIdStream
+            .pipe(CsvReader({ parseNumbers: false, parseBooleans: true, trim: true, skipHeader: true }))
+            .on("data", function (row) {
+                let modObj = {
+                    name: row[0],
+                    id: row[1],
+                };
+                moderatorData[modObj.name] = modObj;
+                moderatorData.push(modObj);
+            })
+            .on("end", function () {
+                moderatorId = moderatorData.DeusTechnica.id;
+            });
+    }
 });
 
 client.on("error", (err) => {
