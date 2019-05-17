@@ -8,6 +8,7 @@ const ConfigManager = require("./lib/configManager");
 const HookManager = require("./lib/hookManager");
 const RaidChannel = require("./lib/raidChannel");
 const Utils = require("./lib/utils");
+const Service = require("./lib/service");
 
 const { CommandoClient } = require("discord.js-commando");
 const botConfig = getBot();
@@ -39,7 +40,7 @@ if (botConfig.discordToken || process.env.TOKEN) {
     client.login(token).catch((err) => {
         console.log(`Login failed with ${err} - retrying.`);
         client.login(token).catch((err) => {
-            throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+            throw new Error(`Login failed after retry with ${err}. Terminating.`);
         });
     });
 }
@@ -64,7 +65,7 @@ else {
             client.login(token).catch((err) => {
                 console.log(`Login failed with ${err} - retrying.`);
                 client.login(token).catch((err) => {
-                    throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+                    throw new Error(`Login failed after retry with ${err}. Terminating.`);
                 });
             });
         });
@@ -94,6 +95,15 @@ function getBot() {
 
 function getModeratorId() {
     return moderatorId;
+}
+
+var service = null;
+function startService() {
+    if (!service) {
+        service = new Service(3000);
+        service.start();
+    }
+    return service;
 }
 
 function addRaidChannels() {
@@ -175,6 +185,8 @@ client.on("ready", () => {
                 moderatorId = moderatorData.DeusTechnica.id;
             });
     }
+
+    startService();
 });
 
 client.on("error", (err) => {
