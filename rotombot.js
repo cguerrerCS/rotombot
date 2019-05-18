@@ -27,9 +27,6 @@ client.registry.registerCommandsIn(path.resolve("./commands"));
 
 const CsvReader = require("csv-reader");
 
-let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
-let inputRaidBossDataStream = fs.createReadStream("data/Bosses.csv", "utf8");
-
 let raidManager = new RaidManager({ logger: console });
 
 let moderatorData = [];
@@ -150,8 +147,7 @@ client.on("ready", () => {
 
     addRaidChannels();
 
-    client.raidManager.initGymDataAsync(inputRaidDataStream);
-    client.raidManager.initBossDataAsync(inputRaidBossDataStream);
+    client.raidManager.initDataAsync();
 
     if (process && process.env && process.env.MODERATOR_ID) {
         moderatorId = process.env.MODERATOR_ID;
