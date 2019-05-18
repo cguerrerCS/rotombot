@@ -151,20 +151,7 @@ client.on("ready", () => {
     addRaidChannels();
 
     client.raidManager.initGymDataAsync(inputRaidDataStream);
-
-    Utils.processCsvAsync(inputRaidBossDataStream,
-        (row) => {
-            return {
-                name: row[0],
-                id: row[1],
-                tier: row[2],
-                image: row[3],
-                status: row[4],
-            };
-        },
-        (collection) => {
-            client.raidManager.setBossData(collection);
-        });
+    client.raidManager.initBossDataAsync(inputRaidBossDataStream);
 
     if (process && process.env && process.env.MODERATOR_ID) {
         moderatorId = process.env.MODERATOR_ID;
