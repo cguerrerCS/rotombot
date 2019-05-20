@@ -3,6 +3,8 @@
 node_modules/
 state/
 BotToken.csv
+DevTokens.csv
+ProdTokens.csv
 ModeratorId.csv
 .nyc_output/
 coverage/
