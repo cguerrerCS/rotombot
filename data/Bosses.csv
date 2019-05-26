@@ -82,6 +82,8 @@ Lunatone,337,Tier 3,t3.png,active
 Solrock,338,Tier 3,t3.png,active
 Crawdaunt,342,Tier 3,t3.png,active
 Claydol,344,Tier 3,t3.png,active
+Floatzel,419,Tier 3,t3.png,active
+Chansey,113,Tier 3,t3.png,active
 Sandslash,28,Tier 2,t2.png,active
 Venomoth,49,Tier 2,t2.png,active
 Primeape,57,Tier 2,t2.png,active
@@ -115,6 +117,9 @@ Mawile,303,Tier 2,t2.png,active
 Manectric,310,Tier 2,t2.png,active
 Roselia,315,Tier 2,t2.png,active
 Combee,415,Tier 2,t2.png,active
+Bibarel,400,Tier 2,t2.png,active
+Clamperl,366,Tier 2,t2.png,active
+Feebas,349,Tier 2,t2.png,active
 Bulbasaur,1,Tier 1,t1.png,active
 Ivysaur,2,Tier 1,t1.png,active
 Charmander,4,Tier 1,t1.png,active
@@ -153,7 +158,6 @@ Cacnea,331,Tier 1,t1.png,active
 Swablu,333,Tier 1,t1.png,active
 Lileep,345,Tier 1,t1.png,active
 Anorith,347,Tier 1,t1.png,active
-Feebas,349,Tier 1,t1.png,active
 Shuppet,353,Tier 1,t1.png,active
 Duskull,355,Tier 1,t1.png,active
 Bagon,371,Tier 1,t1.png,active
@@ -164,3 +168,6 @@ Buizel,418,Tier 1,t1.png,active
 Drifloon,425,Tier 1,t1.png,active
 Buneary,427,Tier 1,t1.png,active
 Skorupi,451,Tier 1,t1.png,active
+Machop,66,Tier 1,t1.png,active
+Bronzor,436,Tier 1,t1.png,active
+Slakoth,287,Tier 1,t1.png,active
