@@ -1,5 +1,5 @@
 external_id,Zones,City,Official Name,Friendly Name,Longitude,Latitude,ExStatus
-07891354174b444eaaa16d994b18ba04.16,Rain City,Bellevue,128th Ave Trail Marker,128th Ave Trail Marker,-122.169556,47.60731,NonEx
+07891354174b444eaaa16d994b18ba04.16,Rain City,Bellevue,128th Ave Trail Marker,128th Ave Trail Marker,-122.169556,47.60731,ExEligible
 ccf01118878f46f993283160e4b76a51.16,Rain City|DowntownBellevueDiscord,Bellevue,Ballet Arts Center,Ballet Arts Center,-122.206655,47.612126,ExEligible
 83d756f41c724d60af1750cba0daeaa0.16,Rain City,Bellevue,Barbara Jean Soreano Memorial Bench,Barbara Jean Soreano Memorial Bench,-122.201002,47.635549,NonEx
 a4cc26e2b5664157a7c9204d4fec86ea.12,Rain City|DowntownBellevueDiscord,Bellevue,Bellevue Arts Museum,BAM,-122.201434,47.615275,NonEx
@@ -9,6 +9,7 @@ b0982572908b45e996ab9c82228f5c75.16,Rain City|ShaperCarin,Bellevue,Bellevue Club
 145d4931704f482ea10dda11d23ae551.12,Rain City|ShaperCarin,Bellevue,Bellevue Fire Station 7,Bellevue Fire Station 7,-122.181342,47.60379,NonEx
 0e84055a3d044530979a655cedf4601b.16,Rain City|ShaperCarin,Bellevue,Bellevue Fountain,Bellevue Fountain,-122.188308,47.606559,NonEx
 2bf8ea2c6f9448f991ca9554282a3926.12,Rain City|DowntownBellevueDiscord,Bellevue,Bellevue Post Office,Bellevue Post Office,-122.202168,47.620532,NonEx
+N/A,Rain City|DowntownBellevueDiscord,Bellevue,Bellevue Square Clock Tower,Bellevue Square Clock Tower,-122.20142,47.615674,NonEx
 473b4a4a5e6c406b91838dd003d5a522.11,Rain City|DowntownBellevueDiscord,Bellevue,Bellevue Symetra Fountain,Bellevue Symetra Fountain,-122.196717,47.617198,NonEx
 3ea9c48190c24162b215cd2c69517d86.11,Rain City|DowntownBellevueDiscord,Bellevue,Bellevue Transit Center,Bellevue Transit Center,-122.193964,47.615491,NonEx
 2656bcadd5c947c88b5425b871060311.16,Rain City,Bellevue,Bellewood Presbyterian Church,Bellewood Presbyterian Church,-122.193937,47.631615,NonEx
@@ -33,9 +34,8 @@ b589420bbb2e43e9a99120e55777d0bb.11,Rain City|DowntownBellevueDiscord,Bellevue,F
 38309184963a4197a18ccd2ebb76683a.11,Rain City|DowntownBellevueDiscord,Bellevue,Gandhi Statue,Ghandi,-122.194651,47.619644,NonEx
 fc28e74516d744e08027be23c1b0203d.16,Rain City,Bellevue,Gnome,Gnome,-122.204325,47.604371,NonEx
 fa32aebd698bd0de48e27ce9872bf3b9,Rain City|DowntownBellevueDiscord,Bellevue,Grace Lutheran Church,Grace Lutheran Church,-122.211359,47.617134,NonEx
-56289f6c63c84f8f92593e5dd747a934.16,Rain City|DowntownBellevueDiscord,Bellevue,Hear Taste See Smell Feel,Hear Taste See Smell Feel,-122.207066,47.612788,NonEx
 51f7dd5c72f84389a7bd4b87b697c473.16,Rain City,Bellevue,Hidden Valley Sports Park,Hidden Valley Sports Park,-122.191121,47.627332,NonEx
-9a5d021243594ed09ef50c472bd1c1c0.16,Rain City,Bellevue,Impossible Balancing Rocks,Impossible Balancing Rocks,-122.18029,47.608848,NonEx
+9a5d021243594ed09ef50c472bd1c1c0.16,Rain City,Bellevue,Impossible Balancing Rocks,Impossible Balancing Rocks,-122.18029,47.608848,ExEligible
 114472b4c71d45cd8a01445da3c96558.16,Rain City,Bellevue,In Memory of Freeman Fike,In Memory of Freeman Fike,-122.213869,47.630102,NonEx
 7ed3fd90b92b416991b14f6dd0aa2ee5.16,Rain City,Bellevue,Indian Trail,Indian Trail,-122.237337,47.632054,NonEx
 d1096654d7d2773e4a719489842a1dd6,Rain City,Bellevue,KA-BOOM,KA-BOOM,-122.173486,47.620044,NonEx
@@ -56,19 +56,20 @@ f80f820f81fd4bb0bb6bef9378995349.16,Rain City,Bellevue,Mercer Slough Nature Park
 8f8e7dc04a89422ea6d272db4da76858.16,Rain City,Bellevue,NE 8th Art Wall: Easton Court,NE 8th Art Wall: Easton Court,-122.156061,47.616998,NonEx
 524446c2a0fc4107865eeb71dc636e9e.16,Rain City|DowntownBellevueDiscord,Bellevue,North Bravern Fountain,North Bravern Fountain,-122.192259,47.617023,NonEx
 a41ffda26f4e41c598b921b606a4e37b.16,Rain City,Bellevue,PACCAR Donation Bench,PACCAR Donation Bench,-122.17795,47.607243,NonEx
+N/A,Rain City|DowntownBellevueDiscord,Bellevue,Ping Pong Table,Ping Pong Table,-122.196859,47.614393,NonEx
 f905b02b210f475c996e8f89a0921df7.16,Rain City,Bellevue,Points Loop Trail (Clyde Hill Elementary),Points Loop Trail (Clyde Hill Elementary),-122.20997,47.631847,NonEx
 cbf526fa540144f39596531071453686.16,Rain City,Bellevue,Points Loop Trail (OGCC),Points Loop Trail (OGCC),-122.233263,47.623857,NonEx
 22c0a9fa4054423e988ab1201d2ce758.16,Rain City,Bellevue,Points Loop Trail Marker,Points Loop Trail Marker,-122.22666,47.636662,NonEx
+N/A,Rain City|DowntownBellevueDiscord,Bellevue,Rods of Damocles,Rods of Damocles,-122.201556,47.61419,NonEx
 ac896df8e0f349edab27527e4114f7a1.16,Rain City,Bellevue,Sacred Heart Church,Sacred Heart Church,-122.212668,47.62344,NonEx
 05fb9d43ba9d43288c3c3b33d08dff44.16,Rain City,Bellevue,Salmon Sculpture,Salmon Sculpture,-122.210194,47.600078,NonEx
 de2b91b18f9744609b992624a3362aa8.16,Rain City,Bellevue,Satellite Antenna,Satellite Antenna,-122.170642,47.628635,NonEx
 49ce0813f58a381f97cc8e616adc9ab1,Rain City,Bellevue,Sculpted Stump,Sculpted Stump,-122.173419,47.619725,NonEx
-4a305c90570a4227bb75243bd57c07f5.16,Rain City|DowntownBellevueDiscord,Bellevue,Shepherd II,Shep,-122.204403,47.611802,NonEx
 ec01d16d3407432183e5eb90847c1ff5.16,Rain City,Bellevue,Splashing Stones,Splashing Stones,-122.190407,47.629084,NonEx
 770294ed5a09f8cab68bc466e6e166d2,Rain City,Bellevue,SR520: Ecology And The Environment,SR520: Ecology And The Environment,-122.253746,47.640198,NonEx
 29962141344641c79da69d0bffcfd208.16,Rain City,Bellevue,St. Thomas Church,St. Thomas Church,-122.228739,47.621304,NonEx
 f7794ef9b6fe44c5b99165b39081d51c.16,Rain City|DowntownBellevueDiscord,Bellevue,Stainless Stele No.1,Stainless Stele No.1,-122.194246,47.613153,NonEx
-9f24fec413adf6506081296abb12cc13,Rain City|DowntownBellevueDiscord,Bellevue,Starbucks (Bellevue),Bellevue Starbucks,-122.19653,47.615948,ExEligible
+9f24fec413adf6506081296abb12cc13,Rain City|DowntownBellevueDiscord,Bellevue,Starbucks (Bellevue),Bellevue Starbucks,-122.19653,47.615948,NonEx
 27820d7b93b8615db9b0412c2fa84a4f,Rain City,Bellevue,Starbucks (Evergreen Village),Evergreen Village Starbucks|Ezell's Starbucks,-122.15459,47.624992,ExEligible
 ec70a7bfabc848e9b174a9965f195474.16,Rain City,Bellevue,Stories of Autism,Stories of Autism,-122.166247,47.629091,NonEx
 ffab3139a97748488f4755690f4eee9d.16,Rain City|DowntownBellevueDiscord|ShaperCarin,Bellevue,Surrey Downs,Surrey Downs,-122.193985,47.60989,NonEx
@@ -78,12 +79,15 @@ ffab3139a97748488f4755690f4eee9d.16,Rain City|DowntownBellevueDiscord|ShaperCari
 da157577aee04f22afcd1b90e7ed2b0f.16,Rain City,Bellevue,The Lake's Receding Shoreline,The Lake's Receding Shoreline,-122.183582,47.59197,NonEx
 fb5d6e89eda641ca8fa2529f04d0d21b.16,Rain City|DowntownBellevueDiscord,Bellevue,The Pumphouse,The Pumphouse,-122.183215,47.61773,NonEx
 971b63dc6b4e450a93fbe1dfbbe987fa.16,Rain City,Bellevue,The Ravine Bridge,The Ravine Bridge,-122.177582,47.606359,NonEx
+N/A,Rain City|DowntownBellevueDiscord,Bellevue,Three Metal Pillars,Three Metal Pillars,-122.211021,47.612313,NonEx
 4240136cb010480f9b305d2708803529.16,Rain City|ShaperCarin,Bellevue,Water is Life,Water is Life,-122.183693,47.595985,NonEx
 f9174f1acad84c0eb0db797fbced539c.16,Rain City|DowntownBellevueDiscord,Bellevue,"Water, Precious Water",WPW,-122.202586,47.612224,ExEligible
 59143fdc3aba4bcdad4086a8796dd481.16,Rain City,Bellevue,Wilburton Hill Park Entrance,Wilburton Hill Park Entrance,-122.174781,47.60998,NonEx
 270c65c259094a83baac1becdced6c2d.16,Rain City|ShaperCarin,Bellevue,Wilburton Trestle,Wilburton Trestle,-122.180643,47.601974,NonEx
 1f71035d9a7b4595974d020ae9760442.16,Rain City,Bellevue,Windsong,Windsong,-122.231494,47.620546,NonEx
 aa80226cd02248bf92bcd1fb2afb7c7f.12,Rain City,Bellevue,Winters House,Winters House,-122.193236,47.591551,NonEx
+N/A,Rain City,Bellevue,Valley Creek,Valley Creek,-122.152527,47.631688,NonEx
+N/A,Rain City,Bellevue,Tam O Shanter Golf and Country Club,Tam O Shanter Golf and Country Club,-122.098968,47.621517,NonEx
 e52a272154434fdc8f37e0fc4c8bcaf3.16,Rain City,Bridle Trails,Bridle Crest Trail,Bridle Crest Trail,-122.16393,47.660711,NonEx
 642210ef72f14fdd9819a31493d0e5df.16,Rain City,Bridle Trails,Bridle Crest Trail Sign,Westside Park,-122.132498,47.659676,NonEx
 24f6c9641a3942fcb85e772d5629ac43.16,Rain City,Bridle Trails,Bridle Trails,Bridle Trails,-122.185234,47.655404,NonEx
@@ -100,9 +104,10 @@ c054e2c292534001ac1ac5b78dc07cd3.16,Rain City,Bridle Trails,Good and Bad Stand,G
 9cc37a4ad86c4d14bca736e3d3cec67e.16,Rain City,Bridle Trails,Horse Show Arena,Horse Show Arena,-122.184697,47.655977,NonEx
 8277025711744a4fa07d5e58e4d40a84.16,Rain City,Bridle Trails,Lake East Christian Church,Lake East Christian Church,-122.185738,47.654849,NonEx
 22a4de162f2247ff823b23c8c773863e.16,Rain City,Bridle Trails,Pike's Peak,Pike's Peak,-122.179197,47.633299,NonEx
+pogomap249933,Rain City,Belevue,Eastside Medical Center Fountain,Eastside Medical Center Fountain,-122.18517,47.628832,NonEx
 a33086ea8bc94f58990a1bfd40b007e7.16,Rain City,Bridle Trails,"Second Church of Christ, Scientist, Bellevue, WA","Second Church of Christ, Scientist, Bellevue, WA",-122.155477,47.629974,NonEx
 94e8b40179344aed805d30c1c5b535f6.16,Rain City,Bridle Trails,Trillium Trail Dedication Plaque,Trillium Trail Dedication Plaque,-122.182763,47.654776,ExEligible
-84dcf06bea38a360f2f79b63bdfb6163,Rain City,Bridle Trails,Westminster "W",Westminster "W",-122.157325,47.632738,NonEx
+84dcf06bea38a360f2f79b63bdfb6163,Rain City,Bridle Trails,"Westminster ""W""","Westminster ""W""",-122.157325,47.632738,NonEx
 68dd6173e351a42aeefdcd19f98c89a8,Rain City,Crossroads,Bellevue Masonic Center's Plaque,Bellevue Masonic Center,-122.122578,47.624449,NonEx
 2fde9406db8c466f894b7ca7cb3179b0.16,Rain City,Crossroads,Bellevue Youth Theatre,Bellevue Youth Theatre,-122.116785,47.62277,NonEx
 21299b950d0a4eeda9d6efbcff80ec26.16,Rain City,Crossroads,Calvary Lutheran Church,Calvary Lutheran Church,-122.122409,47.614881,NonEx
@@ -115,6 +120,9 @@ ae2058b11dad4ea18b0a96a3ca94debc.16,Rain City,Crossroads,Hilaire Park,Hilaire Pa
 65b4098fd9334d208deafad0f92a8794.16,Rain City,Crossroads,P. George Brown Memorial Bench,Hilaire Park (Bench),-122.128187,47.614595,ExEligible
 0f3d21aca50b4560b58128d3af7b1cf8.16,Rain City,Crossroads,The Salvation Army,Xroads (Salvation Army),-122.122246,47.618808,NonEx
 726674aa8ec5455898990462014d286c.16,Rain City,Crossroads,Woodland Mural,Xroads (Woodland Mural),-122.129903,47.619303,NonEx
+N/A,Rain City,Crossroads,Power Shell Youth Theater,Power Shell Youth Theater,-122.12669,47.618804,ExEligible
+N/A,Rain City,Crossroads,SushiMe Wallflowers,SushiMe Wallflowers,-122.132688,47.621403,NonEx
+N/A,Rain City,Crossroads,NE 8th Art Tiles: 153rd Ave,NE 8th Art Tiles: 153rd Ave,-122.136086,47.616955,NonEx
 4130766f9c224c3baedad9166aa0452d.16,Downtown Seattle,Denny Triangle,Cornish Spire of Light,Cornish,-122.334516,47.617861,NonEx
 9fa55472d0f749e0937ffa7befb27fab.11,Downtown Seattle,Denny Triangle,Globe Sculpture,Globe,-122.333498,47.612769,NonEx
 beffd34f60f34ce7bae49731a1d0607a.16,Downtown Seattle,Denny Triangle,Not All Who Wander Are Lost - To Do Is To Be,Not All Who Wander,-122.331099,47.618431,NonEx
@@ -124,9 +132,37 @@ d65a638577cfd7cc8ba61d0507955fd6,Downtown Seattle,Denny Triangle,Starbucks (7th 
 ff8a13a80228495c8e849f626a592155.16,Downtown Seattle,Denny Triangle,The Spiral,Spiral,-122.335601,47.615502,NonEx
 d1fe358c1ead4238969604dee2fec89a.11,Downtown Seattle,Downtown,5th Avenue Theater,Fifth Avenue Theater,-122.333912,47.609025,NonEx
 d9853dbd99f1cfe5d358370b5454579e,Downtown Seattle,Downtown,Find Shiny Deals at Sprint,Sprint (3rd avenue),-122.338574,47.610284,ExEligible
-1c4d4162ae73473f8c8c0c55c2651809.16,Downtown Seattle,Capitol Hill,Charbern,Charbern,-122.3245720,47.616570,NonEx
-bbf0613cfa1f430a95eeea6b688c1147.11,Downtown Seattle,Capitol Hill,Bauhaus Coffee Mural,Bauhaus Coffee Mural,-122.3261350,47.615328,NonEx
-6e134d603644488281c44d4be2d802e9.16,Downtown Seattle,Capitol Hill,Sun Liquor Distillery,Sun Liquor,-122.3250290,47.614198,NonEx
+1c4d4162ae73473f8c8c0c55c2651809.16,Downtown Seattle,Capitol Hill,Charbern,Charbern,-122.324572,47.61657,NonEx
+bbf0613cfa1f430a95eeea6b688c1147.11,Downtown Seattle,Capitol Hill,Bauhaus Coffee Mural,Bauhaus Coffee Mural,-122.326135,47.615328,NonEx
+6e134d603644488281c44d4be2d802e9.16,Downtown Seattle,Capitol Hill,Sun Liquor Distillery,Sun Liquor,-122.325029,47.614198,NonEx
+ed43c7fba3498de92a868a8c8049edfe,Downtown Seattle,South Lake Union,Chess Boss,Chess Boss,-122.331264,47.622654,NonEx
+89446d61d981420b6ae6bfc91e9d5f47,Downtown Seattle,South Lake Union,Amli Pillar,Amli Pillar,-122.331104,47.623197,NonEx
+faaf531b77fd45e8981e71651aea7b0a.11,Downtown Seattle,South Lake Union,Pig Statue,Pig Statue,122.338647,47.62213,NonEx
+865ba577b0d749c7bb6f7a6ee66b71bc.11,Downtown Seattle,South Lake Union,Cabin Corners,Cabin Corners,-122.335624,47.623358,NonEx
+5b533a208178427e932bc35c92fe7769.11,Downtown Seattle,South Lake Union,The Cubic Column of North and South,Cubic Column,-122.335755,47.624641,NonEx
+532ad83836e7402c86c72a1ce14861b3.16,Downtown Seattle,South Lake Union,Electric,Electric,-122.338311,47.624866,NonEx
+e55bfd3db2da4abd912c721cf4810dad.16,Downtown Seattle,South Lake Union,Mohai Street Clock,Mohai Street Clock,-122.337041,47.627895,NonEx
+5b418d8180ba45ca9e3d7247d9e719fa.16,Downtown Seattle,South Lake Union,Urban Flower Bench,Flower Bench,-122.333413,47.625923,NonEx
+14c570a241ba4d17a1cc15f5e28a08cc.11,Downtown Seattle,South Lake Union,Fred Hutchinson Cancer Research,Fred Hutchinson,-122.330896,47.627655,NonEx
+a6ad673cdfbf43b7aea02bbd053822c9.16,Downtown Seattle,South Lake Union,Belkin Presents Bus Stop Mural,Belkin Presents,-122.340374,47.616909,NonEx
+41f2f4e2aa2f446c9230e2f3198f3c33.11,Downtown Seattle,Belltown,Pink Elephant Car Wash,Pink Elephant,-122.343426,47.618402,NonEx
+6b3756984ab44b08b263068d0966e333.16,Downtown Seattle,Belltown,Popsicle,Popsicle,-122.342542,47.614448,NonEx
+3526383c25fe4380b9a3c87bc3853f4d.11,Downtown Seattle,Belltown,Gyro Jack,Gyro Jack,-122.344824,47.614505,NonEx
+dab7fc7b80144f3b88e696d8c96dfa9b.16,Downtown Seattle,Belltown,Vain Mural,Vain Mural,-122.343107,47.611588,NonEx
+afa81b8c3c18793973f463f41438d7fd,Downtown Seattle,Pike Place,Starbucks First Store,Starbucks First Store|First Starbucks,-122.342659,47.610003,NonEx
+b8f7dfb54a93d4345ca3990acea319de,Downtown Seattle,Pike Place,Bubblegum Wall,Bubblegum Wall|Bubble Gum Wall,-122.340306,47.608286,NonEx
+9dbac39858f141efb1f8121c68d44a2a.16,Downtown Seattle,Capitol Hill,Bike Park Stone Guardians,Bike Park Stone Guardians,-122.322528,47.635334,NonEx
+88454898ba21441a8a1d18991d86e7c0.16,Downtown Seattle,Capitol Hill,Melrose Weather Vane,Melrose Weather Vane,-122.327811,47.624445,NonEx
+82574e18b98c46e78252f4723510d2e8.16,Downtown Seattle,Capitol Hill,The Lookout,Lookout,-122.326754,47.626777,NonEx
+0252cb4effe341f589ab065bbef40bc6.16,Downtown Seattle,Capitol Hill,In Honor of James W Ray,James Ray,-122.320985,47.634916,NonEx
+f9826ae5b64c41199786f6b26cb27075.16,Downtown Seattle,Capitol Hill,St Marks Episcopal Cathedral,St Marks|St Marks Episcopal,-122.321118,47.631913,NonEx
+e52121f9261f4fdfb0eea9539d86ead5.16,Downtown Seattle,Roanoke Park,Roanoke Park Place,Roanoke Park Place,-122.320158,47.641662,NonEx
+d4bd7034ce944dfbbc5934feee8866b1.16,Downtown Seattle,Roanoke Park,Roanoke Park,Roanoke Park,-122.320408,47.643258,NonEx
+1976fb187b4344dea7d2b1eb060bf4cc.16,Downtown Seattle,Roanoke Park,The Geographic Center of Seattle,Geographic Center,-122.320219,47.643935,NonEx
+f4eaab080b6b475387273afff0a0b121.16,Downtown Seattle,Roanoke Park,Interlocking Piece Sculpture,Interlocking Piece Sculpture,-122.320193,47.638791,NonEx
+1a4244dfe8f947e6863c2542613262a7.16,Downtown Seattle,Roanoke Park,#25 Bus Shelter on Lakeview Blvd,25 Bus Shelter on Lakeview Blvd|Bus Shelter,-122.324501,47.630882,NonEx
+1fa7f22ffce8423b8ff2443fcf2abc2e.16,Downtown Seattle,Eastlake,I-5 Colonade,I-5 Colonade,-122.324417,47.633601,NonEx
+3b7414e358bb4e59be297d64ba70a6f4.16,Downtown Seattle,Eastlake,Rogers Playfield,Rogers Field,-122.324995,47.642765,NonEx
 9d16290511cd4b27a76e203ea51aad7b.16,Rain City,Kenmore,Church of the Redeemer Episcopal,Church of the Redeemer Episcopal,-122.259747,47.760154,NonEx
 23dd4ba7f6364b48b8b84f46a54bdcc0.16,Rain City,Kenmore,Crocodile Rocks Statue,Crocodile Rocks Statue,-122.247674,47.757794,NonEx
 91bc3dd5fc914f0288905c3210d655f6.16,Rain City,Kenmore,Glow Tubes on Bothell Way,Glow Tubes on Bothell Way,-122.249959,47.75856,NonEx
@@ -155,9 +191,9 @@ f19bd389bf1d43f5b5ea3269a3fc8b74.16,Rain City,Kirkland,Northwest University Sign
 5343201f502d4ec6b750f83e5c6f0de1.12,Rain City,Kirkland,Carillon Bells,Carillon Bells,-122.207349,47.656588,NonEx
 028da7e4551d4942a18dc9dfd2e41dc2.11,Rain City,Kirkland,Glassinator - Andrew Carson,Glassinator - Andrew Carson,-122.207489,47.65752,NonEx
 9b4eed41df6a415db2ea923bcc7da7fe.16,Rain City,Kirkland,Nautilus By Ulrich Pakker,Nautilus By Ulrich Pakker,-122.207121,47.658013,NonEx
-d2920236a27c42afaa007c3f746ae081.12,Rain City,Kirkland,Houghton Beach Park - "Spring",Houghton Beach Park - "Spring",-122.206802,47.66092,NonEx
+d2920236a27c42afaa007c3f746ae081.12,Rain City,Kirkland,"Houghton Beach Park - ""Spring""","Houghton Beach Park - ""Spring""",-122.206802,47.66092,NonEx
 91cd1afaff8a44be8a22264fd48a76ed.16,Rain City,Kirkland,Cherub Fountain,Cherub Fountain,-122.207265,47.663221,NonEx
-946eca3c2d344e88943b81a08a88d8db.12,Rain City,Kirkland,Marsh Park - "Leap Frog" Bronz,Marsh Park - "Leap Frog" Bronz,-122.207234,47.665129,NonEx
+946eca3c2d344e88943b81a08a88d8db.12,Rain City,Kirkland,"Marsh Park - ""Leap Frog"" Bronz","Marsh Park - ""Leap Frog"" Bronz",-122.207234,47.665129,NonEx
 0d81178129324b0097e040d1f4088e51.16,Rain City,Kirkland,Loretta Lenard Memorial,Loretta Lenard Memorial,-122.207611,47.665643,NonEx
 a8f969b8111381ba1ff44460828d2801,Rain City,Kirkland,Houghton Through the Years,Houghton Through the Years,-122.19643,47.665882,NonEx
 78d881aea3b74e2ca1efc927b3db0b0f.16,Rain City,Kirkland,Moss Bay Neighborhood,Moss Bay Neighborhood,-122.201773,47.666936,NonEx
@@ -214,7 +250,7 @@ aa1874b5db9d4376956568872195c156.16,Rain City,Kirkland,Juanita Creek,Juanita Cre
 8e5993ee1926fd98036206aed5695d07,Rain City,Kirkland,Starbucks (Juanita),Juanita Village Starbucks,-122.2117863,47.706651,ExEligible
 bb68684e32a74b1dbce42e63fd5b91b9.12,Rain City,Kirkland,Kelp Bronze Sculpture,Kelp Bronze Sculpture,-122.211669,47.70701,NonEx
 c660b59779c4434390e2ad38e0b81dce.16,Rain City,Kirkland,Safe Walking Tips,Safe Walking Tips,-122.203359,47.711549,ExEligible
-27f6cf38c02f42e19478c095fd0763ee.16,Rain City,Lake Hills,"The Dogs Know" Amelia Gray Memorial Bench,Robinswood Park (Bench),-122.138615,47.587637,ExEligible
+27f6cf38c02f42e19478c095fd0763ee.16,Rain City,Lake Hills,The Dogs Know Amelia Gray Memorial Bench,Robinswood Park (Bench),-122.138615,47.587637,ExEligible
 e6894b7125334178865aa18b46785687.11,Rain City,Lake Hills,Balance of Order,Balance of Order,-122.152227,47.580375,NonEx
 15ecca81b3834f2b8b681de1eb2deda9.11,Rain City,Lake Hills,Bellevue College Fountain,Bellevue College Fountain,-122.149515,47.584392,NonEx
 54779cef9691473f97c945aef9092c5f.11,Rain City,Lake Hills,Bellevue Demonstration Garden,Bellevue Demonstration Garden,-122.133281,47.597158,ExEligible
@@ -327,19 +363,20 @@ c8dad8ec9964448998914b2c194938c3.16,Rain City,Overlake,TWC - Stone Columns,Micro
 b625d49b364f0155b75e2e11136e18b5,Rain City,Redmond,Anderson Park,Anderson Park,-122.116119,47.67374,NonEx
 7d87fd5a00064242b64bfd2563e26c15.16,Rain City,Redmond,Ashford Park Gazebo,Ashford Park Gazebo,-122.100218,47.682791,NonEx
 2aeb7568e5064560a1b3079efca7bde8.11,Rain City,Redmond,Bear Creek Crossing,Redmond Panera,-122.110648,47.671026,NonEx
-5814435bf76d4a4eae3815b2536eb08c.16,Rain City,Redmond,Bear Creek Water Tower,Bear Creek Water Tower,-122.103674,47.687974,NonEx
+5814435bf76d4a4eae3815b2536eb08c.16,Rain City,Redmond,Bear Creek Water Tower,Bear Creek Water Tower|Watertower|Water Tower,-122.103674,47.687974,NonEx
 c2f1e99aa7ac4becbdd15d58f5374574.16,Rain City,Redmond,Bicycle Bike Rack,Redmond 7-11,-122.130934,47.669839,NonEx
 3ed00d88b02f485e9e517093ffb8fcc0.16,Rain City,Redmond,Big Red Ball,Redmond Target,-122.104056,47.672208,NonEx
 c434b54d176647eba4c8cb53a0748ff6.16,Rain City,Redmond,Bird on a Boat,Redmond PCC,-122.0933,47.701848,NonEx
 f7c305833fb143f4beeba3550f48c527.16,Rain City,Redmond,BJ's Brewmural,BJs Brewhouse,-122.119748,47.668914,NonEx
 890092103ca740499435447f2ba9df88.11,Rain City,Redmond,Black Raven Brewing Co.,Black Raven,-122.14461,47.685628,NonEx
+N/A,Rain City,Redmond,Brooke Jillyann Bennette Park,Brooke Jillyann Bennette Park,-122.1129375,47.7065777,NonEx
 5aaccc40120c4ed2a1399b5012c95945.16,Rain City,Redmond,Charlotte's Trailhead,Farrell McWhirter Park (Trail),-122.08074,47.693287,NonEx
 3a3ceb8dc99040f6818b3099b3d25812.16,Rain City,Redmond,Cleveland Fountain,Cleveland Fountain,-122.125595,47.673667,NonEx
 305873ab0f934cf18a5b515afb77950b.16,Rain City,Redmond,Community Rockstars,Community Rockstars,-122.132734,47.683612,NonEx
-e14eb1bb30144d6894168d74929ef33e.16,Rain City,Redmond,Connor "Boy" Reed Memorial Bench,Farrell McWhirter Park (Bench),-122.079746,47.694365,NonEx
+e14eb1bb30144d6894168d74929ef33e.16,Rain City,Redmond,"Connor ""Boy"" Reed Memorial Bench",Farrell McWhirter Park (Bench),-122.079746,47.694365,NonEx
 89407c4c53634a9590ef37cf388e60ab.16,Rain City,Redmond,Digipen Institute of Technology,Digipen,-122.150289,47.688851,NonEx
 d7de722104134e37b742f92ddf7a340c.16,Rain City,Redmond,Dog Watch Bridge,Marymoor (Dog Watch Bridge),-122.115464,47.658598,NonEx
-144765a6981973364845e6b95203c514,Rain City,Redmond,Education Hill Pig,Education Hill Pig,-122.111546,47.674945,NonEx
+144765a6981973364845e6b95203c514,Rain City,Redmond,Bear Creek Trail and Greenway,New Education Hill Pig,-122.109134,47.673594,ExEligible
 3d2eb6cf7c69e38199814d583884faab,Rain City,Redmond,Find shiny deals at Sprint,Redmond Sprint,-122.114047,47.670882,ExEligible
 2b791ce4f3ea6da18c01b098a4220766,Rain City,Redmond,Flying Saucer Pizza,Flying Saucer Pizza,-122.1442979,47.683467,NonEx
 a439b83c1903409287c16e61be49d6b2.16,Rain City,Redmond,Fountain Fish,Millennium Campus,-122.093758,47.677081,NonEx
@@ -348,7 +385,7 @@ b4d95a493bd04e58a6c6554971b07fd0.16,Rain City,Redmond,Gridlock Light Sculpture,G
 6a33b52fff8a4f0eb392343a761df7e3.16,Rain City,Redmond,Hartman Park,Hartman Park Sign,-122.110177,47.691002,ExEligible
 a140b3ebf51d4776a950541f8932c68c.16,Rain City,Redmond,Have You Seen My Baseball?,Marymoor (Baseball Fields),-122.12451,47.664054,NonEx
 e5dcefb42a384df7881f2e4494c7aa7e.11,Rain City,Redmond,Hunting Fox,City Hall,-122.13052,47.67892,NonEx
-318664e9de374b65b041311087368bc2.16,Rain City,Redmond,Jennifer Dunn Memorial Flagpole and Garden,Jennifer Dunn Memorial Flagpole and Garden,-122.142046,47.70443,NonEx
+318664e9de374b65b041311087368bc2.16,Rain City,Redmond,Jennifer Dunn Memorial Flagpole and Garden,Jennifer Dunn Memorial Flagpole and Garden,-122.142046,47.70443,ExEligible
 bd051691116c4fe8837693ba31529163.16,Rain City,Redmond,Jim Palmquist Memorial Plaque,Hartman Park (Baseball),-122.107328,47.692436,ExEligible
 ea197d2a49df492fb232a903f944438c.16,Rain City,Redmond,Josh Dowell Memorial Bench,Marymoor (Josh Dowell Memorial),-122.11084,47.658938,NonEx
 b70d3d5f022e4029bd215f7dec1dbcca.16,Rain City,Redmond,Juel Park,Juel Park (Entrance),-122.089278,47.702702,NonEx
@@ -357,7 +394,7 @@ b4757dc0af8b3f3abcf7ba03a12bfad8,Rain City,Redmond,Kids Playing Baseball Mural,M
 c73eb00cf09544ba8de4cd1d7fcb4369.16,Rain City,Redmond,Leaf Inlay in Sidewalk,Leaf Inlay,-122.114435,47.689362,NonEx
 d38924fc05f649cd923bdecc6afffdbe.12,Rain City,Redmond,Luke McRedmond's Paired Beavers,Luke McRedmond,-122.13216,47.67325,NonEx
 b11410b368a94e128af7e2d2e04f4bf1.16,Rain City,Redmond,Marymoor Park,Marymoor (Entrance),-122.125947,47.662058,NonEx
-752c039f897b4e28bd2eab5b6c4dfdea.16,Rain City,Redmond,Marymoor Park Sammamish Rowing Facility,Marymoor (Rowing Facility),-122.117129,47.653548,NonEx
+752c039f897b4e28bd2eab5b6c4dfdea.16,Rain City,Redmond,Marymoor Park Sammamish Rowing Facility,Marymoor (Rowing Facility),-122.117129,47.653548,ExEligible
 05e035e830be4f959458e98d79636f5e.16,Rain City,Redmond,Marymoor Park Soccer Fields,Marymoor (Soccer Fields),-122.119801,47.665222,NonEx
 54f58c9de11e40cba322ebd17d2462db.16,Rain City,Redmond,McWhirter Park,Farrell McWhirter Park (Road),-122.079004,47.692419,NonEx
 26bec05105e54011bbe1cd95619d0f97.16,Rain City,Redmond,Mural (Wells Fargo),Wells Fargo,-122.127309,47.67865,NonEx
@@ -368,22 +405,23 @@ cc0b16236d70462f91057f0e7e54281d.16,Rain City,Redmond,Nike Park,Nike Park,-122.1
 94f524d72b1842a0b5e38bdf817167b4.16,Rain City,Redmond,Painted Parking Lot,Painted Parking Lot,-122.124617,47.672712,ExEligible
 53a16a10ba494d14bf96e918d3cc4592.16,Rain City,Redmond,Perrigo Park Welcome Sign,Perrigo Park,-122.080517,47.682932,NonEx
 1af328d0d010412390f521dfe4f224b6.11,Rain City,Redmond,Portal II,Portal 2,-122.131723,47.680447,NonEx
-ac50e5bdd8044d0b8108cce959796f89.16,Rain City,Redmond,Prescott Community Park,Prescott Community Park,-122.11828,47.708327,NonEx
+ac50e5bdd8044d0b8108cce959796f89.16,Rain City,Redmond,Prescott Community Park,Prescott Community Park,-122.11828,47.708327,ExEligible
 03c128604e364e5cae6b8794b8a87fcf.16,Rain City,Redmond,Redmond - Powerline Trail,Redmond Powerline Trail,-122.130248,47.691434,NonEx
 5e3dc0d6a362468abbbfce4851806632.16,Rain City,Redmond,Redmond Bicycle Sculpture,Redmond Inn,-122.105097,47.668468,NonEx
 afb69d786ebf438c92f288eeccea197c.16,Rain City,Redmond,Redmond Clock Tower,Clock Tower,-122.123056,47.67417,NonEx
 ef71e02621b74fe79e59b74b25fb7e87.16,Rain City,Redmond,Redmond Meadow Park,Meadow Park,-122.12655,47.695703,NonEx
 27b411c4ebe343cbb2e93d903e7d33e0.16,Rain City,Redmond,Redmond Pool,Redmond Pool,-122.106308,47.692516,NonEx
-38b17fe20a384cd5b29576e7ad0e51f1.12,Rain City,Redmond,Redmond Post Office,Redmond Post Office,-122.095035,47.6693,NonEx
+38b17fe20a384cd5b29576e7ad0e51f1.12,Rain City,Redmond,Redmond Post Office,Redmond Post Office|Post Office,-122.095035,47.6693,NonEx
 403e6342286b4c6594c3d2e1287ab432.16,Rain City,Redmond,Redmond Stormwater Project,Redmond Arco,-122.143754,47.681894,NonEx
-90788188f6f343acbbba7a007b647857.16,Rain City,Redmond,Redmond Town Center Fish Statue,Farmers Market,-122.124425,47.671892,NonEx
+90788188f6f343acbbba7a007b647857.16,Rain City,Redmond,Redmond Town Center Fish Statue,Farmers Market|Fish|Market,-122.124425,47.671892,NonEx
 4b9a0fed1ea94c948e437665da54a99a.16,Rain City,Redmond,Redmond Twist,Evergreen,-122.123692,47.681979,NonEx
 511db23a34c5418396c70b22b65a8557.16,Rain City,Redmond,Redmond's Erratic,Redmond Erratic,-122.119251,47.671955,NonEx
 4312a7dcdb4a4f1487f4ee4958bb8dc8.16,Rain City,Redmond,Redwood Family Church,Redwood Family Church,-122.131803,47.702695,NonEx
 dde41fbd7ec2464b8c8e352f2dcc8abc.16,Rain City,Redmond,Riparian Area,Safeway/Riparian,-122.108778,47.67182,ExEligible
 88f55cdd0dd346d9880c41ba094d96ff.16,Rain City,Redmond,Salmon Circles II,Red Robin,-122.113983,47.670266,NonEx
-6292a44df15949b7b2fd3ea133005f77.16,Rain City,Redmond,Sammamish River Trail at 60 Acres,Sammamish River Trail at 60 Acres,-122.142527,47.704358,NonEx
+6292a44df15949b7b2fd3ea133005f77.16,Rain City,Redmond,Sammamish River Trail at 60 Acres,Sixty Acres,-122.142527,47.704358,NonEx
 fddce7376ce14026bfe468eb52fcce15.16,Rain City,Redmond,Shapers Shelter,Marymoor (Shapers Shelter),-122.121721,47.660554,NonEx
+N/A,Rain City,Redmond,Smith Woods,Smith Woods,-122.104174,47.709227,NonEx
 8f1b3b935b39466791c7eabb1dc4938d.16,Rain City,Redmond,Sophie Irish Memorial Rock,Marymoor (Sophie Irish Memorial),-122.114947,47.659638,NonEx
 b0104e64daaf474996cd44327b323c47.16,Rain City,Redmond,Soulfood Books and Cafe,Soul Foods,-122.130386,47.675219,NonEx
 7f3a6783cf274cad82a22e27c5b15e15.16,Rain City,Redmond,Spiritbrook Park,Spiritbrook Park,-122.139351,47.66459,ExEligible
@@ -409,10 +447,12 @@ b46bc45db4884b83ab7181d35c99f07a.16,Rain City,Redmond,Wild Silhouettes,Avondale 
 e9039c33a9e340e2863b8ff4bdb3e9ae.16,Rain City,Redmond,Willows Run Golf,Willows Golf Course,-122.150992,47.694295,NonEx
 5f2cd636bb6f4e0996a3e44284812eaf.11,Rain City,Redmond,Wisdom Seekers in Redmond,Redmond Library|Library,-122.128532,47.678799,NonEx
 f5fe41f2f3754c1b96a0aa423c4e3824.11,Rain City,Redmond,Works Sculpture at Redmond City,Redmond Works Sculpture,-122.098055,47.672222,NonEx
-deadbeef,Rain City,Redmond,Stormwater Pond (Brighton Place),Stormwater Pond (Brighton Place),-122.111885,47.699476,NonEx
+N/A,Rain City,Redmond,Stormwater Pond (Brighton Place),Joanne Brighton Place,-122.111885,47.699476,NonEx
+N/A,Rain City,Redmond,Northstar Park,Northstar Park,-122.117114,47.704642,NonEx
 1ff086150e664d9e8b4ccb7a97d9c87d.16,Rain City,Rose Hill,Austin J.Eversole Eagle Scout Project,Grass Lawn Park (Woods),-122.148187,47.667063,ExEligible
 4f0be5511e3d46aa8bb2eacf58d5b768.16,Rain City,Rose Hill,Auzias de Turenne,Auzias de Turenne,-122.179037,47.676058,NonEx
 683bcfa9e487495ab042455a37973fd0.16,Rain City,Rose Hill,Bowling Mania,Tech City Bowling Mania,-122.165746,47.666398,NonEx
+pogomap5579399,Rain City,Rose Hill,Rose Hill Post Office,Rose Hill Post Office,-122.16596,47.665096,NonEx
 c9be080c2e1f48720f816a7738b22a50,Rain City,Rose Hill,GLP: Challenge,Grass Lawn Park (Challenge),-122.145776,47.667172,ExEligible
 06c515047be54131b56d3235f446e3c7.16,Rain City,Rose Hill,Grass Lawn Park,Grass Lawn Park (Corner),-122.143273,47.667866,ExEligible
 2c73f27c03664105a72a97db5e7536e6.16,Rain City,Rose Hill,Holy Family Catholic Church,Holy Family Catholic Church,-122.180931,47.669834,NonEx
@@ -438,11 +478,30 @@ f2e31ee693974dd1a04305aa2452571b.16,Rain City,Rose Hill,William Finkbeiner Field
 86273a3ee363433095eae05a1c78839f.16,Downtown Seattle,Westlake Park,Pacific Place Penguin,Pacific Place,-122.335394,47.613016,NonEx
 03c0e46a0d378e757f2843c8d18a882a,Downtown Seattle,Westlake Park,Starbucks (Westlake Park),Westlake Park Starbucks,-122.337614,47.611505,ExEligible
 7a6a58575b3414245a0935843c6327c8,Downtown Seattle,Westlake Park,The Deadly Sculptures,Deadly Sculptures,-122.336676,47.610363,NonEx
-ad7fa55ed080418794e80e16d4e3713e.11,Downtown Seattle,Capitol Hill,Boren Columns,Boren Columns,-122.3294140,47.613639,NonEx
-0b26dd527a254fb69dca49eb25b2a585.12,Rain City,Redmond Ridge,Library Express Redmond Ridge,Redmond Ridge Library Express,-122.045556,47.693320,NonEx
-4c24503eb57d4a6997a2f89d97444802.16,Rain City,Redmond Ridge,Gutter Water,Gutter Water,-122.043211,47.693772,NonEx
-9dd1d4d651a741699d5e14a8d3c4da9c.16,Rain City,Redmond Ridge,Wetland Information Board,Wetland Information Board,-122.038500,47.694278,NonEx
-aaa82d9cc90a4db69c17dd0186ebf85b.16,Rain City,Redmond Ridge,"There's No Free Lunch",Theres No Free Lunch,-122.0373930,47.691701,NonEx
-be96dde87ef54150843583ddb916d58b.16,Rain City,Redmond Ridge,Cedar Park and Fire Pit,Cedar Park and Fire Pit,-122.044342,47.690121,NonEx
-6d5c034de175448190523af73ee4501a.16,Rain City,Redmond Ridge,Redmond North Little League,Redmond North Little League,-122.0343270,47.690802,NonEx
-3d5255d5ba294eb5b085f7c92921f00f.16,Rain City,Redmond Ridge,Cascara Park,Cascara Park,-122.038436,47.688609,NonEx
+ad7fa55ed080418794e80e16d4e3713e.11,Downtown Seattle,Capitol Hill,Boren Columns,Boren Columns,-122.329414,47.613639,NonEx
+0b26dd527a254fb69dca49eb25b2a585.12,Rain City|RedmondRidgePoGo,Redmond Ridge,Library Express Redmond Ridge,Redmond Ridge Library Express,-122.045556,47.69332,NonEx
+4c24503eb57d4a6997a2f89d97444802.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Gutter Water,Gutter Water,-122.043211,47.693772,NonEx
+9dd1d4d651a741699d5e14a8d3c4da9c.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Wetland Information Board,Wetland Information Board,-122.0385,47.694278,NonEx
+aaa82d9cc90a4db69c17dd0186ebf85b.16,Rain City|RedmondRidgePoGo,Redmond Ridge,There's No Free Lunch,Theres No Free Lunch,-122.037393,47.691701,ExEligible
+be96dde87ef54150843583ddb916d58b.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Cedar Park and Fire Pit,RR Community Center,-122.044342,47.690121,ExEligible
+6d5c034de175448190523af73ee4501a.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Redmond North Little League,Redmond North Little League,-122.034327,47.690802,NonEx
+3d5255d5ba294eb5b085f7c92921f00f.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Cascara Park,Cascara Park,-122.038436,47.688609,NonEx
+c45cbeb3fa8b4e538eab90fb8c308c52.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Middle Bear Creek Natural Area,Middle Bear Creek Natural Area,-122.083014,47.71743,NonEx
+c5533b5fe8b8465b9cbf9768e18f77ac.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Dedication Plaque to Katherine Taylor,Dedication Plaque to Katherine Taylor,-122.030255,47.727218,NonEx
+21121ffdf4f743c0a880c76ea3d451e8.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Collin Creek Trail,Collin Creek,-122.045894,47.715658,ExEligible
+c663c4186dde4cce81435b2e71b030f2.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Lawn Bowling and Croquet,Lawn Bowling and Croquet,122.027815,47.707173,NonEx
+40111a763c1142bd98cfce5ba416e665.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Nuthatch Trail,Nuthatch Trail,-122.027161,47.685268,NonEx
+fd0e393c049f4ecbb83b666bbab6dca2.16,Rain City|RedmondRidgePoGo,Redmond Ridge,A Walk in the Woods,Walk in the Woods,-122.033317,47.682839,NonEx
+914b8ac85d4b4dd29a89f6a9aca46907.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Stone Pyramid,Stone Pyramid,-122.029015,47.677586,NonEx
+9463eeeb270d4d0aad57c53787381f24.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Nuthatch to East Branch Trail,Nuthatch to East Branch,-122.024674,47.676628,NonEx
+456bcdc6be844aa1b6cc3486bf7dbf67.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Elliston Park,Elliston Park,-122.02379,47.694414,NonEx
+dfe190e5b13d4af2a4df9df7b334eab7.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Four Reasons,Four Reasons,-122.016464,47.697229,NonEx
+a2a602594f094bfe838e70e09dd33a66.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Brighton Monument,Brighton Monument,-122.017854,47.695757,NonEx
+f08ee9ad307b4fe88cfcc9e7b14fda84.16,Rain City|RedmondRidgePoGo,Redmond Ridge,RRE Basketball Courts,RRE Basketball Courts,-122.017103,47.691218,NonEx
+7929856931ae44f4adf193a2d85c4013.16,Rain City|RedmondRidgePoGo,Redmond Ridge,RRE Soccer Fields,RRE Soccer Fields,-122.00745,47.68366,NonEx
+ed2fb748bcbd4e18bd1e3ece06e1290b.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Dawnbreaker Water Tower,Dawnbreaker,-122.01369,47.689859,NonEx
+5943f5af494941b494096d4b9684e386.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Brick Swan Wall,Brick Swan Wall,-122.021384,47.663111,NonEx
+fe5971b1bdd64560b0d744fb963f1201.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Eagle Trail Map,Eagle Trail Map,-122.033139,47.681397,NonEx
+8fa62a8babfd4daaa5c8db5d505efca2.16,Rain City|RedmondRidgePoGo,Redmond Ridge,Arch at Turnstone Park,Arch at Turnstone Park,-122.045197,47.684641,NonEx
+rotom20190531,Rain City|RedmondRidgePoGo,Redmond Ridge,Community Energy,Community Energy,-122.024405,47.700139,NonEx
+N/A,Rain City|RedmondRidgePoGo,Redmond Ridge,Redmond Watershed Preserve,Redmond Watershed Preserve,-122.049373,47.69324,NonEx
