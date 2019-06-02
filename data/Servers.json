@@ -1,0 +1,50 @@
+[
+    {
+        "id": "288714963235635200",
+        "displayName": "Rain City PoGo",
+        "guildName": "Rain City Pogo",
+        "gymLookupOptions" : {
+            "preferredZones": [ "Rain City" ]
+        }
+    },
+    {
+        "id": "421722886991118376",
+        "displayName": "DowntownBellevueDiscord",
+        "guildName": "DowntownBellevueDiscord",
+        "gymLookupOptions" : {
+            "preferredZones": [ "DowntownBellevueDiscord" ]
+        }
+    },
+    {
+        "id": "480935359803424778",
+        "displayName": "ShaperCarin",
+        "guildName": "ShaperCarin",
+        "gymLookupOptions" : {
+            "preferredZones": [ "ShaperCarin" ]
+        }
+    },
+	{
+        "id": "490651827566805003",
+        "displayName": "RedmondRidgePoGo",
+        "guildName": "RedmondRidgePoGo",
+        "gymLookupOptions" : {
+            "preferredZones": [ "RedmondRidgePoGo" ]
+        }
+    },
+    {
+        "id": "420429550804140034",
+        "displayName": "Technica",
+        "guildName": "Technica",
+        "gymLookupOptions": {
+            "preferredZones": [ "Rain City" ]
+        }
+    },
+    {
+        "id": "446888538705887234",
+        "displayName": "West World",
+        "guildName": "West World",
+        "gymLookupOptions": {
+            "preferredZones": [ "Downtown Seattle" ]
+        }
+    }
+]

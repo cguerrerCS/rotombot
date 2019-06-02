@@ -1,11 +1,21 @@
 "use strict";
 
+// hack for now
+process.env.TZ = "America/Los_Angeles";
+
+const fs = require("fs");
+const path = require("path");
 const Discord = require("discord.js");
 const RaidManager = require("./lib/raidManager.js");
+const ConfigManager = require("./lib/configManager");
+const HookManager = require("./lib/hookManager");
 const RaidChannel = require("./lib/raidChannel");
+const Utils = require("./lib/utils");
 
 const { CommandoClient } = require("discord.js-commando");
-const isDevelopment = false;
+const botConfig = getBot();
+const botName = botConfig.name;
+const isDevelopment = botConfig.isDevelopment;
 
 //Discord related commands
 const client = new CommandoClient({
@@ -13,42 +23,57 @@ const client = new CommandoClient({
 });
 
 client.registry.registerGroup("raids", "Raids");
+client.registry.registerGroup("player", "Player");
 client.registry.registerDefaults();
-client.registry.registerCommandsIn(__dirname + "/commands");
+client.registry.registerCommandsIn(path.resolve("./commands"));
 
-const fs = require("fs");
 const CsvReader = require("csv-reader");
-let inputRaidDataStream = fs.createReadStream("RaidLocations.csv", "utf8");
-let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
-let inputRaidBossDataStream = fs.createReadStream("RaidBosses.csv", "utf8");
+let inputRaidDataStream = fs.createReadStream("data/Gyms.csv", "utf8");
 
-let raidManager = new RaidManager();
-let raidData = [];
-let raidBossData = [];
-let tokens = {};
+let inputRaidBossDataStream = fs.createReadStream("data/Bosses.csv", "utf8");
+let inputModeratorIdStream = fs.createReadStream("ModeratorId.csv", "utf8");
 
-// Login logic for the bot:
-// read in bot tokens
-inputBotTokenStream
-    .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-    .on("data", function (row) {
-        let tokenObj = {
-            botName: row[0],
-            token: row[1],
-            clientID: row[2],
-        };
-        tokens[tokenObj.botName] = tokenObj;
-    })
-    .on("end", function () {
-        if (isDevelopment) {
-            let token = tokens["Rotom Jr."].token;
-            client.login(token);
-        }
-        else {
-            let token = tokens.Rotom.token;
-            client.login(token);
-        }
+let raidManager = new RaidManager({ logger: console });
+
+let moderatorData = [];
+let moderatorId = undefined;
+
+if (!botConfig.discordToken) {
+    let inputBotTokenStream = fs.createReadStream("BotToken.csv", "utf8");
+    let tokens = {};
+
+    // Login logic for the bot:
+    // read in bot tokens
+    inputBotTokenStream
+        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
+        .on("data", function (row) {
+            let tokenObj = {
+                botName: row[0],
+                token: row[1],
+                clientID: row[2],
+            };
+            tokens[tokenObj.botName] = tokenObj;
+        })
+        .on("end", function () {
+            const token = tokens[botName].token;
+            client.login(token).catch((err) => {
+                console.log(`Login failed with ${err} - retrying.`);
+                client.login(token).catch((err) => {
+                    throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+                });
+            });
+        });
+}
+else {
+    const token = botConfig.discordToken;
+    client.login(token).catch((err) => {
+        console.log(`Login failed with ${err} - retrying.`);
+        client.login(token).catch((err) => {
+            throw new Error(`Login failed after retry with ${err}. Terminating.`); 
+        });
     });
+}
+
 
 function reportError(message, cmd, error, syntax) {
     let output = "Zzz-zzt! Could not process " + cmd + " command submitted by " + message.author + "\n*error: " + error + "*\n";
@@ -63,8 +88,21 @@ function reportError(message, cmd, error, syntax) {
     message.channel.send(output);
 }
 
+function getBot() {
+    let config = path.resolve("data/BotConfig.json");
+    if (fs.existsSync(config)) {
+        let cfg = require(config);
+        return (typeof cfg.default === "string") ? cfg[cfg.default] : cfg.default;
+    }
+    return { name: "Rotom", isDevelopment: false };
+}
+
+function getModeratorId() {
+    return moderatorId;
+}
+
 function addRaidChannels() {
-    console.log("Serving channels:\n");
+    let output = [];
     for (let kvp of client.channels) {
         let channel = kvp[1];
         if (channel.type === "text") {
@@ -75,16 +113,21 @@ function addRaidChannels() {
             let canReadHistory = permissions.has(Discord.Permissions.FLAGS.READ_MESSAGE_HISTORY);
             if (canRead && canSend) {
                 if (canManage && canReadHistory && channel.topic && channel.topic.startsWith("!raids ")) {
-                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic);
+                    let raidChannel = new RaidChannel(client.raidManager, channel, channel.topic, client.config);
                     client.raidManager.addRaidChannel(raidChannel);
-                    raidChannel.update();
-                    console.log(`    Reporting "${channel.topic}" on ${channel.guild.name}/${channel.name}\n`);
+                    output.push(`    Reporting on ${channel.guild.name}/${channel.name} [${channel.topic}]\n`);
                 }
                 else {
-                    console.log(`    Listening on ${channel.guild.name}/${channel.name}\n`);
+                    output.push(`    Listening on ${channel.guild.name}/${channel.name}\n`);
                 }
             }
         }
+    }
+
+    if (output.length > 0) {
+        console.log("Serving channels:\n");
+        output.sort();
+        output.forEach((line) => console.log(line));
     }
 }
 
@@ -93,39 +136,47 @@ client.on("ready", () => {
     process.stdout.write(`Bot logged in as ${client.user.tag}! Listening...\n`);
     client.reportError = reportError;
     client.isDevelopment = isDevelopment;
+    client.botName = botName;
     client.raidManager = raidManager;
+    client.getModeratorId = getModeratorId;
+    client.config = new ConfigManager({ logger: console });
+    client.hooks = new HookManager(client, botConfig.hooks);
+    client.raidManager.hooks = client.hooks;
 
     addRaidChannels();
 
-    // read in all raid data
-    inputRaidDataStream
-        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
-        .on("data", function (row) {
-            let data = {
-                city: row[0],
-                name: row[1],
-                friendlyName: row[2],
-                lng: row[3],
-                lat: row[4],
-                mapLink: `https://www.google.com/maps/dir/?api=1&destination=${row[3]},${row[4]}`,
+    client.raidManager.initGymDataAsync(inputRaidDataStream);
+
+    Utils.processCsvAsync(inputRaidBossDataStream,
+        (row) => {
+            return {
+                name: row[0],
+                id: row[1],
+                tier: row[2],
+                image: row[3],
+                status: row[4],
             };
-            raidData.push(data);
-        })
-        .on("end", function () {
-            client.raidManager.setGymData(raidData);
+        },
+        (collection) => {
+            client.raidManager.setBossData(collection);
         });
 
-    inputRaidBossDataStream
-        .pipe(CsvReader({ parseNumbers: true, parseBooleans: true, trim: true, skipHeader: true }))
+    inputModeratorIdStream
+        .pipe(CsvReader({ parseNumbers: false, parseBooleans: true, trim: true, skipHeader: true }))
         .on("data", function (row) {
-            let data = {
+            let modObj = {
                 name: row[0],
-                tier: row[1],
-                status: row[2],
+                id: row[1],
             };
-            raidBossData.push(data);
+            moderatorData[modObj.name] = modObj;
+            moderatorData.push(modObj);
         })
         .on("end", function () {
-            client.raidManager.setBossData(raidBossData);
+            moderatorId = moderatorData.DeusTechnica.id;
         });
 });
+
+client.on("error", (err) => {
+    console.log(err.message);
+});
+

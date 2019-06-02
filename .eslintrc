@@ -611,7 +611,7 @@
         // We include a promise library, as needed, in all of our modules for consistent behavior.
         // Don't allow access to a global or native 'Promise' (like a built-in browser implementation) that may
         // behave differently.
-        "promise/no-native": "error",
+        // "promise/no-native": "error",
 
         // Prevent .then(success, fail) - use .catch instead. This avoids a common anti-pattern, see
         // https://github.com/petkaantonov/bluebird/wiki/Promise-anti-patterns#the-thensuccess-fail-anti-pattern

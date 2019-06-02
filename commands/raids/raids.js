@@ -1,10 +1,6 @@
 "use strict";
 const commando = require("discord.js-commando");
-
-const defaultRaidsRegex = /^!raids\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
-const allRaidsRegex = /^!raids\s+all\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
-const minRaidsRegex = /^!raids\s+(?:T)?(\d)([+]?)\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
-const rangeRaidsRegex = /^!raids\s+(?:T)?(\d)\s*-\s*(?:T)?(\d)\s*(?:\s+in\s+(\w(?:\s|\w)*))?\s*$/i;
+const RaidsCommand = require("../../lib/raidsCommand");
 
 //!raids command
 class raids extends commando.Command {
@@ -16,80 +12,60 @@ class raids extends commando.Command {
             description: "list current raids",
             examples: [
                 "Default (T4 & 5):",
-                "  !raids [in <city>]",
+                "  !raids [in <cities>]",
                 "  !raids",
                 "  !raids in redmond",
+                "  !raids in redmond, rose hill",
                 "All raids:",
-                "  !raids all [in <city>]",
+                "  !raids all [in <cities>]",
                 "  !raids all in rose hill",
+                "Ex-eligible raids:",
+                "  !raids ex [in <cities>]",
+                "  !raids ex in redmond",
                 "Exact tier:",
-                "  !raids <tier> [in <city>]",
+                "  !raids <tier> [in <cities>]",
                 "  !raids 4",
                 "  !raids 4 in overlake",
                 "Minimum tier:",
-                "  !raids <minTier>+ [in <city>]",
+                "  !raids <minTier>+ [in <cities>]",
                 "  !raids 3+",
                 "  !raids 3+ in bellevue",
                 "Range of tiers:",
-                "  !raids <minTier>-<maxTier> [in <city>]",
+                "  !raids <minTier>-<maxTier> [in <cities>]",
                 "  !raids 1-3",
                 "  !raids 1-3 in lake hills",
+                "Additional options:",
+                "  Add +nocards for text output",
+                "  Add +raidcards for a card per raid",
+                "  Add +listcard to display all raids in one card (default)",
+                "  Add +rsvp to get a list of raiders who have rsvp'ed for the raids",
             ],
         });
     }
 
     async run(message) {
         let client = message.client;
-        let minTier = 4;
-        let maxTier = 5;
-        let city = undefined;
-        let cityRegex = /.*/;
+        let content = message.content;
 
-        let match = message.content.match(allRaidsRegex);
-        if (match !== null) {
-            minTier = 1;
-            maxTier = 5;
-            city = match[1];
+        try {
+            let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message);
+            let command = new RaidsCommand(content, client.raidManager);
+            let messages = command.getMessages(lookupOptions);
+            messages.forEach((m) => {
+                message.channel.send(m.embed ? m : m.content).catch(console.log);
+            });
         }
-        else {
-            match = message.content.match(minRaidsRegex);
-            if (match !== null) {
-                minTier = match[1];
-                maxTier = (match[2] === "+" ? 5 : minTier);
-                city = match[3];
+        catch (err) {
+            if (err) {
+                client.reportError(
+                    message,
+                    "!raids",
+                    `My circuitzzz are tingling! I didn't understand that command...\n(${err})`,
+                    this.examples.join("\n"),
+                );
             }
-            else {
-                match = message.content.match(rangeRaidsRegex);
-                if (match !== null) {
-                    minTier = match[1];
-                    maxTier = match[2];
-                    city = match[3];
-                }
-                else {
-                    match = message.content.match(defaultRaidsRegex);
-                    if (match === null) {
-                        client.reportError(
-                            message,
-                            "!add",
-                            "My circuitzzz are tingling! I didn't understand that command..."
-                        );
-                    }
-
-                    if (match[1]) {
-                        city = match[1];
-                    }
-                }
-            }
+            return;
         }
-
-        if (city) {
-            cityRegex = new RegExp(`.*${city}.*`, "i");
-        }
-
-        let description = (((minTier === maxTier) ? `T${minTier}` : `T${minTier}-T${maxTier}`) + (city ? ` in ${city}` : ""));
-        message.channel.send(client.raidManager.listFormatted((r) => {
-            return (r.tier >= minTier) && (r.tier <= maxTier) && cityRegex.test(r.gym.city);
-        }, description));
     }
 }
 

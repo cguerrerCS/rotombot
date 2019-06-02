@@ -19,6 +19,12 @@
                 "--config=test/support/jasmine.json"
             ],
             "internalConsoleOptions": "openOnFirstSessionStart"
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Merge Gyms",
+            "program": "${workspaceFolder}/tools/mergeGyms.js"
+        },
     ]
 }

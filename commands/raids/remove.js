@@ -1,7 +1,7 @@
 "use strict";
 const commando = require("discord.js-commando");
 const cmdParser = require("discord-command-parser");
-const RaidManager = require("../../lib/raidManager");
+const Raid = require("../../lib/raid");
 
 //!remove command
 class remove extends commando.Command {
@@ -16,6 +16,7 @@ class remove extends commando.Command {
     }
     async run(message) {
         var client = message.client;
+        let onBehalfOf = (message.author || message.member);
         var output = "Processing !remove command submitted by user " + message.author +  "\n";
         process.stdout.write(output);
         message.channel.send(output);
@@ -37,7 +38,8 @@ class remove extends commando.Command {
         var raidToRemove = parsed.arguments.join(" ");
         try {
             let removed = client.raidManager.removeRaid(raidToRemove);
-            message.channel.send(`Removed ${RaidManager.getFormattedRaidDescription(removed).description}.\n`);
+            message.channel.send(`Removed ${Raid.raidToString(removed)}.\n`);
+            client.hooks.raidRemoved(removed, onBehalfOf);
         }
         catch (err) {
             client.reportError(message, "!remove", err, this.examples[0]);
