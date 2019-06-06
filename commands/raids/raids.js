@@ -52,7 +52,7 @@ class raids extends commando.Command {
             let command = new RaidsCommand(content, client.raidManager);
             let messages = command.getMessages(lookupOptions);
             messages.forEach((m) => {
-                message.channel.send(m.embed ? m : m.content).catch(console.log);
+                message.channel.send(m.message.embed ? m.message : m.message.content).catch(console.log);
             });
         }
         catch (err) {
