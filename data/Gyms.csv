@@ -25,6 +25,7 @@ a4edac8ddc494531b7ceace80697b188.16,Rain City,Bellevue,City of Clyde Hill,City o
 2690051bc6984f22a009e31feb06c1b3.16,Rain City,Bellevue,Crab Netting Neon,Crab Netting Neon,-122.179836,47.620172,NonEx
 0238c1977917407da0deedf64a56c0d9.11,Rain City|DowntownBellevueDiscord,Bellevue,Double Inquiry,Double Inquiry,-122.194178,47.619585,NonEx
 5b4f01bb23534f41b4e62f7e2a85cab0.16,Rain City|DowntownBellevueDiscord,Bellevue,Downtown Bellevue Map,Downtown Bellevue Map,-122.203862,47.610114,NonEx
+raincity20190610.1,Rain City|DowntownBellevueDiscord,Bellevue,Jack M Docter Memorial Park,Docter Park,-122.184547,47.623928,NonEx
 1524a50a6e5e4caba179696939143dfe.16,Rain City,Bellevue,Early Pioneer Life Was Challenging,Early Pioneer Life Was Challenging,-122.187225,47.589208,NonEx
 f8a93a94982c4fcb90607940b4893e1f.16,Rain City,Bellevue,Enatai Beach Trailhead,Enatai Beach Trailhead,-122.195008,47.580386,NonEx
 0d297a236c8641fb8a0f3917d08b8d8c.16,Rain City,Bellevue,Enatai Neighborhood Park,Enatai Neighborhood Park,-122.197419,47.587992,NonEx
@@ -371,9 +372,9 @@ c434b54d176647eba4c8cb53a0748ff6.16,Rain City,Redmond,Bird on a Boat,Redmond PCC
 f7c305833fb143f4beeba3550f48c527.16,Rain City,Redmond,BJ's Brewmural,BJs Brewhouse,-122.119748,47.668914,NonEx
 890092103ca740499435447f2ba9df88.11,Rain City,Redmond,Black Raven Brewing Co.,Black Raven,-122.14461,47.685628,NonEx
 N/A,Rain City,Redmond,Brooke Jillyann Bennette Park,Brooke Jillyann Bennette Park,-122.1129375,47.7065777,NonEx
-5aaccc40120c4ed2a1399b5012c95945.16,Rain City,Redmond,Charlotte's Trailhead,Farrell McWhirter Park (Trail),-122.08074,47.693287,NonEx
+5aaccc40120c4ed2a1399b5012c95945.16,Rain City,Redmond,Charlotte's Trailhead,Farrell McWhirter Park (Trail)|McWhirter Trail,-122.08074,47.693287,NonEx
 305873ab0f934cf18a5b515afb77950b.16,Rain City,Redmond,Community Rockstars,Community Rockstars,-122.132734,47.683612,NonEx
-e14eb1bb30144d6894168d74929ef33e.16,Rain City,Redmond,"Connor ""Boy"" Reed Memorial Bench",Farrell McWhirter Park (Bench),-122.079746,47.694365,NonEx
+e14eb1bb30144d6894168d74929ef33e.16,Rain City,Redmond,"Connor ""Boy"" Reed Memorial Bench",Farrell McWhirter Park (Bench)|McWhirter Bench,-122.079746,47.694365,NonEx
 89407c4c53634a9590ef37cf388e60ab.16,Rain City,Redmond,Digipen Institute of Technology,Digipen,-122.150289,47.688851,NonEx
 d7de722104134e37b742f92ddf7a340c.16,Rain City,Redmond,Dog Watch Bridge,Marymoor (Dog Watch Bridge),-122.115464,47.658598,NonEx
 144765a6981973364845e6b95203c514,Rain City,Redmond,Bear Creek Trail and Greenway,New Education Hill Pig,-122.109134,47.673594,ExEligible
@@ -397,7 +398,7 @@ b11410b368a94e128af7e2d2e04f4bf1.16,Rain City,Redmond,Marymoor Park,Marymoor (En
 752c039f897b4e28bd2eab5b6c4dfdea.16,Rain City,Redmond,Marymoor Park Sammamish Rowing Facility,Marymoor (Rowing Facility),-122.117129,47.653548,ExEligible
 05e035e830be4f959458e98d79636f5e.16,Rain City,Redmond,Marymoor Park Soccer Fields,Marymoor (Soccer Fields),-122.119801,47.665222,NonEx
 rotom20190605.1,Rain City,Redmond,Marymoor Park Ballfield 7,Marymoor (Ballfield 7),-122.1076367,47.6622329,NonEx
-54f58c9de11e40cba322ebd17d2462db.16,Rain City,Redmond,McWhirter Park,Farrell McWhirter Park (Road),-122.079004,47.692419,NonEx
+54f58c9de11e40cba322ebd17d2462db.16,Rain City,Redmond,McWhirter Park,Farrell McWhirter Park (Road)|McWhirter Road,-122.079004,47.692419,NonEx
 26bec05105e54011bbe1cd95619d0f97.16,Rain City,Redmond,Mural (Wells Fargo),Wells Fargo,-122.127309,47.67865,NonEx
 39ea4f34110e4bf3be0c5962be16c0c9.16,Rain City,Redmond,Muslim Association Of Puget Sound,Muslim Association (MAPS)|MAPS,-122.106531,47.665574,NonEx
 raincity20190605.2,Rain City,Redmond,Evangelical Chinese Church,Evangelical Chinese Church,-122.1093522,47.6657593,NonEx
