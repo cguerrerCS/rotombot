@@ -2,6 +2,7 @@ Raid Boss,id,Raid Tier,Active,
 Articuno,144,Tier 5,t5.png,inactive
 Azelf,482,Tier 5,t5.png,inactive
 Cresselia,488,Tier 5,t5.png,inactive
+Deoxys,386,Tier 5,t5.png,active
 Dialga,483,Tier 5,t5.png,inactive
 Entei,244,Tier 5,t5.png,inactive
 Giratina,487,Tier 5,t5.png,inactive
@@ -11,7 +12,7 @@ Kyogre,382,Tier 5,t5.png,inactive
 Latias,380,Tier 5,t5.png,inactive
 Latios,381,Tier 5,t5.png,inactive
 Mesprit,481,Tier 5,t5.png,inactive
-Mewtwo,150,Tier 5,t5.png,inactive
+Mewtwo,150,Tier 5,t5.png,active
 Moltres,146,Tier 5,t5.png,inactive
 Palkia,484,Tier 5,t5.png,inactive
 Raikou,243,Tier 5,t5.png,inactive
