@@ -94,9 +94,9 @@ e52a272154434fdc8f37e0fc4c8bcaf3.16,Rain City,Bridle Trails,Bridle Crest Trail,B
 24f6c9641a3942fcb85e772d5629ac43.16,Rain City,Bridle Trails,Bridle Trails,Bridle Trails,-122.185234,47.655404,NonEx
 a57660a09c0149c8843b71df2515d672.16,Rain City,Bridle Trails,Bridle Trails Gazebo,Bridle Trails Gazebo,-122.164519,47.646395,NonEx
 5f75545f96294a5a9f92744a23684b2c.16,Rain City,Bridle Trails,Bridle Trails State Park,Bridle Trails State Park,-122.184187,47.655032,NonEx
-db0d505b1b6b435f919d92de370f6dd8.16,Rain City,Bridle Trails,Bridle Trails Viewpoint Park,Bridle Trails Viewpoint Park,-122.162141,47.631508,NonEx
+db0d505b1b6b435f919d92de370f6dd8.16,Rain City,Bridle Trails,Bridle Trails Viewpoint Park,Bridle Trails Viewpoint Park,-122.162141,47.631508,ExEligible
 320e74101a0f4cdbb64fd3536eb48acd.16,Rain City,Bridle Trails,Central Park Tennis Club,Central Park Tennis Club,-122.173313,47.66063,NonEx
-618aba0cdb8b48d0a2083edcdbdf2ffb.16,Rain City,Bridle Trails,Cherry Crest Park,Cherry Crest Park,-122.170354,47.63324,NonEx
+618aba0cdb8b48d0a2083edcdbdf2ffb.16,Rain City,Bridle Trails,Cherry Crest Park,Cherry Crest Park,-122.170354,47.63324,ExEligible
 38c5f441914c43dd8f1a4924f3e2cbb9.16,Rain City,Bridle Trails,Conifer Species Stand,Conifer Species Stand,-122.173272,47.655895,NonEx
 b80088b078944c2db670de9e2587ae96.16,Rain City,Bridle Trails,Eastside Harley Davidson,Eastside Harley Davidson,-122.155817,47.630599,NonEx
 984973d071244e8687e885968f639d3d.16,Rain City,Bridle Trails,Forest Gaps Stand,Forest Gaps Stand,-122.172072,47.653616,NonEx
@@ -104,13 +104,13 @@ b80088b078944c2db670de9e2587ae96.16,Rain City,Bridle Trails,Eastside Harley Davi
 c054e2c292534001ac1ac5b78dc07cd3.16,Rain City,Bridle Trails,Good and Bad Stand,Good and Bad Stand,-122.178266,47.652912,NonEx
 9cc37a4ad86c4d14bca736e3d3cec67e.16,Rain City,Bridle Trails,Horse Show Arena,Horse Show Arena,-122.184697,47.655977,NonEx
 8277025711744a4fa07d5e58e4d40a84.16,Rain City,Bridle Trails,Lake East Christian Church,Lake East Christian Church,-122.185738,47.654849,NonEx
-22a4de162f2247ff823b23c8c773863e.16,Rain City,Bridle Trails,Pike's Peak,Pike's Peak,-122.179197,47.633299,NonEx
+22a4de162f2247ff823b23c8c773863e.16,Rain City,Bridle Trails,Pike's Peak,Pike's Peak,-122.179197,47.633299,ExEligible
 pogomap249933,Rain City,Belevue,Eastside Medical Center Fountain,Eastside Medical Center Fountain,-122.18517,47.628832,NonEx
 a33086ea8bc94f58990a1bfd40b007e7.16,Rain City,Bridle Trails,"Second Church of Christ, Scientist, Bellevue, WA","Second Church of Christ, Scientist, Bellevue, WA",-122.155477,47.629974,NonEx
 94e8b40179344aed805d30c1c5b535f6.16,Rain City,Bridle Trails,Trillium Trail Dedication Plaque,Trillium Trail Dedication Plaque,-122.182763,47.654776,ExEligible
 84dcf06bea38a360f2f79b63bdfb6163,Rain City,Bridle Trails,"Westminster ""W""","Westminster ""W""",-122.157325,47.632738,NonEx
 68dd6173e351a42aeefdcd19f98c89a8,Rain City,Crossroads,Bellevue Masonic Center's Plaque,Bellevue Masonic Center,-122.122578,47.624449,NonEx
-2fde9406db8c466f894b7ca7cb3179b0.16,Rain City,Crossroads,Bellevue Youth Theatre,Bellevue Youth Theatre,-122.116785,47.62277,NonEx
+2fde9406db8c466f894b7ca7cb3179b0.16,Rain City,Crossroads,Bellevue Youth Theatre,Bellevue Youth Theatre,-122.116785,47.62277,ExEligible
 21299b950d0a4eeda9d6efbcff80ec26.16,Rain City,Crossroads,Calvary Lutheran Church,Calvary Lutheran Church,-122.122409,47.614881,NonEx
 8413e83daf7d4f94a37613ae646da18e.16,Rain City,Crossroads,Coffee Cup Bike Rack,Xroads (Bike Rack),-122.131228,47.618412,NonEx
 9eb62ac423ce4c43bf6e3b72911da18f.16,Rain City,Crossroads,Colonial Square Apartment Homes,Xroads (Colonial Square),-122.132236,47.624645,NonEx
@@ -329,7 +329,7 @@ a35687808eaf9841c2eaf4b13b17c370,Rain City,Overlake,Brown Bear Car Wash Bel-Red,
 e3d43f9db75b49858bef08a80eab9b1b.16,Rain City,Overlake,Double Quad,Microsoft B6,-122.125582,47.639234,NonEx
 86001ad78450423c824131926f595b1a.16,Rain City,Overlake,Electric Blue Tower of Power,Electric Blue Tower of Power,-122.13461,47.630915,NonEx
 5cd9780c1e814e96a09b64fc3dc9a688.16,Rain City,Overlake,Giant Leaves,Giant Leaves,-122.136288,47.632664,NonEx
-234b8fa7b39b48fba53cc4c4bfb35694.16,Rain City,Overlake,Highland Covenant Church,Highland Covenant Church,-122.138168,47.627729,NonEx
+234b8fa7b39b48fba53cc4c4bfb35694.16,Rain City,Overlake,Highland Covenant Church,Highland Covenant Church,-122.138168,47.627729,ExEligible
 22ad9ab9883d451da8f62a2ef728e926.16,Rain City,Overlake,Idylwood Park South Side,Idylwood Park (South Side),-122.103427,47.641949,ExEligible
 6bc7f88cae364a73b429fa3340e40d70.16,Rain City,Overlake,Islamic Center of the Eastside,Islamic Center of the Eastside,-122.144099,47.610085,NonEx
 30bb5766d26444f2af35c95327b28fa8.16,Rain City,Overlake,Lake Sammamish Foursquare Church,Foursquare Church,-122.146474,47.617415,NonEx
@@ -340,8 +340,8 @@ fe86bde57c94499c8567e2bccb2a8697.16,Rain City,Overlake,Microsoft Fitness Trail,M
 8acc8df4b66e41b39adc781a6a5eb6b9.16,Rain City,Overlake,Microsoft Redwest Wetlands East,RedWest (Wetlands),-122.138512,47.656599,NonEx
 4d636493c9aa4670ae25d4be53b43815.16,Rain City,Overlake,Microsoft Vision Plaque,Microsoft B16,-122.127827,47.642939,NonEx
 7a2b6cc706a445bc9b7742a2e86440ea.16,Rain City,Overlake,MSFT Bldg 25 Cafe Fountain,Microsoft B25,-122.131129,47.645331,NonEx
-e7c53ac7aa3446dc903a728994fbe800.11,Rain City,Overlake,Nebula Torcida,Microsoft B115,-122.141738,47.640355,NonEx
-391e8c53d59a4f298331d0202168857e.16,Rain City,Overlake,Nintendo of America,Nintendo Building,-122.140126,47.651046,NonEx
+e7c53ac7aa3446dc903a728994fbe800.11,Rain City,Overlake,Nebula Torcida,Microsoft B115,-122.141738,47.640355,ExEligible
+391e8c53d59a4f298331d0202168857e.16,Rain City,Overlake,Nintendo of America,Nintendo Building,-122.140126,47.651046,ExEligible
 13877ff597a744b9bccc45704d996a1e.16,Rain City,Overlake,Nintendo Sign,Nintendo Sign,-122.141007,47.654689,NonEx
 8a804339458c4bebaa66fdbb57830cd5.16,Rain City,Overlake,North Bellevue Community Center,NBCC,-122.1433,47.647675,ExEligible
 d4acd48fb20342708c32969f3add77a0.11,Rain City,Overlake,Overlake Black Bears,Overlake Black Bears,-122.143336,47.631661,NonEx
@@ -371,7 +371,7 @@ c2f1e99aa7ac4becbdd15d58f5374574.16,Rain City,Redmond,Bicycle Bike Rack,Redmond 
 c434b54d176647eba4c8cb53a0748ff6.16,Rain City,Redmond,Bird on a Boat,Redmond PCC,-122.0933,47.701848,NonEx
 f7c305833fb143f4beeba3550f48c527.16,Rain City,Redmond,BJ's Brewmural,BJs Brewhouse,-122.119748,47.668914,NonEx
 890092103ca740499435447f2ba9df88.11,Rain City,Redmond,Black Raven Brewing Co.,Black Raven,-122.14461,47.685628,NonEx
-N/A,Rain City,Redmond,Brooke Jillyann Bennette Park,Brooke Jillyann Bennette Park,-122.1129375,47.7065777,NonEx
+N/A,Rain City,Redmond,Brooke Jillyann Bennette Park,Brooke Jillyann Bennette Park,-122.1129375,47.7065777,ExEligible
 5aaccc40120c4ed2a1399b5012c95945.16,Rain City,Redmond,Charlotte's Trailhead,Farrell McWhirter Park (Trail)|McWhirter Trail,-122.08074,47.693287,NonEx
 305873ab0f934cf18a5b515afb77950b.16,Rain City,Redmond,Community Rockstars,Community Rockstars,-122.132734,47.683612,NonEx
 e14eb1bb30144d6894168d74929ef33e.16,Rain City,Redmond,"Connor ""Boy"" Reed Memorial Bench",Farrell McWhirter Park (Bench)|McWhirter Bench,-122.079746,47.694365,NonEx
@@ -412,12 +412,12 @@ cc0b16236d70462f91057f0e7e54281d.16,Rain City,Redmond,Nike Park,Nike Park,-122.1
 ac50e5bdd8044d0b8108cce959796f89.16,Rain City,Redmond,Prescott Community Park,Prescott Community Park,-122.11828,47.708327,ExEligible
 03c128604e364e5cae6b8794b8a87fcf.16,Rain City,Redmond,Redmond - Powerline Trail,Redmond Powerline Trail,-122.130248,47.691434,NonEx
 5e3dc0d6a362468abbbfce4851806632.16,Rain City,Redmond,Redmond Bicycle Sculpture,Redmond Inn,-122.105097,47.668468,NonEx
-afb69d786ebf438c92f288eeccea197c.16,Rain City,Redmond,Redmond Clock Tower,Clock Tower,-122.123056,47.67417,NonEx
+afb69d786ebf438c92f288eeccea197c.16,Rain City,Redmond,Redmond Clock Tower,Clock Tower,-122.123056,47.67417,ExEligible
 ef71e02621b74fe79e59b74b25fb7e87.16,Rain City,Redmond,Redmond Meadow Park,Meadow Park,-122.12655,47.695703,NonEx
-27b411c4ebe343cbb2e93d903e7d33e0.16,Rain City,Redmond,Redmond Pool,Redmond Pool,-122.106308,47.692516,NonEx
+27b411c4ebe343cbb2e93d903e7d33e0.16,Rain City,Redmond,Redmond Pool,Redmond Pool,-122.106308,47.692516,ExEligible
 38b17fe20a384cd5b29576e7ad0e51f1.12,Rain City,Redmond,Redmond Post Office,Redmond Post Office|Post Office,-122.095035,47.6693,NonEx
 403e6342286b4c6594c3d2e1287ab432.16,Rain City,Redmond,Redmond Stormwater Project,Redmond Arco,-122.143754,47.681894,NonEx
-90788188f6f343acbbba7a007b647857.16,Rain City,Redmond,Redmond Town Center Fish Statue,Farmers Market|Fish|Market,-122.124425,47.671892,NonEx
+90788188f6f343acbbba7a007b647857.16,Rain City,Redmond,Redmond Town Center Fish Statue,Farmers Market|Fish|Market,-122.124425,47.671892,ExEligible
 4b9a0fed1ea94c948e437665da54a99a.16,Rain City,Redmond,Redmond Twist,Evergreen,-122.123692,47.681979,NonEx
 511db23a34c5418396c70b22b65a8557.16,Rain City,Redmond,Redmond's Erratic,Redmond Erratic,-122.119251,47.671955,NonEx
 4312a7dcdb4a4f1487f4ee4958bb8dc8.16,Rain City,Redmond,Redwood Family Church,Redwood Family Church,-122.131803,47.702695,NonEx
@@ -445,7 +445,7 @@ a169f4d109054d07936844148457333f.16,Rain City,Redmond,Vern Wagner Fields Dedicat
 f3d6b06d15e74e9e88262ead6c5f20da.16,Rain City,Redmond,Victors Coffee Co. and Roasters,Victors Coffeeshop,-122.1219,47.674577,NonEx
 7a65b4ad11344ebdb3421c045bcd56f6.16,Rain City,Redmond,Washington Cathedral,Washington Cathedral,-122.13135,47.709688,NonEx
 72c4e8cb052344cd84a626a99aaecd36.16,Rain City,Redmond,Water Tower,Redmond Way Water Tower,-122.09184,47.663903,NonEx
-03100cac5b2746a7a3e70480de9bcc58.16,Rain City,Redmond,Weiner Elephants,Redmond PD|Redmond Police|Redmond Police Department,-122.128889,47.680386,NonEx
+03100cac5b2746a7a3e70480de9bcc58.16,Rain City,Redmond,Weiner Elephants,Redmond PD|Redmond Police|Redmond Police Department,-122.128889,47.680386,ExEligible
 e40bc2423fcc4b49beee7f53c36f1a13.16,Rain City,Redmond,West Ironcycle,Ben Franklin,-122.130123,47.675691,NonEx
 raincity20190608.1,Rain City,Redmond,Pretty Pagoda,Pretty Pagoda,-122.125752,47.675053,NonEx
 b46bc45db4884b83ab7181d35c99f07a.16,Rain City,Redmond,Wild Silhouettes,Avondale Bus Stop,-122.104461,47.678821,NonEx
@@ -454,7 +454,7 @@ e9039c33a9e340e2863b8ff4bdb3e9ae.16,Rain City,Redmond,Willows Run Golf,Willows G
 f5fe41f2f3754c1b96a0aa423c4e3824.11,Rain City,Redmond,Works Sculpture at Redmond City,Redmond Works Sculpture,-122.098055,47.672222,NonEx
 N/A,Rain City,Redmond,Stormwater Pond (Brighton Place),Joanne Brighton Place,-122.111885,47.699476,NonEx
 20190916raincity,Rain City,Redmond,Trailside Community Park,Trailside Community Park,-122.110852,47.701128,NonEx
-20190823raincity,Rain City,Redmond,Powerline Trail at Norman Rockwell,Rockwell Powerline Trail|Norman Rockwell Powerline Trail,-122.122428,47.698459,NonEx
+20190823raincity,Rain City,Redmond,Powerline Trail at Norman Rockwell,Rockwell Powerline Trail|Norman Rockwell Powerline Trail,-122.122428,47.698459,ExEligible
 N/A,Rain City,Redmond,Northstar Park,Northstar Park,-122.117114,47.704642,ExEligible
 1ff086150e664d9e8b4ccb7a97d9c87d.16,Rain City,Rose Hill,Austin J.Eversole Eagle Scout Project,Grass Lawn Park (Woods),-122.148187,47.667063,ExEligible
 4f0be5511e3d46aa8bb2eacf58d5b768.16,Rain City,Rose Hill,Auzias de Turenne,Auzias de Turenne,-122.179037,47.676058,NonEx
