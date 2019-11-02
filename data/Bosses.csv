@@ -2,7 +2,7 @@ Raid Boss,id,Raid Tier,Active,
 Articuno,144,Tier 5,t5.png,inactive
 Azelf,482,Tier 5,t5.png,inactive
 Cresselia,488,Tier 5,t5.png,inactive
-Darkrai,491,Tier 5,t5.png,active
+Darkrai,491,Tier 5,t5.png,inactive
 Deoxys,386,Tier 5,t5.png,inactive
 DeoxysA,386,Tier 5,t5.png,inactive
 DeoxysN,386,Tier 5,t5.png,inactive
@@ -22,9 +22,9 @@ Moltres,146,Tier 5,t5.png,inactive
 Palkia,484,Tier 5,t5.png,inactive
 Raikou,243,Tier 5,t5.png,inactive
 Rayquaza,384,Tier 5,t5.png,inactive
-Regice,378,Tier 5,t5.png,inactive
-Regirock,377,Tier 5,t5.png,inactive
-Registeel,379,Tier 5,t5.png,inactive
+Regice,378,Tier 5,t5.png,active
+Regirock,377,Tier 5,t5.png,active
+Registeel,379,Tier 5,t5.png,active
 Suicune,245,Tier 5,t5.png,inactive
 Uxie,480,Tier 5,t5.png,inactive
 Zapdos,145,Tier 5,t5.png,inactive
