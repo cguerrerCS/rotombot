@@ -132,7 +132,6 @@ c6a29c91de4c401c873b7db8a635eb90.16,Downtown Seattle,Denny Triangle,Servant Chri
 d65a638577cfd7cc8ba61d0507955fd6,Downtown Seattle,Denny Triangle,Starbucks (7th and Stewart),7th and Stewart Starbucks,-122.33587,47.614326,ExEligible
 ff8a13a80228495c8e849f626a592155.16,Downtown Seattle,Denny Triangle,The Spiral,Spiral,-122.335601,47.615502,NonEx
 d1fe358c1ead4238969604dee2fec89a.11,Downtown Seattle,Downtown,5th Avenue Theater,Fifth Avenue Theater,-122.333912,47.609025,NonEx
-d9853dbd99f1cfe5d358370b5454579e,Downtown Seattle,Downtown,Find Shiny Deals at Sprint,Sprint (3rd avenue),-122.338574,47.610284,ExEligible
 1c4d4162ae73473f8c8c0c55c2651809.16,Downtown Seattle,Capitol Hill,Charbern,Charbern,-122.324572,47.61657,NonEx
 bbf0613cfa1f430a95eeea6b688c1147.11,Downtown Seattle,Capitol Hill,Bauhaus Coffee Mural,Bauhaus Coffee Mural,-122.326135,47.615328,NonEx
 6e134d603644488281c44d4be2d802e9.16,Downtown Seattle,Capitol Hill,Sun Liquor Distillery,Sun Liquor,-122.325029,47.614198,NonEx
@@ -379,7 +378,6 @@ e14eb1bb30144d6894168d74929ef33e.16,Rain City,Redmond,"Connor ""Boy"" Reed Memor
 89407c4c53634a9590ef37cf388e60ab.16,Rain City,Redmond,Digipen Institute of Technology,Digipen,-122.150289,47.688851,NonEx
 d7de722104134e37b742f92ddf7a340c.16,Rain City,Redmond,Dog Watch Bridge,Marymoor (Dog Watch Bridge),-122.115464,47.658598,NonEx
 144765a6981973364845e6b95203c514,Rain City,Redmond,Bear Creek Trail and Greenway,New Education Hill Pig,-122.109134,47.673594,ExEligible
-3d2eb6cf7c69e38199814d583884faab,Rain City,Redmond,Find shiny deals at Sprint,Redmond Sprint,-122.114047,47.670882,ExEligible
 2b791ce4f3ea6da18c01b098a4220766,Rain City,Redmond,Flying Saucer Pizza,Flying Saucer Pizza,-122.1442979,47.683467,NonEx
 a439b83c1903409287c16e61be49d6b2.16,Rain City,Redmond,Fountain Fish,Millennium Campus,-122.093758,47.677081,NonEx
 9342b265cba542fdaf4881e12ce57cbd.16,Rain City,Redmond,G Patrick Glenn Bench,Marymoor (Glenn Bench),-122.123426,47.661997,NonEx
@@ -459,6 +457,7 @@ N/A,Rain City,Redmond,Stormwater Pond (Brighton Place),Joanne Brighton Place,-12
 20190823raincity,Rain City,Redmond,Powerline Trail at Norman Rockwell,Rockwell Powerline Trail|Norman Rockwell Powerline Trail,-122.122428,47.698459,ExEligible
 N/A,Rain City,Redmond,Northstar Park,Northstar Park,-122.117114,47.704642,ExEligible
 1ff086150e664d9e8b4ccb7a97d9c87d.16,Rain City,Rose Hill,Austin J.Eversole Eagle Scout Project,Grass Lawn Park (Woods),-122.148187,47.667063,ExEligible
+20191122raincity.1,Rain City,Rose Hill,The First Pitch,First Pitch,-122.14419,47.669224,NonEx
 4f0be5511e3d46aa8bb2eacf58d5b768.16,Rain City,Rose Hill,Auzias de Turenne,Auzias de Turenne,-122.179037,47.676058,NonEx
 683bcfa9e487495ab042455a37973fd0.16,Rain City,Rose Hill,Bowling Mania,Tech City Bowling Mania,-122.165746,47.666398,NonEx
 pogomap5579399,Rain City,Rose Hill,Rose Hill Post Office,US Post Office Bartells|Post Office Bartells|Bartells PostOffice,-122.16596,47.665096,NonEx
