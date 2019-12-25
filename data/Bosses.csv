@@ -14,11 +14,11 @@ Entei,244,Tier 5,t5.png,inactive
 Giratina,487,Tier 5,t5.png,inactive
 Groudon,383,Tier 5,t5.png,inactive
 Heatran,485,Tier 5,t5.png,inactive
-Ho-oh,250,Tier 5,t5.png,active
+Ho-oh,250,Tier 5,t5.png,inactive
 Kyogre,382,Tier 5,t5.png,inactive
 Latias,380,Tier 5,t5.png,inactive
 Latios,381,Tier 5,t5.png,inactive
-Lugia,249,Tier 5,t5.png,active
+Lugia,249,Tier 5,t5.png,inactive
 Mesprit,481,Tier 5,t5.png,inactive
 Mewtwo,150,Tier 5,t5.png,inactive
 Moltres,146,Tier 5,t5.png,inactive
@@ -33,6 +33,7 @@ Terrakion,639,Tier 5,t5.png,inactive
 Uxie,480,Tier 5,t5.png,inactive
 Virizion,640,Tier 5,t5.png,active
 Zapdos,145,Tier 5,t5.png,inactive
+Abomasnow,Tier 4,t4.png,active
 Absol,359,Tier 4,t4.png,active
 Aggron,306,Tier 4,t4.png,active
 Blastoise,9,Tier 4,t4.png,active
@@ -57,6 +58,7 @@ Ursaring,217,Tier 4,t4.png,active
 Venusaur,3,Tier 4,t4.png,active
 Victreebel,71,Tier 4,t4.png,active
 Walrein,365,Tier 4,t4.png,active
+Weezing,110,Tier 4,t4.png,active
 Wobbuffet,202,Tier 4,t4.png,active
 Aerodactyl,142,Tier 3,t3.png,active
 Alakazam,65,Tier 3,t3.png,active
@@ -66,6 +68,7 @@ Breloom,286,Tier 3,t3.png,active
 Chansey,113,Tier 3,t3.png,active
 Claydol,344,Tier 3,t3.png,active
 Crawdaunt,342,Tier 3,t3.png,active
+Delibird,225,Tier 3,t3.png,active
 Donphan,232,Tier 3,t3.png,active
 Gengar,94,Tier 3,t3.png,active
 Espeon,196,Tier 3,t3.png,active
@@ -85,7 +88,7 @@ Onix,95,Tier 3,t3.png,active
 Piloswine,221,Tier 3,t3.png,active
 Pinsir,127,Tier 3,t3.png,active
 Porygon,137,Tier 3,t3.png,active
-Raichu,26,Tier 3,t3.png,active
+AlolanRaichu,26,Tier 3,t3.png,active
 Scyther,123,Tier 3,t3.png,active
 Sharpedo,319,Tier 3,t3.png,active
 Shuckle,213,Tier 3,t3.png,active
@@ -122,15 +125,16 @@ Muk,89,Tier 2,t2.png,active
 Nosepass,299,Tier 2,t2.png,active
 Pineco,204,Tier 2,t2.png,active
 Primeape,57,Tier 2,t2.png,active
+Raichu,26,Tier 2,t2.png,active
 Roselia,315,Tier 2,t2.png,active
 Sableye,302,Tier 2,t2.png,active
 Sandslash,28,Tier 2,t2.png,active
 Slowbro,80,Tier 2,t2.png,active
 Sneasel,215,Tier 2,t2.png,active
+Stantler,234,Tier 2,t2.png,active
 Sudowoodo,185,Tier 2,t2.png,active
 Tentacruel,73,Tier 2,t2.png,active
 Venomoth,49,Tier 2,t2.png,active
-Weezing,110,Tier 2,t2.png,active
 Anorith,347,Tier 1,t1.png,active
 Bagon,371,Tier 1,t1.png,active
 Bidoof,399,Tier 1,t1.png,active
@@ -147,6 +151,7 @@ Caterpie,10,Tier 1,t1.png,active
 Charmander,4,Tier 1,t1.png,active
 Charmeleon,5,Tier 1,t1.png,active
 Chikorita,152,Tier 1,t1.png,active
+Cubchoo,613,Tier 1,t1.png,active
 Cubone,104,Tier 1,t1.png,active
 Cyndaquil,155,Tier 1,t1.png,active
 Dratini,147,Tier 1,t1.png,active
