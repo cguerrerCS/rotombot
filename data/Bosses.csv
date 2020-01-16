@@ -39,11 +39,12 @@ Aggron,306,Tier 4,t4.png,active
 Blastoise,9,Tier 4,t4.png,active
 Charizard,6,Tier 4,t4.png,active
 Dragonite,149,Tier 4,t4.png,active
+Excadrill,0,Tier 4,t4.png,active
 Feraligatr,160,Tier 4,t4.png,active
 Golem,76,Tier 4,t4.png,active
 Houndoom,229,Tier 4,t4.png,active
 Lapras,131,Tier 4,t4.png,active
-Marowak,105,Tier 4,t4.png,active
+AlolanMarowak,105,Tier 4,t4.png,active
 Metagross,376,Tier 4,t4.png,active
 Nidoking,34,Tier 4,t4.png,active
 Nidoqueen,31,Tier 4,t4.png,active
@@ -91,6 +92,7 @@ Piloswine,221,Tier 3,t3.png,active
 Pinsir,127,Tier 3,t3.png,active
 Porygon,137,Tier 3,t3.png,active
 AlolanRaichu,26,Tier 3,t3.png,active
+Raichu,26,Tier 3,t3.png,active
 Scyther,123,Tier 3,t3.png,active
 Sharpedo,319,Tier 3,t3.png,active
 Shuckle,213,Tier 3,t3.png,active
@@ -102,6 +104,7 @@ Umbreon,197,Tier 3,t3.png,active
 Vaporeon,134,Tier 3,t3.png,active
 AlolanExeggutor,103,Tier 2,t2.png,active
 Bibarel,400,Tier 2,t2.png,active
+Breloom,0,Tier 2,t2.png,active
 Charmeleon,5,Tier 2,t2.png,active
 Clamperl,366,Tier 2,t2.png,active
 Cloyster,91,Tier 2,t2.png,active
@@ -115,6 +118,7 @@ Fearow,22,Tier 2,t2.png,active
 Feebas,349,Tier 2,t2.png,active
 Gligar,207,Tier 2,t2.png,active
 Grovyle,253,Tier 2,t2.png,active
+Kingler,0,Tier 2,t2.png,active
 Kirlia,281,Tier 2,t2.png,active
 Lanturn,171,Tier 2,t2.png,active
 Lickitung,108,Tier 2,t2.png,active
@@ -122,6 +126,7 @@ Magcargo,219,Tier 2,t2.png,active
 Magmar,126,Tier 2,t2.png,active
 Magneton,82,Tier 2,t2.png,active
 Manectric,310,Tier 2,t2.png,active
+Marowak,105,Tier 2,t2.png,active
 Marshtomp,259,Tier 2,t2.png,active
 Masquerain,284,Tier 2,t2.png,active
 Mawile,303,Tier 2,t2.png,active
@@ -130,7 +135,7 @@ Muk,89,Tier 2,t2.png,active
 Nosepass,299,Tier 2,t2.png,active
 Pineco,204,Tier 2,t2.png,active
 Primeape,57,Tier 2,t2.png,active
-Raichu,26,Tier 2,t2.png,active
+Prinplup,0,Tier 2,t2.png,active
 Raticate,20,Tier 2,t2.png,active
 Roselia,315,Tier 2,t2.png,active
 Sableye,302,Tier 2,t2.png,active
@@ -184,6 +189,7 @@ Meowth,52,Tier 1,t1.png,active
 Metapod,11,Tier 1,t1.png,active
 Minun,312,Tier 1,t1.png,active
 Omanyte,138,Tier 1,t1.png,active
+Oshawott,Tier 2,t1.png,active
 Patrat,504,Tier 1,t1.png,active
 Pidove,519,Tier 1,t1.png,active
 Plusle,311,Tier 1,t1.png,active
@@ -201,6 +207,7 @@ Sunkern,191,Tier 1,t1.png,active
 Swablu,333,Tier 1,t1.png,active
 Swinub,220,Tier 1,t1.png,active
 Tepig,498,Tier 1,t1.png,active
+Timburr,0,Tier 1,t1.png,active
 Totodile,158,Tier 1,t1.png,active
 Wailmer,320,Tier 1,t1.png,active
 Wartortle,8,Tier 1,t1.png,active
