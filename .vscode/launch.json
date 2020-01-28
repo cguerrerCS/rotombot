@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Start Bot",
-            "program": "${workspaceFolder}\\rotombot.js"
+            "program": "${workspaceFolder}/rotombot.js"
         },
         {
             "type": "node",
