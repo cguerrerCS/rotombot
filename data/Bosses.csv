@@ -20,7 +20,7 @@ Latias,380,Tier 5,t5.png,inactive
 Latios,381,Tier 5,t5.png,inactive
 Lugia,249,Tier 5,t5.png,inactive
 Mesprit,481,Tier 5,t5.png,inactive
-Mewtwo,150,Tier 5,t5.png,active
+Mewtwo,150,Tier 5,t5.png,inactive
 Moltres,146,Tier 5,t5.png,inactive
 Palkia,484,Tier 5,t5.png,inactive
 Raikou,243,Tier 5,t5.png,inactive
@@ -30,6 +30,7 @@ Regirock,377,Tier 5,t5.png,inactive
 Registeel,379,Tier 5,t5.png,inactive
 Suicune,245,Tier 5,t5.png,inactive
 Terrakion,639,Tier 5,t5.png,inactive
+Thundurus,642,Tier 5,t5.png,active
 Tornadus,0,Tier 5,t5.png,inactive
 Uxie,480,Tier 5,t5.png,inactive
 Virizion,640,Tier 5,t5.png,inactive
@@ -56,6 +57,7 @@ Rhydon,112,Tier 4,t4.png,active
 Shiftry,275,Tier 4,t4.png,active
 Snorlax,143,Tier 4,t4.png,active
 Staraptor,398,Tier 4,t4.png,active
+Swampert,260,Tier 4,t4.png,active
 Togetic,176,Tier 4,t4.png,active
 Tyranitar,248,Tier 4,t4.png,active
 Ursaring,217,Tier 4,t4.png,active
@@ -70,6 +72,7 @@ Azumarill,184,Tier 3,t3.png,active
 Breloom,286,Tier 3,t3.png,active
 Chansey,113,Tier 3,t3.png,active
 Claydol,344,Tier 3,t3.png,active
+Clefable,35,Tier 3,t3.png,active
 Crawdaunt,342,Tier 3,t3.png,active
 Delibird,225,Tier 3,t3.png,active
 Donphan,232,Tier 3,t3.png,active
@@ -123,6 +126,7 @@ Fearow,22,Tier 2,t2.png,active
 Feebas,349,Tier 2,t2.png,active
 Gligar,207,Tier 2,t2.png,active
 Grovyle,253,Tier 2,t2.png,active
+Haunter,93,Tier 2,t2.png,active
 Kingler,0,Tier 2,t2.png,active
 Kirlia,281,Tier 2,t2.png,active
 Lanturn,171,Tier 2,t2.png,active
@@ -153,7 +157,9 @@ Sudowoodo,185,Tier 2,t2.png,active
 Swellow,277,Tier 2,t2.png,active
 Tentacruel,73,Tier 2,t2.png,active
 Venomoth,49,Tier 2,t2.png,active
+Whiscash,340,Tier 2,t2.png,active
 Wobbuffet,202,Tier 2,t2.png,active
+AlolanGrimer,88,Tier 1,t1.png,active
 Anorith,347,Tier 1,t1.png,active
 Bagon,371,Tier 1,t1.png,active
 Bidoof,399,Tier 1,t1.png,active
@@ -206,6 +212,7 @@ Ralts,280,Tier 1,t1.png,active
 Roggenrola,Tier 1,t1.png,active
 Sandshrew,27,Tier 1,t1.png,active
 Shellder,90,Tier 1,t1.png,active
+Shieldon,410,Tier 1,t1.png,active
 Shinx,403,Tier 1,t1.png,active
 Shuppet,353,Tier 1,t1.png,active
 Skorupi,451,Tier 1,t1.png,active
