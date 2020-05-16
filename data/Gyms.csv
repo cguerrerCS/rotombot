@@ -93,6 +93,7 @@ raincity20200204.1,Rain City,Overlake,Tam O Shanter Park,Tam O Shanter Park,-122
 raincity20200225.1,Rain City,Overlake,St Peters United Methodist Church,St Peters (8th street),-122.1107410,47.616900,NonEx
 raincity20200322.1,Rain City,Overlake,St Peters United Methodist Church (Northup),St Peters (Northup),-122.1098270,47.618819,NonEx
 raincity20200225.2,Rain City,Overlake,Ivanhoe Park,Ivanhoe Park,-122.1182970,47.623455,ExEligible
+raincity20200515.1,Rain City,Overlake,Ivanhoe Baseball Field Sign,Ivanhoe Baseball Field Sign,-122.1175780,47.620714,NonEx
 raincity20200225.3,Rain City,Overlake,Viewpoint Park,Viewpoint Park,-122.0939250,47.631212,NonEx
 raincity20200322.2,Rain City,Overlake,Brae Burn,Brae Burn,-122.0981950,47.631261,NonEx
 e52a272154434fdc8f37e0fc4c8bcaf3.16,Rain City,Bridle Trails,Bridle Crest Trail,Bridle Crest Trail,-122.16393,47.660711,NonEx
@@ -371,10 +372,11 @@ b1defec458024147983f763394848770.16,Rain City,Overlake,Truck In A Tree,Microsoft
 c8dad8ec9964448998914b2c194938c3.16,Rain City,Overlake,TWC - Stone Columns,Microsoft B27,-122.130721,47.635711,NonEx
 b625d49b364f0155b75e2e11136e18b5,Rain City,Redmond,Anderson Park,Anderson Park,-122.116119,47.67374,NonEx
 7d87fd5a00064242b64bfd2563e26c15.16,Rain City,Redmond,Ashford Park Gazebo,Ashford Park Gazebo,-122.100218,47.682791,NonEx
-2aeb7568e5064560a1b3079efca7bde8.11,Rain City,Redmond,Bear Creek Crossing,Redmond Panera,-122.110648,47.671026,NonEx
+2aeb7568e5064560a1b3079efca7bde8.11,Rain City,Redmond,Bear Creek Crossing,Redmond Panera|Bear Creek,-122.110648,47.671026,NonEx
 5814435bf76d4a4eae3815b2536eb08c.16,Rain City,Redmond,Bear Creek Water Tower,Bear Creek Water Tower|Watertower|Water Tower,-122.103674,47.687974,NonEx
 c2f1e99aa7ac4becbdd15d58f5374574.16,Rain City,Redmond,Bicycle Bike Rack,Redmond 7-11,-122.130934,47.669839,NonEx
 3ed00d88b02f485e9e517093ffb8fcc0.16,Rain City,Redmond,Big Red Ball,Redmond Target,-122.104056,47.672208,NonEx
+raincity20200515.2,Rain City,Redmond,Bear Creek Park and Ride,Bear Creek Park and Ride,-122.101006,47.673630,NonEx
 c434b54d176647eba4c8cb53a0748ff6.16,Rain City,Redmond,Bird on a Boat,Redmond PCC,-122.0933,47.701848,NonEx
 raincity20200106.1,Rain City,Redmond,Avondale Powerline,Avondale Power Line,-122.093363,47.699122,NonEx
 20191116raincity.2,Rain City,Redmond,Flying Silverware,Flying Silverware,-122.093300,47.701848,NonEx
