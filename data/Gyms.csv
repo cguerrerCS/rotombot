@@ -404,7 +404,7 @@ bd051691116c4fe8837693ba31529163.16,Rain City,Redmond,Jim Palmquist Memorial Pla
 ea197d2a49df492fb232a903f944438c.16,Rain City,Redmond,Josh Dowell Memorial Bench,Marymoor (Josh Dowell Memorial),-122.11084,47.658938,NonEx
 b70d3d5f022e4029bd215f7dec1dbcca.16,Rain City,Redmond,Juel Park,Juel Park (Entrance),-122.089278,47.702702,NonEx
 4552c968d9eb4be1966824784f2e236f.16,Rain City,Redmond,Juel Trail,Juel Park (Trail),-122.089142,47.701802,ExEligible
-raincity20200627.3,Rain City,Redmond,Powerline Trail Post,Juel Powerline Trail Post,-122.084098,47.698715,NonEx
+raincity20200627.3,Rain City,Redmond,Powerline Trail Post,Juel Powerline Trail Post,-122.0835330,47.698273,NonEx
 b4757dc0af8b3f3abcf7ba03a12bfad8,Rain City,Redmond,Kids Playing Baseball Mural,Mattress Firm,-122.116819,47.67262,NonEx
 c73eb00cf09544ba8de4cd1d7fcb4369.16,Rain City,Redmond,Leaf Inlay in Sidewalk,Leaf Inlay,-122.114435,47.689362,NonEx
 d38924fc05f649cd923bdecc6afffdbe.12,Rain City,Redmond,Luke McRedmond's Paired Beavers,Luke McRedmond,-122.13216,47.67325,NonEx
@@ -463,7 +463,7 @@ a43edff5f6784b1ea7dbff3cba82c92b.16,Rain City,Redmond,The Rich Marsh,Marymoor (R
 b793664bd36b4bb49909c20bad86bb52.16,Rain City,Redmond,Uly Al Rw,Marymoor (Uly Al Rw),-122.105375,47.661421,ExEligible
 a169f4d109054d07936844148457333f.16,Rain City,Redmond,Vern Wagner Fields Dedication,Marymoor (Vern Wagner),-122.115819,47.664586,NonEx
 8809a5f47188461f81574dd0c613f342.16,Rain City,Redmond,Vesta Fountain,Vesta Fountain,-122.08833,47.658175,NonEx
-raincity20200627.2,Rain City,Redmond,Woodbridge Playground,Woodbridge Playground,-122.1127492,47.676571,NonEx
+raincity20200627.2,Rain City,Redmond,Woodbridge Playground,Woodbridge Playground,-122.0857080,47.663684,NonEx
 f3d6b06d15e74e9e88262ead6c5f20da.16,Rain City,Redmond,Victors Coffee Co. and Roasters,Victors Coffeeshop,-122.1219,47.674577,NonEx
 7a65b4ad11344ebdb3421c045bcd56f6.16,Rain City,Redmond,Washington Cathedral,Washington Cathedral,-122.13135,47.709688,NonEx
 72c4e8cb052344cd84a626a99aaecd36.16,Rain City,Redmond,Water Tower,Redmond Way Water Tower,-122.09184,47.663903,NonEx
@@ -543,3 +543,6 @@ raincity20200428.1,Rain City,Overlake,Eagles Soar Where Buses Stop,Eagles Soar,-
 raincity20200428.2,Rain City,Overlake,Moscow Mural,Moscow Mural,-122.1495670,47.643817,NonEx
 raincity20200428.3,Rain City,Overlake,Idylwood Park,Idylwood Park,-122.1062330,47.643817,NonEx
 raincity20200428.4,Rain City,Rose Hill,Sunflowers,Sunflowers,-122.153163,47.666205,NonEx
+raincity20200724.1,Rain City,Overlake,BC North Campus,BC North Campus,-122.1070450,47.634957,NonEx
+raincity20200724.2,Rain City,Overlake,Great Horned Owl Intense Eyes Bus Stop Mural,Owl Eyes,-122.1070450,47.631316,NonEx
+raincity20200724.3,Rain City,Duvall,Duvall Highlands Basketball Courts,Duvall Highlands Basketball,-121.961562,47.729188,NonEx
