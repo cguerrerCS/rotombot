@@ -12,10 +12,10 @@ DeoxysD,386,Tier 5,t5.png,inactive
 Dialga,483,Tier 5,t5.png,inactive
 Entei,244,Tier 5,t5.png,inactive
 Giratina,487,Tier 5,t5.png,inactive
-Groudon,383,Tier 5,t5.png,active
+Groudon,383,Tier 5,t5.png,inactive
 Heatran,485,Tier 5,t5.png,inactive
 Ho-oh,250,Tier 5,t5.png,inactive
-Kyogre,382,Tier 5,t5.png,active
+Kyogre,382,Tier 5,t5.png,inactive
 Kyurem,0,Tier 5,t5.png,active
 Landorus,0,Tier 5,t5.png,inactive
 Latias,380,Tier 5,t5.png,inactive
@@ -26,7 +26,7 @@ Mewtwo,150,Tier 5,t5.png,inactive
 Moltres,146,Tier 5,t5.png,inactive
 Palkia,484,Tier 5,t5.png,inactive
 Raikou,243,Tier 5,t5.png,inactive
-Rayquaza,384,Tier 5,t5.png,inactive
+Rayquaza,384,Tier 5,t5.png,active
 Regice,378,Tier 5,t5.png,inactive
 Regirock,377,Tier 5,t5.png,inactive
 Registeel,379,Tier 5,t5.png,inactive
