@@ -16,7 +16,7 @@ Groudon,383,Tier 5,t5.png,inactive
 Heatran,485,Tier 5,t5.png,inactive
 Ho-oh,250,Tier 5,t5.png,inactive
 Kyogre,382,Tier 5,t5.png,inactive
-Kyurem,0,Tier 5,t5.png,active
+Kyurem,0,Tier 5,t5.png,inactive
 Landorus,0,Tier 5,t5.png,inactive
 Latias,380,Tier 5,t5.png,inactive
 Latios,381,Tier 5,t5.png,inactive
@@ -128,6 +128,7 @@ Electrode,0,Tier 2,t2.png,active
 Exeggutor,103,Tier 2,t2.png,active
 Fearow,22,Tier 2,t2.png,active
 Feebas,349,Tier 2,t2.png,active
+Gible,0,Tier 2,t2.png,active
 Gligar,207,Tier 2,t2.png,active
 Grovyle,253,Tier 2,t2.png,active
 Haunter,0,Tier 2,t2.png,active
