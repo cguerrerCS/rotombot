@@ -26,7 +26,7 @@ Mewtwo,150,Tier 5,t5.png,inactive
 Moltres,146,Tier 5,t5.png,inactive
 Palkia,484,Tier 5,t5.png,inactive
 Raikou,243,Tier 5,t5.png,inactive
-Rayquaza,384,Tier 5,t5.png,active
+Rayquaza,384,Tier 5,t5.png,inactive
 Regice,378,Tier 5,t5.png,inactive
 Regirock,377,Tier 5,t5.png,inactive
 Registeel,379,Tier 5,t5.png,inactive
@@ -43,6 +43,7 @@ Abomasnow,Tier 4,t4.png,active
 Absol,359,Tier 4,t4.png,active
 Aggron,306,Tier 4,t4.png,active
 Blastoise,9,Tier 4,t4.png,active
+Bronzong,0,Tier 4,t4.png,active
 Charizard,6,Tier 4,t4.png,active
 Dragonite,149,Tier 4,t4.png,active
 Excadrill,0,Tier 4,t4.png,active
@@ -125,11 +126,13 @@ Croconaw,159,Tier 2,t2.png,active
 Dewgong,87,Tier 2,t2.png,active
 Electabuzz,125,Tier 2,t2.png,active
 Electrode,0,Tier 2,t2.png,active
+Elgyem,0,Tier 2,t2.png,active
 Exeggutor,103,Tier 2,t2.png,active
 Fearow,22,Tier 2,t2.png,active
 Feebas,349,Tier 2,t2.png,active
 Gible,0,Tier 2,t2.png,active
 Gligar,207,Tier 2,t2.png,active
+Gothita,0,Tier 2,t2.png,active
 Grovyle,253,Tier 2,t2.png,active
 Haunter,0,Tier 2,t2.png,active
 Kingler,0,Tier 2,t2.png,active
@@ -157,10 +160,16 @@ Sableye,302,Tier 2,t2.png,active
 Sandslash,28,Tier 2,t2.png,active
 Slowbro,80,Tier 2,t2.png,active
 Sneasel,215,Tier 2,t2.png,active
+Solosis,0,Tier 2,t2.png,active
 Stantler,234,Tier 2,t2.png,active
 Sudowoodo,185,Tier 2,t2.png,active
 Swellow,277,Tier 2,t2.png,active
 Tentacruel,73,Tier 2,t2.png,active
+UnownA,0,Tier 2,t2.png,active
+UnownL,0,Tier 2,t2.png,active
+UnownR,0,Tier 2,t2.png,active
+UnownT,0,Tier 2,t2.png,active
+UnownU,0,Tier 2,t2.png,active
 Venomoth,49,Tier 2,t2.png,active
 Whiscash,0,Tier 2,t2.png,active
 Wobbuffet,202,Tier 2,t2.png,active
@@ -180,6 +189,7 @@ Cacnea,331,Tier 1,t1.png,active
 Caterpie,10,Tier 1,t1.png,active
 Charmander,4,Tier 1,t1.png,active
 Chikorita,152,Tier 1,t1.png,active
+Clefairy,0,Tier 1,t1.png,active
 Cubchoo,613,Tier 1,t1.png,active
 Cubone,104,Tier 1,t1.png,active
 Cyndaquil,155,Tier 1,t1.png,active
@@ -191,6 +201,7 @@ Dwebble,0,Tier 1,t1.png,active
 Geodude,74,Tier 1,t1.png,active
 Grimer,0,Tier 1,t1.png,active
 Ivysaur,2,Tier 1,t1.png,active
+Jigglypuff,0,Tier 1,t1.png,active
 Kabutops,140,Tier 1,t1.png,active
 Klink,599,Tier 1,t1.png,active
 Kricketot,401,Tier 1,t1.png,active
@@ -224,6 +235,7 @@ Skorupi,451,Tier 1,t1.png,active
 Slakoth,287,Tier 1,t1.png,active
 Snorunt,361,Tier 1,t1.png,active
 Squirtle,7,Tier 1,t1.png,active
+Staryu,0,Tier 1,t1.png,active
 Sunkern,191,Tier 1,t1.png,active
 Swablu,333,Tier 1,t1.png,active
 Swinub,220,Tier 1,t1.png,active
