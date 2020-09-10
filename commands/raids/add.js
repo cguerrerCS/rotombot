@@ -3,8 +3,10 @@
 const commando = require("discord.js-commando");
 const Raid = require("../../lib/raid");
 
-const addEggByStartTimeRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/;
-const addEggByTimerRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/;
+const addMegaEggByStartTimeRegex = /^!add\s+(?:m|mega)\s+(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/i;
+const addMegaEggByTimerRegex = /^!add\s+(?:m|mega)\s+(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/i;
+const addEggByStartTimeRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:@|at)\s*)((?:\d?\d):?(?:\d\d)\s*(?:a|A|am|AM|p|P|pm|PM)?)$/i;
+const addEggByTimerRegex = /^!add\s+(?:(?:L|T)?(\d+)\s+)?(\w+(?:\s|\w)*)(?:\s+(?:in)\s*)(\d?\d)\s*?$/i;
 const addBossWithTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(?:\s+(\d?\d)\s*(?:left))\s*?$/;
 const addBossWithTimerAltRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)(?:for)(?:\s+(\d?\d)\s*)\s*?$/;
 const addBossNoTimerRegex = /^!add\s*((?:\w|-)+)\s*(?:@|at)\s*(\w+(?:\w|\s)*)$/;
@@ -26,11 +28,14 @@ class raid extends commando.Command {
                 "Add an unhatched egg with start time and optional tier:",
                 "  !add [<tier>] <location> (at|@) <time>",
                 "  !add wells fargo at 1012",
-                "  !add 4 wells fargo at 1012",
+                "  !add 3 wells fargo at 1012",
+                "  !add mega wells fargo at 1012",
+                "  !add m wells fargo at 1012",
                 "Add an unhatched egg with time-to-hatch and an optional tier:",
                 "  !add [<tier>] <location> in <minutes>",
                 "  !add library in 20",
-                "  !add 4 library in 20",
+                "  !add 3 library in 20",
+                "  !add mega library in 20",
                 "Add or update an active raid:",
                 "  !add <pkmn> (at|@) <location> <minutes> left",
                 "  !add ho-oh at Luke McRedmond 30 left",
@@ -46,7 +51,7 @@ class raid extends commando.Command {
                 "     12:10pm - 10 minutes after noon",
                 "     06:15 - 6:15 AM",
                 "     9:15 - either 9:15 AM or 9:15 PM",
-                "  Tier is 1-5",
+                "  Tier is 1, 3, 5 or MEGA",
                 "  Unhatched egg timer is 1-60",
                 "  Active raid timer is 1-45",
             ],
@@ -69,7 +74,21 @@ class raid extends commando.Command {
 
         let lookupOptions = client.config.getEffectiveGymLookupOptionsForMessage(message) || {};
 
-        let match = message.content.match(addEggByStartTimeRegex);
+        let match = message.content.match(addMegaEggByStartTimeRegex);
+        if (match !== null) {
+            const [, gym, startTime] = match;
+            try {
+                let added = client.raidManager.addEggAbsolute("mega", gym, startTime, lookupOptions);
+                message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
+                client.hooks.raidUpdated(added, onBehalfOf);
+            }
+            catch (e) {
+                client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
+            }
+            return;
+        }
+
+        match = message.content.match(addEggByStartTimeRegex);
         if (match !== null) {
             const [, tier, gym, startTime] = match;
             try {
@@ -79,6 +98,21 @@ class raid extends commando.Command {
             }
             catch (e) {
                 client.reportError(message, "!add", e, this.examples[eggStartTimeSampleIndex]);
+            }
+            return;
+        }
+
+        match = message.content.match(addMegaEggByTimerRegex);
+        if (match !== null) {
+            const [, gym, timer] = match;
+            try {
+                let added = client.raidManager.addEggCountdown("mega", gym, timer, lookupOptions);
+                message.channel.send(`Added ${Raid.raidToString(added)}.\n`);
+                client.hooks.raidUpdated(added, onBehalfOf);
+            }
+            catch (err) {
+                client.reportError(message, "!add", err, this.examples[eggTimerSampleIndex]);
+                return;
             }
             return;
         }
