@@ -1,8 +1,8 @@
 Raid Boss,id,Raid Tier,Active,
-Articuno,144,Tier 5,t5.png,active
+Articuno,144,Tier 5,t5.png,inactive
 Azelf,482,Tier 5,t5.png,inactive
 Cobalion,638,Tier 5,t5.png,inactive
-Cresselia,488,Tier 5,t5.png,active
+Cresselia,488,Tier 5,t5.png,inactive
 Darkrai,491,Tier 5,t5.png,inactive
 Deoxys,386,Tier 5,t5.png,inactive
 DeoxysA,386,Tier 5,t5.png,inactive
@@ -38,11 +38,12 @@ Thundurus,0,Tier 5,t5.png,inactive
 Tornadus,0,Tier 5,t5.png,inactive
 Uxie,480,Tier 5,t5.png,inactive
 Virizion,640,Tier 5,t5.png,inactive
-Zapdos,145,Tier 5,t5.png,inactive
+Zapdos,145,Tier 5,t5.png,active
 Zekrom,0,Tier 5,t5.png,inactive
 MegaBlastoise,2,Tier 4,mega.png,active
 MegaCharizardX,2,Tier 4,mega.png,active
 MegaCharizardY,2,Tier 4,mega.png,active
+MegaHoundoom,2,Tier 4,mega.png,active
 MegaPidgeot,2,Tier 4,mega.png,active
 MegaVenusaur,2,Tier 4,mega.png,active
 Abomasnow,Tier 3,t3.png,active
