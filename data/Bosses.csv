@@ -29,7 +29,7 @@ Palkia,484,Tier 5,t5.png,inactive
 Raikou,243,Tier 5,t5.png,inactive
 Rayquaza,384,Tier 5,t5.png,inactive
 Regice,378,Tier 5,t5.png,inactive
-Regirock,377,Tier 5,t5.png,active
+Regirock,377,Tier 5,t5.png,inactive
 Registeel,379,Tier 5,t5.png,inactive
 Reshiram,643,Tier 5,t5.png,inactive
 Suicune,245,Tier 5,t5.png,inactive
@@ -91,6 +91,7 @@ Claydol,344,Tier 3,t3.png,active
 Clefable,0,Tier 3,t3.png,active
 Crawdaunt,342,Tier 3,t3.png,active
 Delibird,225,Tier 3,t3.png,active
+Dewgong,87,Tier 3,t3.png,active
 Donphan,232,Tier 3,t3.png,active
 Gengar,94,Tier 3,t3.png,active
 Espeon,196,Tier 3,t3.png,active
@@ -134,7 +135,6 @@ Cloyster,91,Tier 1,t1.png,active
 Combee,415,Tier 1,t1.png,active
 Combusken,256,Tier 1,t1.png,active
 Croconaw,159,Tier 1,t1.png,active
-Dewgong,87,Tier 1,t1.png,active
 Electabuzz,125,Tier 1,t1.png,active
 Electrode,0,Tier 1,t1.png,active
 Elgyem,0,Tier 1,t1.png,active
@@ -253,6 +253,7 @@ Swinub,220,Tier 1,t1.png,active
 Tepig,498,Tier 1,t1.png,active
 Timburr,0,Tier 1,t1.png,active
 Totodile,158,Tier 1,t1.png,active
+Vanillite,0,Tier 1,t1.png,active
 Venipede,0,Tier 1,t1.png,active
 Wailmer,320,Tier 1,t1.png,active
 Wartortle,8,Tier 1,t1.png,active
