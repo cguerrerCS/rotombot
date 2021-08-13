@@ -40,16 +40,19 @@ Uxie,480,Tier 5,t5.png,inactive
 Virizion,640,Tier 5,t5.png,inactive
 Zapdos,145,Tier 5,t5.png,inactive
 Zekrom,0,Tier 5,t5.png,inactive
+MegaAbomasnow,2,Tier 4,mega.png,inactive
 MegaAmpharos,2,Tier 4,mega.png,active
 MegaBlastoise,2,Tier 4,mega.png,inactive
 MegaCharizardX,2,Tier 4,mega.png,inactive
 MegaCharizardY,2,Tier 4,mega.png,inactive
+MegaGengar,2,Tier 4,mega.png,inactive
 MegaHoundoom,2,Tier 4,mega.png,inactive
 MegaPidgeot,2,Tier 4,mega.png,inactive
 MegaVenusaur,2,Tier 4,mega.png,inactive
 Abomasnow,Tier 3,t3.png,active
 Absol,359,Tier 3,t3.png,active
 Aggron,306,Tier 3,t3.png,active
+Ariados,0,Tier 3,t3.png,active
 Blastoise,9,Tier 3,t3.png,active
 Bronzong,0,Tier 3,t3.png,active
 Charizard,6,Tier 3,t3.png,active
@@ -58,6 +61,7 @@ Excadrill,0,Tier 3,t3.png,active
 Feraligatr,160,Tier 3,t3.png,active
 Golem,76,Tier 3,t3.png,active
 Gyarados,0,t3.png,active
+Hariyama,0,t3.png,active
 Houndoom,229,Tier 3,t3.png,active
 Lapras,131,Tier 3,t3.png,active
 AlolanMarowak,105,Tier 3,t3.png,active
@@ -89,6 +93,7 @@ Claydol,344,Tier 3,t3.png,active
 Clefable,0,Tier 3,t3.png,active
 Crawdaunt,342,Tier 3,t3.png,active
 Delibird,225,Tier 3,t3.png,active
+Dewgong,87,Tier 3,t3.png,active
 Donphan,232,Tier 3,t3.png,active
 Gengar,94,Tier 3,t3.png,active
 Espeon,196,Tier 3,t3.png,active
@@ -106,6 +111,7 @@ Kangaskhan,0,Tier 3,t3.png,active
 Lunatone,337,Tier 3,t3.png,active
 Machamp,68,Tier 3,t3.png,active
 Mantine,226,Tier 3,t3.png,active
+Mawile,303,Tier 3,t3.png,active
 Medicham,0,Tier 3,t3.png,active
 Ninetails,38,Tier 3,t3.png,active
 Omastar,139,Tier 3,t3.png,active
@@ -133,7 +139,6 @@ Cloyster,91,Tier 1,t1.png,active
 Combee,415,Tier 1,t1.png,active
 Combusken,256,Tier 1,t1.png,active
 Croconaw,159,Tier 1,t1.png,active
-Dewgong,87,Tier 1,t1.png,active
 Electabuzz,125,Tier 1,t1.png,active
 Electrode,0,Tier 1,t1.png,active
 Elgyem,0,Tier 1,t1.png,active
@@ -157,7 +162,6 @@ Manectric,310,Tier 1,t1.png,active
 Marowak,105,Tier 1,t1.png,active
 Marshtomp,259,Tier 1,t1.png,active
 Masquerain,284,Tier 1,t1.png,active
-Mawile,303,Tier 1,t1.png,active
 Misdreavus,200,Tier 1,t1.png,active
 Muk,89,Tier 1,t1.png,active
 Nosepass,299,Tier 1,t1.png,active
@@ -209,6 +213,7 @@ Drifloon,425,Tier 1,t1.png,active
 Drowzee,96,Tier 1,t1.png,active
 Duskull,355,Tier 1,t1.png,active
 Dwebble,0,Tier 1,t1.png,active
+Espurr,0,Tier 1,t1.png,active
 Geodude,74,Tier 1,t1.png,active
 Grimer,0,Tier 1,t1.png,active
 Ivysaur,2,Tier 1,t1.png,active
@@ -256,6 +261,7 @@ Swinub,220,Tier 1,t1.png,active
 Tepig,498,Tier 1,t1.png,active
 Timburr,0,Tier 1,t1.png,active
 Totodile,158,Tier 1,t1.png,active
+Vanillite,0,Tier 1,t1.png,active
 Venipede,0,Tier 1,t1.png,active
 Wailmer,320,Tier 1,t1.png,active
 Wartortle,8,Tier 1,t1.png,active
